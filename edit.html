@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Resume</title>
+    <link rel="stylesheet" href="css/edit.css">
+</head>
+<body class="edit">
+    <div class="overlay" id="overlay"></div>
+    <div class="modify-table" id="modify-table">
+        <table id="modify-options"></table>
+    </div>
+    <div id="download-icon">
+        <i class="fa-solid fa-download"></i>
+    </div>
+    <header>
+        <h1>Edit Your Resume</h1>
+    </header>
+    <main class="edit-page">
+        <div id="form-container" class="form-container-hidden"><section class="form-section">
+            <form id="resume-form">
+                <div class="grid-box">
+                    <div>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <div>
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" name="phone">
+                    </div>
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    <div>
+                        <label for="location">Location:</label>
+                        <input type="text" id="location" name="location">
+                    </div>
+                </div>
+
+                <label for="university">University:</label>
+                <textarea id="university" name="university"></textarea>
+                <label for="graduation">(Expected) Graduation Year:</label>
+                <input type="text" id="graduation" name="graduation">
+                <label for="major">Major:</label>
+                <textarea id="major" name="major"></textarea>
+
+                <label for="communication">Communication Languages:</label>
+                <textarea id="communication" name="communication"></textarea>
+                <label for="program">Programming Languages:</label>
+                <textarea id="program" name="program"></textarea>
+                <label for="cert">Certifications:</label>
+                <textarea id="cert" name="cert"></textarea>
+
+                <label for="company">Company:</label>
+                <input type="text" id="company" name="company">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title">
+                <label for="org-address">Location:</label>
+                <textarea id="org-address" name="org-address"></textarea>
+                <label for="start">Start Date:</label>
+                <input type="text" id="start" name="start">
+                <label for="end">End Date:</label>
+                <input type="text" id="end" name="end">
+                <label for="exp">Experience:</label>
+                <textarea id="exp" name="exp"></textarea>
+
+                <button type="button" id="preview-btn">Preview</button>
+                <button type="button" id="save-btn">Download</button>
+            </form>
+        </section></div>
+        <div id="preview-container"><section class="preview-section">
+            <div id="resume-preview">
+                <!-- The selected template with user data will appear here -->
+            </div>
+        </section></div>
+    </main>
+    <script src="js/edit.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/e212b5add5.js" crossorigin="anonymous"></script>
+</body>
+</html>

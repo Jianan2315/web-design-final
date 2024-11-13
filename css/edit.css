@@ -1,0 +1,183 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #3498db;
+  background: #f4f4f4;
+}
+
+header {
+  background: white;
+}
+
+.edit-page {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  background: white;
+}
+
+.form-section, .preview-section {
+  width: 100%;
+  padding: 1.25rem;
+  background: #f4f4f4;
+}
+
+.edit-page {
+  justify-content: space-evenly;
+}
+.edit-page > div {
+  width: 42%;
+  background: white;
+}
+header {
+  text-align: center;
+  padding: 1.25rem;
+}
+
+.form-section form {
+  display: flex;
+  flex-direction: column;
+  color: black;
+}
+.form-section form .grid-box {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+}
+.form-section form .grid-box label {
+  display: inline-block;
+  width: 30%;
+}
+.form-section form label {
+  margin-top: 10px;
+}
+.form-section form input, .form-section form textarea {
+  padding: 5px;
+  font-size: 16px;
+}
+/*.form-section form #preview-btn, .form-section form #save-btn*/
+.form-section form button {
+  margin-top: 1.25rem;
+  padding: 10px;
+  background-color: rgb(99.6774193548, 99.6774193548, 106.3225806452);
+  color: rgb(229.5, 229.5, 229.5);
+  font-size: 1.125rem;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+/*.form-section form #preview-btn:hover, .form-section form #save-btn:hover*/
+.form-section form button:hover{
+  background-color: #4b4b50;
+  color: white;
+}
+
+.preview-section #resume-preview {
+  border: 1px solid #ccc;
+}
+/* download css*/
+.download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #000000;
+  text-align: center;
+  font-size: 36px;
+}
+.download .container {
+  max-width: 100%;
+}
+.download h1 {
+  color: #4CAF50;
+}
+.download a {
+  color: #2196F3;
+  text-decoration: none;
+  font-weight: bold;
+}
+.download a:hover {
+  text-decoration: underline;
+}
+/*Icon/button  rules*/
+.editIcon {
+  float: right;
+}
+.editIcon-hidden {
+  display: none;
+}
+.edit{}
+.edit body.disabled {
+  filter: grayscale(1);
+  pointer-events: none;
+}
+.edit .overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Light translucent overlay */
+  z-index: 1000; /* Higher than the rest of the page */
+}
+.edit .modify-table {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #f4f4f4;
+  /*border: 1px solid #333;*/
+  padding: 20px;
+  z-index: 1100; /* Higher than overlay */
+  border-radius: 10px;
+  min-width: 400px;
+  min-height: 248px;
+}
+.modify-table table{
+  width: 400px;
+  height: 248px;
+}
+.modify-table tr{
+  color: black;
+}
+.modify-table td {
+  font-size: 24px;
+  text-align: left;
+  padding: 0 4px 16px 4px;
+}
+
+.modify-table button{
+  min-width:64px;
+  font-size: 20px;
+  padding: 2px;
+  margin: 0 5%;
+}
+
+.modify-table .btn-cell {
+  text-align: center;
+}
+
+.form-container-hidden {
+  display: none;
+}
+
+#download-icon {
+  top: 0;
+  right: 0;
+  margin: 20px;
+  position: fixed;
+}
+#download-icon:hover{
+  cursor: pointer;
+}
