@@ -118,22 +118,22 @@ window.addEventListener("load", function () {
       <h2>Education</h2>
       <div class="editIcon" id="eduIcon">
           <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-          <i class="fa-solid fa-plus" onclick="addEducation(this)" style="float:right;margin-right: 5px;"></i>
+          <i class="fa-solid fa-plus" onclick="addEducation(this)" style="float:right;margin-right: 10px;"></i>
       </div>      
       <table>
-        <tr>
+        <tr class="component">
           <td><strong>Northeastern University</strong></td>
           <td>Dec 2026</td>
         </tr>
-        <tr class="degree">
-          <td>MS in Software Engineering Systems</td>
+        <tr class="degree component">
+          <td colspan="2">MS in Software Engineering Systems</td>
         </tr>
-        <tr>
+        <tr class="component">
           <td><strong>Boston University</strong></td>
           <td> Dec 2019</td>
         </tr>
-        <tr class="degree">
-          <td>BS in Computer Science</td>
+        <tr class="degree component">
+          <td colspan="2">BS in Computer Science</td>
         </tr>
       </table>
     </section>
@@ -143,12 +143,12 @@ window.addEventListener("load", function () {
       <h2>Personal Skills</h2>
       <div class="editIcon" id="skillIcon">
         <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-        <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 5px;"></i>
+        <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
       </div>
       <ul>
-        <li><strong>Communication language</strong>: Chinese (Native), English (Proficient)</li>
-        <li><strong>Programming languages</strong>: Python, SQL, HTML5, Java</li>
-        <li><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals</li>
+        <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)</li>
+        <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java</li>
+        <li class="component"><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals</li>
       </ul>
     </section>
     
@@ -157,25 +157,25 @@ window.addEventListener("load", function () {
       <h2>Professional Experience</h2>
       <div class="editIcon" id="expIcon">
         <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 5px;"></i>
+        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
       </div>      
-      <h3>Wicresoft, Azure PaaS Support Engineer</h3>
-      <p><em>Shanghai | Jul 2023 - Jul 2024</em></p>
-      <ul>
+      <h3 class="component">Wicresoft, Azure PaaS Support Engineer</h3>
+      <p class="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
+      <ul class="component">
         <li>Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.</li>
         <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID.</li>
       </ul>
         
-      <h3>Huawei Digital Power Technology, Software Development Engineer</h3>
-      <p><em>Shenzhen | Mar 2022 - Aug 2022</em></p>
-      <ul>
+      <h3 class="component">Huawei Digital Power Technology, Software Development Engineer</h3>
+      <p class="component"><em>Shenzhen | Mar 2022 - Aug 2022</em></p>
+      <ul class="component">
         <li>Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.</li>
         <li>Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency.</li>
       </ul>
   
-      <h3>Dell, Global Operations Engineer, Intern</h3>
-      <p><em>Shanghai | Jul 2021 - Sep 2021</em></p>
-      <ul>
+      <h3 class="component">Dell, Global Operations Engineer, Intern</h3>
+      <p class="component"><em>Shanghai | Jul 2021 - Sep 2021</em></p>
+      <ul class="component">
         <li>Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.</li>
         <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
       </ul>
@@ -208,9 +208,124 @@ document.addEventListener("DOMContentLoaded", function() {
             .save() // This triggers the download of the PDF
             // .then(()=>{element.classList.remove("pdf")})
             .then(()=>{window.location.href = "download.html";})
+            .then(()=>extractAndSaveResumeData())
             ;
     });
 });
+function bindEduBlock(){
+    // Add hover effect to "blocks"
+    const eduSection = document.getElementById("edu-section");
+    // edu
+    if (eduSection){
+        console.log("eduSection");
+    } else {
+        console.log("Invalid eduSection");
+    }
+    // odd
+    oddElements=eduSection.querySelectorAll("tr:nth-child(odd)");
+    console.log("odd eles:", oddElements)
+    oddElements.forEach(oddElement => {
+        oddElement.addEventListener('mouseenter', () => {
+            const nextSibling = oddElement.nextElementSibling;
+            if (nextSibling && nextSibling.classList.contains('component')) {
+                nextSibling.classList.add('component-hover');
+            }
+        });
+
+        oddElement.addEventListener('mouseleave', () => {
+            const nextSibling = oddElement.nextElementSibling;
+            if (nextSibling && nextSibling.classList.contains('component')) {
+                nextSibling.classList.remove('component-hover');
+            }
+        });
+    });
+    // even
+    evenElements=eduSection.querySelectorAll("tr:nth-child(even)");
+    console.log("even eles:", evenElements)
+    evenElements.forEach(evenElement => {
+        evenElement.addEventListener('mouseenter', () => {
+            const prevSibling = evenElement.previousElementSibling;
+            if (prevSibling && prevSibling.classList.contains('component')) {
+                prevSibling.classList.add('component-hover');
+            }
+        });
+
+        evenElement.addEventListener('mouseleave', () => {
+            const prevSibling = evenElement.previousElementSibling;
+            if (prevSibling && prevSibling.classList.contains('component')) {
+                prevSibling.classList.remove('component-hover');
+            }
+        });
+    });
+
+}
+
+function bindExpBlock(){
+    const expSection = document.getElementById("exp-section");
+
+    // first
+    firstElements=expSection.querySelectorAll("h3");
+    console.log("first eles:", firstElements)
+    firstElements.forEach(firstElement => {
+        firstElement.addEventListener('mouseenter', () => {
+            const secondElement = firstElement.nextElementSibling;
+            const thirdElement = secondElement.nextElementSibling;
+            secondElement.classList.add('component-hover');
+            thirdElement.classList.add('component-hover');
+        });
+
+        firstElement.addEventListener('mouseleave', () => {
+            const secondElement = firstElement.nextElementSibling;
+            const thirdElement = secondElement.nextElementSibling;
+            secondElement.classList.remove('component-hover');
+            thirdElement.classList.remove('component-hover');
+        });
+    });
+    // 2nd
+    secondElements = expSection.querySelectorAll("p");
+    console.log("first eles:", secondElements)
+    secondElements.forEach(secondElement => {
+        secondElement.addEventListener('mouseenter', () => {
+            const firstElement = secondElement.previousElementSibling;
+            const thirdElement = secondElement.nextElementSibling;
+            firstElement.classList.add('component-hover');
+            thirdElement.classList.add('component-hover');
+        });
+
+        secondElement.addEventListener('mouseleave', () => {
+            const firstElement = secondElement.previousElementSibling;
+            const thirdElement = secondElement.nextElementSibling;
+            firstElement.classList.remove('component-hover');
+            thirdElement.classList.remove('component-hover');
+        });
+    });
+    // 3rd
+    thirdElements = expSection.querySelectorAll("ul");
+    console.log("3rd eles:", thirdElements)
+    thirdElements.forEach(thirdElement => {
+        thirdElement.addEventListener('mouseenter', () => {
+            const secondElement = thirdElement.previousElementSibling;
+            const firstElement = secondElement.previousElementSibling;
+            firstElement.classList.add('component-hover');
+            secondElement.classList.add('component-hover');
+        });
+
+        thirdElement.addEventListener('mouseleave', () => {
+            const secondElement = thirdElement.previousElementSibling;
+            const firstElement = secondElement.previousElementSibling;
+            firstElement.classList.remove('component-hover');
+            secondElement.classList.remove('component-hover');
+        });
+    });
+}
+window.addEventListener("load", function() {
+    // Add hover effect to "blocks"
+    bindEduBlock()
+    bindExpBlock()
+});
+
+
+
 
 // set grayscale background
 function activateOverlay(icon) {
@@ -423,9 +538,13 @@ function addEducation(icon) {
         <textarea id="major" name="major"></textarea>
         
         <button type="button" id="add-edu-entry">Save</button>
+        <button type="button" id="cancel-edu-entry">Cancel</button>
     `;
     form.querySelector('#add-edu-entry').addEventListener('click', function() {
         addEduEntry(this, icon);
+    });
+    form.querySelector('#cancel-edu-entry').addEventListener('click', function() {
+        cancelEntry();
     });
 }
 
@@ -448,12 +567,12 @@ function addEduEntry(button, icon) {
     const table = icon.closest("section").querySelector("table");
     const dateString = gradDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });//toDateString()
     table.innerHTML += `
-        <tr>
+        <tr class="component">
           <td><strong>${college}</strong></td>
           <td>${dateString}</td>
         </tr>
-        <tr class="degree">
-          <td>${major}</td>
+        <tr class="degree component">
+          <td colspan="2">${major}</td>
         </tr>
     `
 
@@ -480,6 +599,7 @@ function addEduEntry(button, icon) {
         table.appendChild(block.institutionRow);
         table.appendChild(block.degreeRow);
     });
+    bindEduBlock()
     cancelEntry();
 }
 
@@ -499,10 +619,14 @@ function addSkill(icon) {
         <textarea id="new-skill-detail" name="new-skill-detail"></textarea>
         
         <button type="button" id="add-skill-entry">Save</button>
+        <button type="button" id="cancel-skill-entry">Cancel</button>
     `;
     form.querySelector('#add-skill-entry').addEventListener('click', function() {
         addSkillEntry(this, icon);
     });
+    form.querySelector('#cancel-skill-entry').addEventListener('click', function() {
+        cancelEntry();
+    })
 }
 
 function addSkillEntry(button, icon) {
@@ -541,9 +665,13 @@ function addExp(icon) {
         <textarea id="exp" name="exp" oninput="addBullet(this)"></textarea>
         
         <button type="button" id="add-exp-entry">Save</button>
+        <button type="button" id="cancel-exp-entry">Cancel</button>
     `;
     form.querySelector('#add-exp-entry').addEventListener('click', function() {
         addExpEntry(this, icon);
+    });
+    form.querySelector('#cancel-exp-entry').addEventListener('click', function() {
+        cancelEntry();
     });
 }
 
@@ -573,9 +701,9 @@ function addExpEntry(button, icon) {
     const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
     const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
     expSection.innerHTML += `
-        <h3>${company}, ${title}</h3>
-        <p><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul></ul>
+        <h3 class="component">${company}, ${title}</h3>
+        <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
+        <ul class="component"></ul>
     `
 
     const ulEles = expSection.querySelectorAll("ul");
@@ -624,9 +752,79 @@ function addExpEntry(button, icon) {
         expSection.appendChild(block.p);
         expSection.appendChild(block.ul);
     });
+    bindExpBlock()
     cancelEntry();
 }
 function addBullet(lines) {
     const values=lines.value.split("\n").map(line => line.startsWith("•")?line:`•${line}`);
     lines.value=values.join("\n");
+}
+
+function extractAndSaveResumeData() {
+    const resumeData = {};
+
+    // Personal Info
+    const personalInfo = document.querySelector('#personal-info');
+    resumeData.personal_info = {
+        name: personalInfo.querySelector('h1').innerText,
+        phone: personalInfo.querySelector('p').innerText.split('|')[0].trim().replace('Phone: ', ''),
+        email: personalInfo.querySelector('p').innerText.split('|')[1].trim().replace('Email: ', ''),
+        location: personalInfo.querySelector('p').innerText.split('|')[2].trim().replace('Location: ', '')
+    };
+
+    // Education Section
+    resumeData.education = [];
+    const eduSection = document.querySelector('#edu-section');
+    const eduRows = eduSection.querySelectorAll('table tbody tr');
+    for (let i = 0; i < eduRows.length; i += 2) {
+        const institutionRow = eduRows[i];
+        const degreeRow = eduRows[i + 1];
+        resumeData.education.push({
+            institution: institutionRow.querySelector('td strong').innerText,
+            graduation_date: institutionRow.querySelectorAll('td')[1].innerText,
+            degree: degreeRow.querySelector('td').innerText
+        });
+    }
+
+    // Personal Skills
+    const skillSection = document.querySelector('#skill-section');
+    resumeData.personal_skills = {
+        communication_languages: skillSection.querySelectorAll('ul li')[0].innerText.split(': ')[1].trim(),
+        programming_languages: skillSection.querySelectorAll('ul li')[1].innerText.split(': ')[1].trim().split(', '),
+        certifications: skillSection.querySelectorAll('ul li')[2].innerText.split(': ')[1].trim().split('; ')
+    };
+
+    // Professional Experience
+    resumeData.professional_experience = [];
+    const expSection = document.querySelector('#exp-section');
+    const experienceEntries = expSection.querySelectorAll('.component');
+    for (let i = 0; i < experienceEntries.length; i += 3) {
+        const companyPosition = experienceEntries[i];
+        const duration = experienceEntries[i + 1];
+        const responsibilities = experienceEntries[i + 2];
+        const responsibilityList = [];
+        responsibilities.querySelectorAll('li').forEach(li => {
+            responsibilityList.push(li.innerText);
+        });
+        resumeData.professional_experience.push({
+            company: companyPosition.innerText.split(',')[0].trim(),
+            position: companyPosition.innerText.split(',')[1].trim(),
+            location: duration.innerText.split('|')[0].trim(),
+            start_end_dates: duration.innerText.split('|')[1].trim(),
+            responsibilities: responsibilityList
+        });
+    }
+
+    // Convert to JSON
+    const resumeJson = JSON.stringify(resumeData, null, 4);
+    console.log(resumeJson);
+
+    // Save as JSON File
+    const blob = new Blob([resumeJson], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'resume_data.json'; // The name of the file to be downloaded
+    document.body.appendChild(link);
+    link.click(); // Programmatically click the link to trigger the download
+    document.body.removeChild(link); // Clean up the link element
 }

@@ -181,3 +181,22 @@ header {
 #download-icon:hover{
   cursor: pointer;
 }
+
+.component {
+  background: #ffffff;
+}
+
+.component:hover{
+  background: #f4f4f4;
+}
+
+.component-hover {
+  background-color: #f4f4f4;
+}
+
+/*#edu-section > table{*/
+/*  border-spacing: 0;*/
+/*}*/
+i:hover{
+  cursor: pointer;
+}
