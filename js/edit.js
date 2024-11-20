@@ -78,6 +78,7 @@ document.getElementById("preview-btn").addEventListener("click", function () {
 });
 
 // Load selected template
+// per my test, this load event does NOT affect event delegation.
 window.addEventListener("load", function () {
     const params = new URLSearchParams(window.location.search);
     const templateId = params.get("template");
@@ -185,6 +186,8 @@ window.addEventListener("load", function () {
 });
 
 // Wait for the DOM to be fully loaded
+// per my test, element replacement does NOT matter for "DOMContentLoaded" event.
+// Thus, any issue about event delegation are NOT related to this download event listener
 document.addEventListener("DOMContentLoaded", function() {
 
     // Get the button and add an event listener
@@ -212,21 +215,28 @@ document.addEventListener("DOMContentLoaded", function() {
             ;
     });
 });
+
 function bindEduBlock(){
     // Add hover effect to "blocks"
     const eduSection = document.getElementById("edu-section");
     // edu
     if (eduSection){
-        console.log("eduSection");
+        // console.log("bindEduBlock()");
     } else {
         console.log("Invalid eduSection");
+        return;
     }
+
+    // console.log("All rows:",eduSection.querySelectorAll("tr"));
+    // eduSection.querySelectorAll("tr").forEach(tmp=>console.log(tmp.textContent));
     // odd
-    oddElements=eduSection.querySelectorAll("tr:nth-child(odd)");
-    console.log("odd eles:", oddElements)
+    const oddElements=eduSection.querySelectorAll("tr:nth-child(odd)");
+    // console.log("Odd eles:", oddElements);
     oddElements.forEach(oddElement => {
+        // console.log("odd: ", oddElement.textContent);
         oddElement.addEventListener('mouseenter', () => {
             const nextSibling = oddElement.nextElementSibling;
+            // console.log(`odd ${oddElement.textContent} \nnext`, nextSibling.textContent);
             if (nextSibling && nextSibling.classList.contains('component')) {
                 nextSibling.classList.add('component-hover');
             }
@@ -240,11 +250,13 @@ function bindEduBlock(){
         });
     });
     // even
-    evenElements=eduSection.querySelectorAll("tr:nth-child(even)");
-    console.log("even eles:", evenElements)
+    const evenElements=eduSection.querySelectorAll("tr:nth-child(even)");
+    // console.log("Even eles:", evenElements);
     evenElements.forEach(evenElement => {
+        // console.log("even: ", evenElement.textContent);
         evenElement.addEventListener('mouseenter', () => {
             const prevSibling = evenElement.previousElementSibling;
+            // console.log(`even ${evenElement.textContent} \nprev`, prevSibling.textContent);
             if (prevSibling && prevSibling.classList.contains('component')) {
                 prevSibling.classList.add('component-hover');
             }
@@ -264,8 +276,8 @@ function bindExpBlock(){
     const expSection = document.getElementById("exp-section");
 
     // first
-    firstElements=expSection.querySelectorAll("h3");
-    console.log("first eles:", firstElements)
+    const firstElements=expSection.querySelectorAll("h3");
+    // console.log("1st eles:", firstElements);
     firstElements.forEach(firstElement => {
         firstElement.addEventListener('mouseenter', () => {
             const secondElement = firstElement.nextElementSibling;
@@ -282,8 +294,8 @@ function bindExpBlock(){
         });
     });
     // 2nd
-    secondElements = expSection.querySelectorAll("p");
-    console.log("first eles:", secondElements)
+    const secondElements = expSection.querySelectorAll("p");
+    // console.log("2nd eles:", secondElements);
     secondElements.forEach(secondElement => {
         secondElement.addEventListener('mouseenter', () => {
             const firstElement = secondElement.previousElementSibling;
@@ -300,8 +312,8 @@ function bindExpBlock(){
         });
     });
     // 3rd
-    thirdElements = expSection.querySelectorAll("ul");
-    console.log("3rd eles:", thirdElements)
+    const thirdElements = expSection.querySelectorAll("ul");
+    // console.log("3rd eles:", thirdElements);
     thirdElements.forEach(thirdElement => {
         thirdElement.addEventListener('mouseenter', () => {
             const secondElement = thirdElement.previousElementSibling;
@@ -318,10 +330,234 @@ function bindExpBlock(){
         });
     });
 }
+
+function popEditForm(){
+    const eduSection = document.getElementById("edu-section");
+    const skillSection = document.getElementById("skill-section");
+    const expSection = document.getElementById("exp-section");
+
+    // edu
+    const eduRows = eduSection.querySelectorAll("tr");
+    let blocks = [];
+    for (let i = 0; i < eduRows.length; i+=2) {
+        // blocks.push({first:eduRows[i], second:eduRows[i+1]});
+        blocks.push([eduRows[i], eduRows[i+1]]);
+    }
+    // blocks.forEach(block=>{
+    //     console.log("block content: ", block);
+    // });
+    // return;
+    blocks.forEach(block => {
+        const cells = block[0].querySelectorAll("td");
+        const college = cells[0].textContent.trim();
+        const date =  new Date(`${cells[1].textContent.trim()} 01`).toISOString().split('T')[0];
+        const major = block[1].textContent.trim();
+        block.forEach(ele => {
+            ele.addEventListener('click', () => {
+                const form = document.getElementById("resume-form");
+                const formContainer = document.getElementById("form-container")
+                formContainer.classList.remove("form-container-hidden")
+                form.innerHTML = `
+                    <label for="university">University:</label>
+                    <textarea id="university" name="university">${college}</textarea>
+                    <label for="graduation">(Expected) Graduation Year:</label>
+                    <input type="date" id="graduation" name="graduation" value=${date}>
+                    <label for="major">Major:</label>
+                    <textarea id="major" name="major">${major}</textarea>
+                    
+                    <button type="button" id="update-edu-entry">Update</button>
+                    <button type="button" id="cancel-edu-entry">Cancel</button>
+                `;
+                form.querySelector('#update-edu-entry').addEventListener('click', function() {
+                    updateEduEntry(this, block);
+                });
+                form.querySelector('#cancel-edu-entry').addEventListener('click', function() {
+                    cancelEntry();
+                });
+            });
+        });
+
+    });
+
+
+
+    // skill
+    const skillRows = skillSection.querySelectorAll("li");
+    skillRows.forEach(block => {
+        const strongElement = block.querySelector('strong');
+        const title = strongElement.textContent.trim(); // "Communication language"
+        // Extract the remaining part (after the colon)
+        const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
+        // console.log(title, details)
+        block.addEventListener('click', () => {
+            // console.log("block:", block)
+            const form = document.getElementById("resume-form");
+            const formContainer = document.getElementById("form-container")
+            formContainer.classList.remove("form-container-hidden")
+            form.innerHTML = `
+                <label for="new-skill-name">Skill name:</label>
+                <textarea id="new-skill-name" name="new-skill-name">${title}</textarea>
+                 <label for="new-skill-detail">Skill details:</label>
+                <textarea id="new-skill-detail" name="new-skill-detail">${details}</textarea>
+                
+                <button type="button" id="update-skill-entry">Update</button>
+                <button type="button" id="cancel-skill-entry">Cancel</button>
+            `;
+            form.querySelector('#update-skill-entry').addEventListener('click', function() {
+                updateSkillEntry(this, block);
+            });
+            form.querySelector('#cancel-skill-entry').addEventListener('click', function() {
+                cancelEntry();
+            });
+        });
+
+
+    });
+    // exp
+    const expRows = eduSection.querySelectorAll("h3");
+    const secondEles = eduSection.querySelectorAll("tr");
+    const thirdEles = eduSection.querySelectorAll("tr");
+    blocks = [];
+    for (let i = 0; i < expRows.length; i+=1) {
+        // blocks.push({first:eduRows[i], second:eduRows[i+1]});
+        blocks.push([expRows[i], expRows[i+1]]);
+    }
+    // blocks.forEach(block=>{
+    //     console.log("block content: ", block);
+    // });
+    // return;
+    blocks.forEach(block => {
+        const cells = block[0].querySelectorAll("td");
+        const college = cells[0].textContent.trim();
+        const date =  new Date(`${cells[1].textContent.trim()} 01`).toISOString().split('T')[0];
+        const major = block[1].textContent.trim();
+        block.forEach(ele => {
+            ele.addEventListener('click', () => {
+                const form = document.getElementById("resume-form");
+                const formContainer = document.getElementById("form-container")
+                formContainer.classList.remove("form-container-hidden")
+                form.innerHTML = `
+                    <label for="university">University:</label>
+                    <textarea id="university" name="university">${college}</textarea>
+                    <label for="graduation">(Expected) Graduation Year:</label>
+                    <input type="date" id="graduation" name="graduation" value=${date}>
+                    <label for="major">Major:</label>
+                    <textarea id="major" name="major">${major}</textarea>
+                    
+                    <button type="button" id="update-edu-entry">Update</button>
+                    <button type="button" id="cancel-edu-entry">Cancel</button>
+                `;
+                form.querySelector('#update-edu-entry').addEventListener('click', function() {
+                    updateEduEntry(this, block);
+                });
+                form.querySelector('#cancel-edu-entry').addEventListener('click', function() {
+                    cancelEntry();
+                });
+            });
+        });
+
+    });
+    // expRows.forEach(row => {
+    //     row.addEventListener("click", () => {
+    //
+    //     });
+    // });
+
+}
+
+
+function updateEduEntry(button, block) {
+    console.log("updateEduEntry()");
+    const form = button.parentNode;
+    const college = form.querySelector("#university").value;
+    const gradDate = form.querySelector("#graduation").value;
+    const major = form.querySelector("#major").value;
+
+    if (!college || !gradDate) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    // 3. Parse graduation date
+    const gradDateObj = new Date(gradDate);
+    const dateString = gradDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+
+
+    const table = block[0].closest("section").querySelector("table");
+    block.forEach(ele => {
+        ele.remove();
+        // console.log("Skip:? ",ele);// ele still exists as a variable/object
+    });
+    table.innerHTML += `
+        <tr class="component">
+          <td><strong>${college}</strong></td>
+          <td>${dateString}</td>
+        </tr>
+        <tr class="degree component">
+          <td colspan="2">${major}</td>
+        </tr>
+    `;
+    // 5. Collect rows into "blocks" of [institutionRow, degreeRow]
+    const rowBlocks = [];
+    const rows = Array.from(table.querySelectorAll('tr'));
+    // console.log(rows);
+    // console.log(document.querySelector("#edu-section").querySelectorAll('tr'));
+
+    for (let i = 0; i < rows.length; i+=2) {
+        const institutionRow = rows[i];
+        const degreeRow = rows[i + 1];
+        // degreeRow.remove();
+        // return;
+        rowBlocks.push({ institutionRow, degreeRow });
+    }
+
+    // 5. Add sorting logic
+    // Sort the blocks based on the date in the institutionRow's second cell
+    rowBlocks.sort((a, b) => {
+        const dateA = new Date(a.institutionRow.cells[1].textContent.trim());
+        const dateB = new Date(b.institutionRow.cells[1].textContent.trim());
+        return dateB - dateA; // Sort in descending order
+    });
+
+    // here is cause of pair hover effect issue.
+    // appendChild() may mess readable order
+    // first attempt: remove content first
+    table.innerHTML=""; // This resolves the issue
+    rowBlocks.forEach(rowBlock => {
+        table.appendChild(rowBlock.institutionRow);
+        table.appendChild(rowBlock.degreeRow);
+    });
+    // console.log("AFTER update");
+    bindEduBlock(); // per my view, it caused by previous sort, which changed the reference so that pair goes wrong.
+    popEditForm(); // SOLVE EVENT listener issue but encounter new one for pair hover effect. so explore bindEduBlock();
+    cancelEntry();
+}
+
+function updateSkillEntry(button, block) {
+    const form = button.parentNode;
+    const name = form.querySelector("#new-skill-name").value;
+    const detail = form.querySelector("#new-skill-detail").value;
+
+    if (!name || !detail) {
+        alert("Please fill in all fields.");
+        return;
+    }
+    const unorderedList = block.closest("ul");
+    block.remove();
+    // console.log(unorderedList);
+    unorderedList.innerHTML += `
+        <li class="component"><strong>${name}</strong> : ${detail}</li>
+    `;
+    popEditForm();
+    cancelEntry();
+}
+
+// here is keypoint for why functionality is only triggered once time for each section.
 window.addEventListener("load", function() {
     // Add hover effect to "blocks"
     bindEduBlock()
     bindExpBlock()
+    popEditForm()
 });
 
 
@@ -355,10 +591,10 @@ function activateOverlay(icon) {
         for (let row of rows) {
             dates.push(row.nextElementSibling.textContent.split("|")[1].split("-")[0].trim());
         }
-        console.log(dates)
-        populateModifyOptionsTable(names, "exp", dates)
+        // console.log(dates);
+        populateModifyOptionsTable(names, "exp", dates);
     } else {
-        console.log("ERROR: Unable to access icons container.")
+        console.log("ERROR: Unable to access icons container.");
     }
 }
 
@@ -394,7 +630,7 @@ function populateModifyOptionsTable(names, mode, dates=null) {
             modifyOptionsTable.appendChild(row);
         });
     } else {
-        console.log("ERROR: Invalid mode type.")
+        console.log("ERROR: Invalid mode type.");
         return;
     }
     if (mode == "edu") {
@@ -436,7 +672,7 @@ function deleteEduRecord(){
         const bothNames = relatedRow.querySelector('td:nth-child(2)').textContent.trim().split(",");
         const universityName = bothNames[0].trim()
         const date = bothNames[1].trim()
-        console.log(universityName, date)
+        // console.log(universityName, date);
         // return;
 
         // Find the related record in #edu-section
@@ -496,27 +732,27 @@ function deleteExpRecord(){
         const relatedRow = checkbox.closest('tr');
         const bothNames = relatedRow.querySelector('td:nth-child(2)').textContent.trim().split(",");
 
-        const orgName = bothNames[0].trim()
-        const date = bothNames[2].trim()
-        console.log(orgName)
-        console.log(date)
+        const orgName = bothNames[0].trim();
+        const date = bothNames[2].trim();
+        // console.log(orgName);
+        // console.log(date);
         // Find the related record in #exp-section
         const expSection = document.querySelector('#exp-section');
         const records = expSection.querySelectorAll('h3');
 
         records.forEach(record => {
-            console.log("BREAKLINE")
-            console.log(record.textContent)
-            console.log(record.nextElementSibling.textContent)
+            // console.log("BREAKLINE");
+            // console.log(record.textContent);
+            // console.log(record.nextElementSibling.textContent);
             if (record.textContent.includes(orgName) && record.nextElementSibling.textContent.includes(date)) {
                 const eles = [record,record.nextElementSibling,record.nextElementSibling.nextElementSibling];
                 for (let e of eles) {
-                    e.remove()
+                    e.remove();
                 }
             }
         });
     });
-    cancelModify()
+    cancelModify();
 }
 
 function cancelModify(){
@@ -595,11 +831,13 @@ function addEduEntry(button, icon) {
     });
 
     // 7. Append sorted rows back to the table
+    table.innerHTML="";
     rowBlocks.forEach(block => {
         table.appendChild(block.institutionRow);
         table.appendChild(block.degreeRow);
     });
-    bindEduBlock()
+    bindEduBlock();
+    popEditForm();
     cancelEntry();
 }
 
@@ -641,8 +879,9 @@ function addSkillEntry(button, icon) {
 
     const unorderedList = icon.closest("section").querySelector("ul");
     unorderedList.innerHTML += `
-        <li><strong>${name}</strong> : ${detail}</li>
-    `
+        <li class="component"><strong>${name}</strong> : ${detail}</li>
+    `;
+    popEditForm();
     cancelEntry();
 }
 
@@ -730,7 +969,7 @@ function addExpEntry(button, icon) {
             const match = textContent.match(/(\w{3} \d{4})/); // Matches "Month Year" format.
             if (match) {
                 startD = match[1]; // The first matched group.
-                console.log(startD); // Output: "Jan 2023" (or whatever your start date is)
+                // console.log(startD); // Output: "Jan 2023" (or whatever your start date is)
             } else {
                 console.log('No start date found.');
             }
@@ -747,12 +986,14 @@ function addExpEntry(button, icon) {
     });
 
     // 7. Append sorted rows back to the table
+    expSection.innerHTML="";
     blocks.forEach(block => {
         expSection.appendChild(block.h);
         expSection.appendChild(block.p);
         expSection.appendChild(block.ul);
     });
-    bindExpBlock()
+    bindExpBlock();
+    popEditForm();
     cancelEntry();
 }
 function addBullet(lines) {
@@ -817,7 +1058,7 @@ function extractAndSaveResumeData() {
 
     // Convert to JSON
     const resumeJson = JSON.stringify(resumeData, null, 4);
-    console.log(resumeJson);
+    // console.log(resumeJson);
 
     // Save as JSON File
     const blob = new Blob([resumeJson], { type: 'application/json' });
