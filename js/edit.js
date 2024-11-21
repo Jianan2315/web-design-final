@@ -14,6 +14,7 @@ function addCSS(filename) {
 }
 
 // get values
+// preview-btn event is NOT used anymore since 90% functionality completed.
 document.getElementById("preview-btn").addEventListener("click", function () {
     const name = document.getElementById("name").value;
     const phone = document.getElementById("phone").value;
@@ -331,7 +332,7 @@ function bindExpBlock(){
     });
 }
 
-function popEditForm(){
+function popEditForm() {
     const eduSection = document.getElementById("edu-section");
     const skillSection = document.getElementById("skill-section");
     const expSection = document.getElementById("exp-section");
@@ -339,9 +340,9 @@ function popEditForm(){
     // edu
     const eduRows = eduSection.querySelectorAll("tr");
     let blocks = [];
-    for (let i = 0; i < eduRows.length; i+=2) {
+    for (let i = 0; i < eduRows.length; i += 2) {
         // blocks.push({first:eduRows[i], second:eduRows[i+1]});
-        blocks.push([eduRows[i], eduRows[i+1]]);
+        blocks.push([eduRows[i], eduRows[i + 1]]);
     }
     // blocks.forEach(block=>{
     //     console.log("block content: ", block);
@@ -350,7 +351,7 @@ function popEditForm(){
     blocks.forEach(block => {
         const cells = block[0].querySelectorAll("td");
         const college = cells[0].textContent.trim();
-        const date =  new Date(`${cells[1].textContent.trim()} 01`).toISOString().split('T')[0];
+        const date = new Date(`${cells[1].textContent.trim()} 01`).toISOString().split('T')[0];
         const major = block[1].textContent.trim();
         block.forEach(ele => {
             ele.addEventListener('click', () => {
@@ -368,17 +369,16 @@ function popEditForm(){
                     <button type="button" id="update-edu-entry">Update</button>
                     <button type="button" id="cancel-edu-entry">Cancel</button>
                 `;
-                form.querySelector('#update-edu-entry').addEventListener('click', function() {
+                form.querySelector('#update-edu-entry').addEventListener('click', function () {
                     updateEduEntry(this, block);
                 });
-                form.querySelector('#cancel-edu-entry').addEventListener('click', function() {
+                form.querySelector('#cancel-edu-entry').addEventListener('click', function () {
                     cancelEntry();
                 });
             });
         });
 
     });
-
 
 
     // skill
@@ -403,10 +403,10 @@ function popEditForm(){
                 <button type="button" id="update-skill-entry">Update</button>
                 <button type="button" id="cancel-skill-entry">Cancel</button>
             `;
-            form.querySelector('#update-skill-entry').addEventListener('click', function() {
+            form.querySelector('#update-skill-entry').addEventListener('click', function () {
                 updateSkillEntry(this, block);
             });
-            form.querySelector('#cancel-skill-entry').addEventListener('click', function() {
+            form.querySelector('#cancel-skill-entry').addEventListener('click', function () {
                 cancelEntry();
             });
         });
@@ -414,57 +414,170 @@ function popEditForm(){
 
     });
     // exp
-    const expRows = eduSection.querySelectorAll("h3");
-    const secondEles = eduSection.querySelectorAll("tr");
-    const thirdEles = eduSection.querySelectorAll("tr");
+    // const tmp=`
+    // <h3 className="component">Wicresoft, Azure PaaS Support Engineer</h3>
+    // <p className="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
+    // <ul className="component">
+    //     <li>Provided technical support for Azure Logic Apps integration services through individual research, team
+    //         discussions, and cross-team collaboration to ensure customer satisfaction.
+    //     </li>
+    //     <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web
+    //         Application Firewall, and Microsoft Entra ID.
+    //     </li>
+    // </ul>
+    // `;
+    const firstEles = expSection.querySelectorAll("h3");
+    const secondEles = expSection.querySelectorAll("p");
+    const thirdEles = expSection.querySelectorAll("ul");
     blocks = [];
-    for (let i = 0; i < expRows.length; i+=1) {
+    for (let i = 0; i < firstEles.length; i += 1) {
         // blocks.push({first:eduRows[i], second:eduRows[i+1]});
-        blocks.push([expRows[i], expRows[i+1]]);
+        blocks.push([firstEles[i], secondEles[i], thirdEles[i]]);
     }
-    // blocks.forEach(block=>{
-    //     console.log("block content: ", block);
-    // });
-    // return;
+
     blocks.forEach(block => {
-        const cells = block[0].querySelectorAll("td");
-        const college = cells[0].textContent.trim();
-        const date =  new Date(`${cells[1].textContent.trim()} 01`).toISOString().split('T')[0];
-        const major = block[1].textContent.trim();
+
+        // Extract details
+        const titleAndCompany = block[0].textContent.trim();
+        const locationAndDates = block[1].textContent.trim();
+        const liEles = block[2].querySelectorAll("li");
+        const experienceItems = Array.from(liEles).map(li => "•"+li.textContent.trim());
+        // Combine experience items into a single string
+        const experienceString = experienceItems.join('\n');
+
+        // Parse title and company
+        const [company, title] = titleAndCompany.split(', ').map(str => str.trim());
+
+        // Parse location and dates
+        const [location, dateRange] = locationAndDates.split('|').map(str => str.trim());
+        const [startDate, endDate] = dateRange.split(' - ').map(str => makeDate(str.trim()));
+
         block.forEach(ele => {
             ele.addEventListener('click', () => {
                 const form = document.getElementById("resume-form");
                 const formContainer = document.getElementById("form-container")
                 formContainer.classList.remove("form-container-hidden")
                 form.innerHTML = `
-                    <label for="university">University:</label>
-                    <textarea id="university" name="university">${college}</textarea>
-                    <label for="graduation">(Expected) Graduation Year:</label>
-                    <input type="date" id="graduation" name="graduation" value=${date}>
-                    <label for="major">Major:</label>
-                    <textarea id="major" name="major">${major}</textarea>
+                    <label for="company">Company:</label>
+                    <input type="text" id="company" name="company" value=${company}>
+                    <label for="title">Position Title:</label>
+                    <input type="text" id="title" name="title" value=${title}>
+                    <label for="org-address">Location:</label>
+                    <textarea id="org-address" name="org-address">${location}</textarea>
+                    <label for="start">Start Date:</label>
+                    <input type="date" id="start" name="start" value=${startDate}>
+                    <label for="end">End Date:</label>
+                    <input type="date" id="end" name="end" value=${endDate}>
+                    <label for="exp">Experience:</label>
+                    <textarea id="exp" name="exp" oninput="addBullet(this)">${experienceString}</textarea>
                     
-                    <button type="button" id="update-edu-entry">Update</button>
-                    <button type="button" id="cancel-edu-entry">Cancel</button>
+                    <button type="button" id="update-exp-entry">Update</button>
+                    <button type="button" id="cancel-exp-entry">Cancel</button>
                 `;
-                form.querySelector('#update-edu-entry').addEventListener('click', function() {
-                    updateEduEntry(this, block);
+                form.querySelector('#update-exp-entry').addEventListener('click', function () {
+                    updateExpEntry(this, block);
                 });
-                form.querySelector('#cancel-edu-entry').addEventListener('click', function() {
+                form.querySelector('#cancel-exp-entry').addEventListener('click', function () {
                     cancelEntry();
                 });
             });
         });
 
     });
-    // expRows.forEach(row => {
-    //     row.addEventListener("click", () => {
-    //
-    //     });
-    // });
 
 }
 
+function makeDate(inputDate){
+    // inputDate = "Jul 2023";
+    const [month, year] = inputDate.split(' ');
+
+    // Convert "Jul 2023" into "2023-07-01"
+    const monthNumber = new Date(`${month} 1, ${year}`).getMonth() + 1; // 1-based month
+    const validDate = `${year}-${String(monthNumber).padStart(2, '0')}-01`;
+    return validDate;
+}
+
+function updateExpEntry(button, block) {
+    const form = button.parentNode;
+    const company = document.getElementById("company").value;
+    const title = document.getElementById("title").value;
+    const orgAddress = document.getElementById("org-address").value;
+    const start = document.getElementById("start").value;
+    const end = document.getElementById("end").value;
+    const exp = document.getElementById("exp").value;
+    const vals=[company,title,orgAddress,start,end,exp]
+
+    for (let val of vals) {
+        if (!val) {
+            alert("Please fill in all fields.");
+            return;
+        }
+    }
+    // 3. graduation date
+    const startDateObj = new Date(start);
+    const endDateObj = new Date(end);
+
+    // 4.
+    const expSection = block[0].closest("section");
+    const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    expSection.innerHTML += `
+        <h3 class="component">${company}, ${title}</h3>
+        <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
+        <ul class="component"></ul>
+    `
+
+    const ulEles = expSection.querySelectorAll("ul");
+    const last = ulEles[ulEles.length - 1];
+    for (let e of exp.split("\n")) {
+        const item = document.createElement('li');
+        item.textContent = e.slice(1);
+        last.appendChild(item);
+    }
+    // 5. Collect elements into "blocks"
+    const blocks = [];
+    const heads = Array.from(expSection.querySelectorAll('h3'));
+
+    for (let h of heads) {
+        const p = h.nextElementSibling;
+        const ul = p.nextElementSibling;
+        const em = p.querySelector('em');
+        let startD = ""
+        if (em) {
+            // Extract the text content of the <p> element.
+            const textContent = em.textContent; // Example: "Some Address | Jan 2023 - Dec 2023"
+
+            // Use a regular expression to extract the start date (format: "Month Year").
+            const match = textContent.match(/(\w{3} \d{4})/); // Matches "Month Year" format.
+            if (match) {
+                startD = match[1]; // The first matched group.
+                // console.log(startD); // Output: "Jan 2023" (or whatever your start date is)
+            } else {
+                console.log('No start date found.');
+            }
+        }
+        blocks.push({h, p, ul, startD});
+    }
+
+    // 5. Add sorting logic
+    // Sort the blocks based on the start date
+    blocks.sort((a, b) => {
+        const dateA = new Date(a.startD.trim());
+        const dateB = new Date(b.startD.trim());
+        return dateB - dateA; // Sort in descending order
+    });
+
+    // 7. Append sorted rows back to the table
+    expSection.innerHTML="";
+    blocks.forEach(block => {
+        expSection.appendChild(block.h);
+        expSection.appendChild(block.p);
+        expSection.appendChild(block.ul);
+    });
+    bindExpBlock();
+    popEditForm();
+    cancelEntry();
+}
 
 function updateEduEntry(button, block) {
     console.log("updateEduEntry()");
@@ -480,7 +593,7 @@ function updateEduEntry(button, block) {
 
     // 3. Parse graduation date
     const gradDateObj = new Date(gradDate);
-    const dateString = gradDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const dateString = gradDateObj.toLocaleString('default', {month: 'short', year: 'numeric' });
 
 
     const table = block[0].closest("section").querySelector("table");
