@@ -13,94 +13,11 @@ function addCSS(filename) {
     document.head.appendChild(link);
 }
 
-// get values
-// preview-btn event is NOT used anymore since 90% functionality completed.
-document.getElementById("preview-btn").addEventListener("click", function () {
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    const email = document.getElementById("email").value;
-    const location = document.getElementById("location").value;
-    const university = document.getElementById("university").value;
-    const graduation = document.getElementById("graduation").value;
-    const major = document.getElementById("major").value;
-    const communication = document.getElementById("communication").value;
-    const program = document.getElementById("program").value;
-    const cert = document.getElementById("cert").value;
-    const company = document.getElementById("company").value;
-    const title = document.getElementById("title").value;
-    const orgAddress = document.getElementById("org-address").value;
-    const start = document.getElementById("start").value;
-    const end = document.getElementById("end").value;
-    const exp = document.getElementById("exp").value;
-
-    const preview = document.getElementById("resume-preview");
-    preview.innerHTML = `
-    <!-- Header -->
-    <header>
-      <h1>${name}</h1>
-      <p> Phone: ${phone} | Email: ${email} | Location: ${location}</p>
-    </header>
-    
-    <!-- Education Section -->
-    <section>
-      <h2>Education</h2>
-      <table>
-        <tr>
-          <td><strong>${university}</strong></td>
-          <td>${graduation}</td>
-        </tr>
-        <tr class="degree">
-          <td>${major}</td>
-        </tr>
-      </table>
-    </section>
-    
-    <!-- Personal Skills Section -->
-    <section>
-      <h2>Personal Skills</h2>
-      <ul>
-        <li><strong>Communication language</strong> : ${communication} </li>
-        <li><strong>Programming languages</strong> : ${program} </li>
-        <li><strong>Certifications</strong> : ${cert} </li>
-      </ul>
-    </section>
-    
-    <!-- Professional Experience Section -->
-    <section>
-      <h2>Professional Experience</h2>
-      <h3>${company}, ${title}</h3>
-      <p><em>${orgAddress} | ${start} - ${end}</em></p>
-      <ul>
-        <li>${exp}</li>
-      </ul>
-    
-    </section>
-  `;
-});
-
 // Load selected template
 // per my test, this load event does NOT affect event delegation.
 window.addEventListener("load", function () {
     const params = new URLSearchParams(window.location.search);
     const templateId = params.get("template");
-
-    // predefined value for demo
-    document.getElementById("name").value = "Michael Johnson";
-    document.getElementById("phone").value = "(857)-737-4159";
-    document.getElementById("email").value = "michael@gmail.com";
-    document.getElementById("location").value = "Boston";
-    document.getElementById("university").value = "Boston University";
-    document.getElementById("graduation").value = "Dec 2023";
-    document.getElementById("major").value = "Master of Science in Computer Science";
-    document.getElementById("communication").value = "English, France, Japanese";
-    document.getElementById("program").value = "Java, Python, Go, Haskell, Ruby";
-    document.getElementById("cert").value = "Microsoft Certified: Azure Integration Specialist;";
-    document.getElementById("company").value = "Microsoft";
-    document.getElementById("title").value = "Support Engineer";
-    document.getElementById("org-address").value = "San Francisco";
-    document.getElementById("start").value = "Jan 2024";
-    document.getElementById("end").value = "Present";
-    document.getElementById("exp").value = "Resolved over 200 support tickets for Azure Cloud Integration Service.";
 
     // Use templateId to load different templates
     // For simplicity, we'll just display the template ID
