@@ -1,4 +1,5 @@
 // edit.js
+const PORT=3072;
 
 // add functions
 function addCSS(filename) {
@@ -1086,16 +1087,31 @@ function extractAndSaveResumeData() {
         });
     }
 
-    // Convert to JSON
-    const resumeJson = JSON.stringify(resumeData, null, 4);
-    // console.log(resumeJson);
 
-    // Save as JSON File
-    const blob = new Blob([resumeJson], { type: 'application/json' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'resume_data.json'; // The name of the file to be downloaded
-    document.body.appendChild(link);
-    link.click(); // Programmatically click the link to trigger the download
-    document.body.removeChild(link); // Clean up the link element
+    // Sending the JSON to the backend using fetch
+    fetch(`http://localhost:${PORT}/save`, {
+        method: 'POST', // HTTP POST method
+        headers: {
+            'Content-Type': 'application/json' // Indicate JSON format
+        },
+        body: JSON.stringify(resumeData, null, 4) // Convert the object to JSON string
+    })
+        .then(response => response.json()) // Parse the JSON response
+        .then(data => {
+            console.log('Success:', data); // Log success message from the backend
+        })
+        .catch(error => {
+            console.error('Error:', error); // Log errors if any
+        });
+
+    // Convert to JSON
+    // const resumeJson = JSON.stringify(resumeData, null, 4);
+    // // Save as JSON File
+    // const blob = new Blob([resumeJson], { type: 'application/json' });
+    // const link = document.createElement('a');
+    // link.href = URL.createObjectURL(blob);
+    // link.download = 'resume_data.json'; // The name of the file to be downloaded
+    // document.body.appendChild(link);
+    // link.click(); // Programmatically click the link to trigger the download
+    // document.body.removeChild(link); // Clean up the link element
 }
