@@ -111,6 +111,7 @@ header {
 /*Icon/button  rules*/
 .editIcon {
   float: right;
+  display: none;
 }
 .editIcon-hidden {
   display: none;
@@ -197,18 +198,29 @@ header {
 i:hover{
   cursor: pointer;
 }
-.trash-td {
+
+/* Add delete trash icon css rules*/
+.component .trash-td {
   padding: 0;
-  width: 20px;
+  width: 14px;
 }
 .fa-solid.trash-icon-edu {
   display:inline-block;
 }
-.fa-solid.trash-icon-edu:hover {
-  /*display:none;*/
-}
 .fa-solid.trash-icon-skill {
   vertical-align: top;
-  margin-left: 10px;
+  float:right;
+  /*display:none;*/
+}
+
+#exp-section ul{
+  position: relative;
+}
+.fa-solid.trash-icon-exp {
+  vertical-align: top;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   /*display:none;*/
 }

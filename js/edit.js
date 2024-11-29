@@ -86,6 +86,7 @@ window.addEventListener("load", function () {
       <ul class="component">
         <li>Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.</li>
         <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID.</li>
+        <i class="fa-solid fa-trash trash-icon-exp"></i>
       </ul>
         
       <h3 class="component">Huawei Digital Power Technology, Software Development Engineer</h3>
@@ -93,6 +94,7 @@ window.addEventListener("load", function () {
       <ul class="component">
         <li>Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.</li>
         <li>Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency.</li>
+        <i class="fa-solid fa-trash trash-icon-exp"></i>
       </ul>
   
       <h3 class="component">Dell, Global Operations Engineer, Intern</h3>
@@ -100,6 +102,7 @@ window.addEventListener("load", function () {
       <ul class="component">
         <li>Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.</li>
         <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
+        <i class="fa-solid fa-trash trash-icon-exp"></i>
       </ul>
     
     </section>
@@ -355,19 +358,7 @@ function popEditForm() {
 
 
     });
-    // exp
-    // const tmp=`
-    // <h3 className="component">Wicresoft, Azure PaaS Support Engineer</h3>
-    // <p className="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
-    // <ul className="component">
-    //     <li>Provided technical support for Azure Logic Apps integration services through individual research, team
-    //         discussions, and cross-team collaboration to ensure customer satisfaction.
-    //     </li>
-    //     <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web
-    //         Application Firewall, and Microsoft Entra ID.
-    //     </li>
-    // </ul>
-    // `;
+
     const firstEles = expSection.querySelectorAll("h3");
     const secondEles = expSection.querySelectorAll("p");
     const thirdEles = expSection.querySelectorAll("ul");
@@ -378,7 +369,6 @@ function popEditForm() {
     }
 
     blocks.forEach(block => {
-
         // Extract details
         const titleAndCompany = block[0].textContent.trim();
         const locationAndDates = block[1].textContent.trim();
