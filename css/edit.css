@@ -194,9 +194,21 @@ header {
   background-color: #f4f4f4;
 }
 
-/*#edu-section > table{*/
-/*  border-spacing: 0;*/
-/*}*/
 i:hover{
   cursor: pointer;
+}
+.trash-td {
+  padding: 0;
+  width: 20px;
+}
+.fa-solid.trash-icon-edu {
+  display:inline-block;
+}
+.fa-solid.trash-icon-edu:hover {
+  /*display:none;*/
+}
+.fa-solid.trash-icon-skill {
+  vertical-align: top;
+  margin-left: 10px;
+  /*display:none;*/
 }

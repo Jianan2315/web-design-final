@@ -44,6 +44,7 @@ window.addEventListener("load", function () {
         <tr class="component">
           <td><strong>Northeastern University</strong></td>
           <td>Dec 2026</td>
+          <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
         </tr>
         <tr class="degree component">
           <td colspan="2">MS in Software Engineering Systems</td>
@@ -51,6 +52,7 @@ window.addEventListener("load", function () {
         <tr class="component">
           <td><strong>Boston University</strong></td>
           <td> Dec 2019</td>
+          <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
         </tr>
         <tr class="degree component">
           <td colspan="2">BS in Computer Science</td>
@@ -66,9 +68,9 @@ window.addEventListener("load", function () {
         <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
       </div>
       <ul>
-        <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)</li>
-        <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java</li>
-        <li class="component"><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals</li>
+        <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+        <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+        <li class="component"><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals<i class="fa-solid fa-trash trash-icon-skill"></i></li>
       </ul>
     </section>
     
@@ -102,7 +104,29 @@ window.addEventListener("load", function () {
     
     </section>
   `;
+
+    document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteEduItem(event, this);
+        });
+    });
+
+    // RESOLVED: here is keypoint for why functionality is only triggered once time for each section.
+    // Add hover effect to "blocks"
+    bindEduBlock()
+    bindExpBlock()
+    popEditForm()
 });
+
+function deleteEduItem(e,icon) {
+    e.stopPropagation()
+}
+function deleteSkillItem(e,icon) {
+    e.stopPropagation()
+}
+function deleteExpItem(e,icon) {
+    e.stopPropagation()
+}
 
 // Wait for the DOM to be fully loaded
 // per my test, element replacement does NOT matter for "DOMContentLoaded" event.
@@ -582,17 +606,6 @@ function updateSkillEntry(button, block) {
     popEditForm();
     cancelEntry();
 }
-
-// here is keypoint for why functionality is only triggered once time for each section.
-window.addEventListener("load", function() {
-    // Add hover effect to "blocks"
-    bindEduBlock()
-    bindExpBlock()
-    popEditForm()
-});
-
-
-
 
 // set grayscale background
 function activateOverlay(icon) {
