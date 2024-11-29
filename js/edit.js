@@ -40,20 +40,22 @@ window.addEventListener("load", function () {
     preview.classList.add("template"+templateId);
     addCSS("template"+templateId+".css");
     loadTextAsInnerHTML("template"+templateId+".txt")
-        .then(text=> preview.innerHTML = text);
-    // preview.innerHTML = ``;
+        .then(text=> {
+            preview.innerHTML = text
 
-    document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
-        icon.addEventListener("click", function(event) {
-            deleteEduItem(event, this);
+            document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
+                icon.addEventListener("click", function(event) {
+                    deleteEduItem(event, this);
+                });
+            });
+
+            // RESOLVED: here is keypoint for why functionality is only triggered once time for each section.
+            // Add hover effect to "blocks"
+            bindEduBlock()
+            bindExpBlock()
+            popEditForm()
         });
-    });
 
-    // RESOLVED: here is keypoint for why functionality is only triggered once time for each section.
-    // Add hover effect to "blocks"
-    bindEduBlock()
-    bindExpBlock()
-    popEditForm()
 });
 
 function deleteEduItem(e,icon) {
