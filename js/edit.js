@@ -41,31 +41,174 @@ window.addEventListener("load", function () {
     addCSS("template"+templateId+".css");
     loadTextAsInnerHTML("template"+templateId+".txt")
         .then(text=> {
-            preview.innerHTML = text
-
+            // preview.innerHTML = text;
+            preview.innerHTML = `
+            <!-- Header -->
+            <header id="personal-info">
+              <h1>Michael Johnson</h1>
+              <p> Phone: (999)-123-4567 | Email: jo.mi@northeastern.edu | Location: Boston</p>
+            </header>
+        
+            <!-- Education Section -->
+            <section id="edu-section">
+              <h2>Education</h2>
+              <div class="editIcon" id="eduIcon">
+                  <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+                  <i class="fa-solid fa-plus" onclick="addEducation(this)" style="float:right;margin-right: 10px;"></i>
+              </div>
+              <table>
+                <tr class="component">
+                  <td><strong>Northeastern University</strong></td>
+                  <td>Dec 2026</td>
+                  <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                  <td colspan="2">MS in Software Engineering Systems</td>
+                </tr>
+                <tr class="component">
+                  <td><strong>Boston University</strong></td>
+                  <td> Dec 2019</td>
+                  <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                  <td colspan="2">BS in Computer Science</td>
+                </tr>
+              </table>
+            </section>
+        
+            <!-- Personal Skills Section -->
+            <section id="skill-section">
+              <h2>Personal Skills</h2>
+              <div class="editIcon" id="skillIcon">
+                <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+                <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
+              </div>
+              <ul>
+                <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+                <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+                <li class="component"><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+              </ul>
+            </section>
+        
+            <!-- Professional Experience Section -->
+            <section id="exp-section">
+              <h2>Professional Experience</h2>
+              <div class="editIcon" id="expIcon">
+                <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+                <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
+              </div>
+              <h3 class="component">Wicresoft, Azure PaaS Support Engineer</h3>
+              <p class="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
+              <ul class="component">
+                <li>Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.</li>
+                <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+              </ul>
+        
+              <h3 class="component">Huawei Digital Power Technology, Software Development Engineer</h3>
+              <p class="component"><em>Shenzhen | Mar 2022 - Aug 2022</em></p>
+              <ul class="component">
+                <li>Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.</li>
+                <li>Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+              </ul>
+        
+              <h3 class="component">Dell, Global Operations Engineer, Intern</h3>
+              <p class="component"><em>Shanghai | Jul 2021 - Sep 2021</em></p>
+              <ul class="component">
+                <li>Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.</li>
+                <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+              </ul>
+        
+            </section>
+            `;
             document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
                 icon.addEventListener("click", function(event) {
                     deleteEduItem(event, this);
+                });
+
+                const relatedRows=[]
+                relatedRows[0] = icon.closest('tr');
+                relatedRows[1] = relatedRows[0].nextElementSibling;
+                relatedRows.forEach(row => {
+                    row.addEventListener('mouseenter', () => {
+                        icon.classList.add('trash-icon-visible');
+                    });
+
+                    row.addEventListener('mouseleave', () => {
+                        icon.classList.remove('trash-icon-visible');
+                    });
+                });
+            });
+
+            document.querySelectorAll(".trash-icon-skill").forEach((icon)=>{
+                icon.addEventListener("click", function(event) {
+                    deleteSkillItem(event, this);
+                });
+
+                const row = icon.closest('li');
+                row.addEventListener('mouseenter', () => {
+                    icon.classList.add('trash-icon-visible');
+                });
+
+                row.addEventListener('mouseleave', () => {
+                    icon.classList.remove('trash-icon-visible');
+                });
+
+            });
+
+            document.querySelectorAll(".trash-icon-exp").forEach((icon)=>{
+                icon.addEventListener("click", function(event) {
+                    deleteExpItem(event, this);
+                });
+
+                const relatedRows=[];
+                relatedRows[0] = icon.closest('ul');
+                relatedRows[1] = relatedRows[0].previousElementSibling;
+                relatedRows[2] = relatedRows[1].previousElementSibling;
+                relatedRows.forEach(row => {
+                    row.addEventListener('mouseenter', () => {
+                        icon.classList.add('trash-icon-visible');
+                    });
+
+                    row.addEventListener('mouseleave', () => {
+                        icon.classList.remove('trash-icon-visible');
+                    });
                 });
             });
 
             // RESOLVED: here is keypoint for why functionality is only triggered once time for each section.
             // Add hover effect to "blocks"
-            bindEduBlock()
-            bindExpBlock()
-            popEditForm()
+            bindEduBlock();
+            bindExpBlock();
+            popEditForm();
         });
 
 });
 
 function deleteEduItem(e,icon) {
-    e.stopPropagation()
+    e.stopPropagation();
+    const relatedRows=[];
+    relatedRows[0] = icon.closest('tr');
+    relatedRows[1] = relatedRows[0].nextElementSibling;
+    relatedRows.forEach(row => row.remove());
+    cancelEntry();
 }
 function deleteSkillItem(e,icon) {
-    e.stopPropagation()
+    e.stopPropagation();
+    const relatedRow = icon.closest('li');
+    relatedRow.remove();
+    cancelEntry();
 }
 function deleteExpItem(e,icon) {
-    e.stopPropagation()
+    e.stopPropagation();
+    const relatedRows=[];
+    relatedRows[0] = icon.closest('ul');
+    relatedRows[1] = relatedRows[0].previousElementSibling;
+    relatedRows[2] = relatedRows[1].previousElementSibling;
+    relatedRows.forEach(row => row.remove());
+    cancelEntry();
 }
 
 // Wait for the DOM to be fully loaded
@@ -110,16 +253,11 @@ function bindEduBlock(){
         return;
     }
 
-    // console.log("All rows:",eduSection.querySelectorAll("tr"));
-    // eduSection.querySelectorAll("tr").forEach(tmp=>console.log(tmp.textContent));
     // odd
     const oddElements=eduSection.querySelectorAll("tr:nth-child(odd)");
-    // console.log("Odd eles:", oddElements);
     oddElements.forEach(oddElement => {
-        // console.log("odd: ", oddElement.textContent);
         oddElement.addEventListener('mouseenter', () => {
             const nextSibling = oddElement.nextElementSibling;
-            // console.log(`odd ${oddElement.textContent} \nnext`, nextSibling.textContent);
             if (nextSibling && nextSibling.classList.contains('component')) {
                 nextSibling.classList.add('component-hover');
             }
@@ -132,6 +270,7 @@ function bindEduBlock(){
             }
         });
     });
+
     // even
     const evenElements=eduSection.querySelectorAll("tr:nth-child(even)");
     // console.log("Even eles:", evenElements);

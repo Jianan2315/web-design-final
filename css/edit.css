@@ -199,28 +199,37 @@ i:hover{
   cursor: pointer;
 }
 
-/* Add delete trash icon css rules*/
+/* Add icon css rules*/
+.fa-trash{
+  margin-right: 6px;
+}
 .component .trash-td {
   padding: 0;
-  width: 14px;
+  width: 20px;
 }
-.fa-solid.trash-icon-edu {
-  display:inline-block;
+.fa-trash.trash-icon-edu {
+  display:none;
 }
-.fa-solid.trash-icon-skill {
+.fa-trash.trash-icon-skill {
   vertical-align: top;
   float:right;
-  /*display:none;*/
+  display:none;
 }
-
+/*set parent ul a reference by "position: relative;"
+then, use "position: absolute;" for child icon.*/
 #exp-section ul{
   position: relative;
 }
-.fa-solid.trash-icon-exp {
+.fa-trash.trash-icon-exp {
   vertical-align: top;
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  /*display:none;*/
+  display:none;
 }
+
+.fa-trash.trash-icon-visible {
+  display:inline-block;
+}
+
