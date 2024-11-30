@@ -74,6 +74,7 @@ window.addEventListener("load", function () {
                   <td colspan="2">BS in Computer Science</td>
                 </tr>
               </table>
+              <div class="add-button">+</div>
             </section>
         
             <!-- Personal Skills Section -->
@@ -88,6 +89,7 @@ window.addEventListener("load", function () {
                 <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java<i class="fa-solid fa-trash trash-icon-skill"></i></li>
                 <li class="component"><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals<i class="fa-solid fa-trash trash-icon-skill"></i></li>
               </ul>
+              <div class="add-button">+</div>
             </section>
         
             <!-- Professional Experience Section -->
@@ -120,7 +122,7 @@ window.addEventListener("load", function () {
                 <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
                 <i class="fa-solid fa-trash trash-icon-exp"></i>
               </ul>
-        
+              <div class="add-button">+</div>
             </section>
             `;
             document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{

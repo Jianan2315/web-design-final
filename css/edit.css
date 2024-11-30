@@ -233,3 +233,32 @@ then, use "position: absolute;" for child icon.*/
   display:inline-block;
 }
 
+/*add-button css rules*/
+/* Style for the round rectangle button */
+.add-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px; /* Adjust width as needed */
+  height: 50px; /* Adjust height as needed */
+  border: 2px solid #3498db; /* Border color */
+  color: #3498db; /* Plus sign color */
+  border-radius: 25px; /* Make the corners rounded */
+  font-size: 32px; /* Size of the plus sign */
+  font-weight: bold;
+  cursor: pointer;
+  margin: 20px auto 0; /* Add space above the button */
+  text-align: center;
+  background-color: #ffffff;
+}
+
+/* Hover effect */
+.add-button:hover {
+  background-color: #000000;
+  color: white;
+  border:gray;
+}
+section {
+  display: flex; /* Make the section a flex container */
+  flex-direction: column; /* Stack content vertically */
+}
