@@ -586,7 +586,7 @@ function updateExpEntry(button, block) {
     expSection.innerHTML += `
         <h3 class="component">${company}, ${title}</h3>
         <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul class="component"></ul>
+        <ul class="component"><i class="fa-solid fa-trash trash-icon-exp"></i></ul>
     `
 
     const ulEles = expSection.querySelectorAll("ul");
@@ -637,6 +637,7 @@ function updateExpEntry(button, block) {
         expSection.appendChild(block.ul);
     });
     bindExpBlock();
+    bindExpDelete()
     popEditForm();
     cancelEntry();
 }
@@ -667,6 +668,7 @@ function updateEduEntry(button, block) {
         <tr class="component">
           <td><strong>${college}</strong></td>
           <td>${dateString}</td>
+          <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
         </tr>
         <tr class="degree component">
           <td colspan="2">${major}</td>
@@ -702,8 +704,9 @@ function updateEduEntry(button, block) {
         table.appendChild(rowBlock.institutionRow);
         table.appendChild(rowBlock.degreeRow);
     });
-    // console.log("AFTER update");
+
     bindEduBlock(); // per my view, it caused by previous sort, which changed the reference so that pair goes wrong.
+    bindEduDelete();
     popEditForm(); // SOLVE EVENT listener issue but encounter new one for pair hover effect. so explore bindEduBlock();
     cancelEntry();
 }
@@ -721,8 +724,9 @@ function updateSkillEntry(button, block) {
     block.remove();
     // console.log(unorderedList);
     unorderedList.innerHTML += `
-        <li class="component"><strong>${name}</strong> : ${detail}</li>
+        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
     `;
+    bindSkillDelete();
     popEditForm();
     cancelEntry();
 }
