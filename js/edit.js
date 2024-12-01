@@ -74,7 +74,7 @@ window.addEventListener("load", function () {
                   <td colspan="2">BS in Computer Science</td>
                 </tr>
               </table>
-              <div class="add-button">+</div>
+              <div id="add-edu" class="add-button">+</div>
             </section>
         
             <!-- Personal Skills Section -->
@@ -89,7 +89,7 @@ window.addEventListener("load", function () {
                 <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java<i class="fa-solid fa-trash trash-icon-skill"></i></li>
                 <li class="component"><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals<i class="fa-solid fa-trash trash-icon-skill"></i></li>
               </ul>
-              <div class="add-button">+</div>
+              <div id="add-skill" class="add-button">+</div>
             </section>
         
             <!-- Professional Experience Section -->
@@ -122,73 +122,119 @@ window.addEventListener("load", function () {
                 <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
                 <i class="fa-solid fa-trash trash-icon-exp"></i>
               </ul>
-              <div class="add-button">+</div>
+              <div id="add-exp" class="add-button">+</div>
             </section>
             `;
-            document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
-                icon.addEventListener("click", function(event) {
-                    deleteEduItem(event, this);
-                });
 
-                const relatedRows=[]
-                relatedRows[0] = icon.closest('tr');
-                relatedRows[1] = relatedRows[0].nextElementSibling;
-                relatedRows.forEach(row => {
-                    row.addEventListener('mouseenter', () => {
-                        icon.classList.add('trash-icon-visible');
-                    });
+            // Bind trash icon with delete function
+            bindEduDelete();
+            bindSkillDelete();
+            bindExpDelete();
 
-                    row.addEventListener('mouseleave', () => {
-                        icon.classList.remove('trash-icon-visible');
-                    });
-                });
+            const addEduButton =  document.getElementById("add-edu");
+            const addSkillButton =  document.getElementById("add-skill");
+            const addExpButton =  document.getElementById("add-exp");
+            addEduButton.addEventListener("click", function(event) {
+                addEducation(this);
+            });
+            addSkillButton.addEventListener("click", function(event) {
+                addSkill(this);
+            });
+            addExpButton.addEventListener("click", function(event) {
+                addExp(this);
             });
 
-            document.querySelectorAll(".trash-icon-skill").forEach((icon)=>{
-                icon.addEventListener("click", function(event) {
-                    deleteSkillItem(event, this);
-                });
-
-                const row = icon.closest('li');
-                row.addEventListener('mouseenter', () => {
-                    icon.classList.add('trash-icon-visible');
-                });
-
-                row.addEventListener('mouseleave', () => {
-                    icon.classList.remove('trash-icon-visible');
-                });
-
-            });
-
-            document.querySelectorAll(".trash-icon-exp").forEach((icon)=>{
-                icon.addEventListener("click", function(event) {
-                    deleteExpItem(event, this);
-                });
-
-                const relatedRows=[];
-                relatedRows[0] = icon.closest('ul');
-                relatedRows[1] = relatedRows[0].previousElementSibling;
-                relatedRows[2] = relatedRows[1].previousElementSibling;
-                relatedRows.forEach(row => {
-                    row.addEventListener('mouseenter', () => {
-                        icon.classList.add('trash-icon-visible');
-                    });
-
-                    row.addEventListener('mouseleave', () => {
-                        icon.classList.remove('trash-icon-visible');
-                    });
-                });
-            });
-
-            // RESOLVED: here is keypoint for why functionality is only triggered once time for each section.
             // Add hover effect to "blocks"
             bindEduBlock();
             bindExpBlock();
             popEditForm();
         });
 
+
 });
 
+function bindEduDelete(){
+    document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteEduItem(event, this);
+        });
+
+        const relatedRows=[]
+        relatedRows[0] = icon.closest('tr');
+        relatedRows[1] = relatedRows[0].nextElementSibling;
+        relatedRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                icon.classList.add('trash-icon-visible');
+            });
+
+            row.addEventListener('mouseleave', () => {
+                icon.classList.remove('trash-icon-visible');
+            });
+        });
+    });
+}
+function getElementPath(element) {
+    if (!element) return '';
+
+    let path = [];
+    while (element.parentNode) {
+        let tagName = element.tagName.toLowerCase();
+        let siblings = Array.from(element.parentNode.children).filter(el => el.tagName === element.tagName);
+
+        if (siblings.length > 1) {
+            // If there are multiple siblings with the same tag name, use nth-child
+            let index = Array.from(element.parentNode.children).indexOf(element) + 1;
+            path.unshift(`${tagName}:nth-child(${index})`);
+        } else {
+            // Use tag name if it's unique
+            path.unshift(tagName);
+        }
+
+        element = element.parentNode;
+        if (element === document.documentElement) break; // Stop at the root element
+    }
+
+    return path.join(' > ');
+}
+
+function bindSkillDelete(){
+    document.querySelectorAll(".trash-icon-skill").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteSkillItem(event, this);
+        });
+        // console.log("icon path:", getElementPath(icon));
+        const row = icon.closest('li');
+        row.addEventListener('mouseenter', () => {
+            icon.classList.add('trash-icon-visible');
+        });
+        row.addEventListener('mouseleave', () => {
+            icon.classList.remove('trash-icon-visible');
+        });
+
+    });
+}
+
+function bindExpDelete(){
+    document.querySelectorAll(".trash-icon-exp").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteExpItem(event, this);
+        });
+
+        const relatedRows=[];
+        relatedRows[0] = icon.closest('ul');
+        relatedRows[1] = relatedRows[0].previousElementSibling;
+        relatedRows[2] = relatedRows[1].previousElementSibling;
+        relatedRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                icon.classList.add('trash-icon-visible');
+            });
+
+            row.addEventListener('mouseleave', () => {
+                icon.classList.remove('trash-icon-visible');
+            });
+        });
+    });
+}
 function deleteEduItem(e,icon) {
     e.stopPropagation();
     const relatedRows=[];
@@ -235,6 +281,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 jsPDF: { unit: "in", format: "a4", orientation: "portrait" }, // Optional: Specify PDF settings
             })
             .then(()=>icons.forEach(icon=>{icon.classList.add("editIcon-hidden")}))
+            .then(()=>{
+                for (let e of ["add-edu","add-skill","add-exp"]){
+                    const element = document.getElementById(e);
+                    element.style.display="none";
+                }
+            })
             .then(()=>element.classList.add("pdf"))
             .save() // This triggers the download of the PDF
             // .then(()=>{element.classList.remove("pdf")})
@@ -918,6 +970,7 @@ function addEduEntry(button, icon) {
         <tr class="component">
           <td><strong>${college}</strong></td>
           <td>${dateString}</td>
+          <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
         </tr>
         <tr class="degree component">
           <td colspan="2">${major}</td>
@@ -949,6 +1002,7 @@ function addEduEntry(button, icon) {
         table.appendChild(block.degreeRow);
     });
     bindEduBlock();
+    bindEduDelete();
     popEditForm();
     cancelEntry();
 }
@@ -990,9 +1044,13 @@ function addSkillEntry(button, icon) {
     }
 
     const unorderedList = icon.closest("section").querySelector("ul");
+    // lol: a fixed issue here: If </i> was missed here, here will add two trash icon tags. IDK the logic behind the issue.
+    // it seems like auto implicit complement for html caused this issue.
     unorderedList.innerHTML += `
-        <li class="component"><strong>${name}</strong> : ${detail}</li>
+        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
     `;
+
+    bindSkillDelete();
     popEditForm();
     cancelEntry();
 }
@@ -1054,7 +1112,7 @@ function addExpEntry(button, icon) {
     expSection.innerHTML += `
         <h3 class="component">${company}, ${title}</h3>
         <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul class="component"></ul>
+        <ul class="component"><i class="fa-solid fa-trash trash-icon-exp"></i></ul>
     `
 
     const ulEles = expSection.querySelectorAll("ul");
@@ -1105,6 +1163,7 @@ function addExpEntry(button, icon) {
         expSection.appendChild(block.ul);
     });
     bindExpBlock();
+    bindExpDelete();
     popEditForm();
     cancelEntry();
 }
