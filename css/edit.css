@@ -111,6 +111,7 @@ header {
 /*Icon/button  rules*/
 .editIcon {
   float: right;
+  display: none;
 }
 .editIcon-hidden {
   display: none;
@@ -194,9 +195,70 @@ header {
   background-color: #f4f4f4;
 }
 
-/*#edu-section > table{*/
-/*  border-spacing: 0;*/
-/*}*/
 i:hover{
   cursor: pointer;
+}
+
+/* Add icon css rules*/
+.fa-trash{
+  margin-right: 6px;
+}
+.component .trash-td {
+  padding: 0;
+  width: 20px;
+}
+.fa-trash.trash-icon-edu {
+  display:none;
+}
+.fa-trash.trash-icon-skill {
+  vertical-align: top;
+  float:right;
+  display:none;
+}
+/*set parent ul a reference by "position: relative;"
+then, use "position: absolute;" for child icon.*/
+#exp-section ul{
+  position: relative;
+}
+.fa-trash.trash-icon-exp {
+  vertical-align: top;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display:none;
+}
+
+.fa-trash.trash-icon-visible {
+  display:inline-block;
+}
+
+/*add-button css rules*/
+/* Style for the round rectangle button */
+.add-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px; /* Adjust width as needed */
+  height: 50px; /* Adjust height as needed */
+  border: 2px solid #3498db; /* Border color */
+  color: #3498db; /* Plus sign color */
+  border-radius: 25px; /* Make the corners rounded */
+  font-size: 32px; /* Size of the plus sign */
+  font-weight: bold;
+  cursor: pointer;
+  margin: 20px auto 0; /* Add space above the button */
+  text-align: center;
+  background-color: #ffffff;
+}
+
+/* Hover effect */
+.add-button:hover {
+  background-color: #000000;
+  color: white;
+  border:gray;
+}
+section {
+  display: flex; /* Make the section a flex container */
+  flex-direction: column; /* Stack content vertically */
 }
