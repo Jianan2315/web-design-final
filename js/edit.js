@@ -14,6 +14,19 @@ function addCSS(filename) {
     document.head.appendChild(link);
 }
 
+function loadTextAsInnerHTML(filename) {
+    // Path to your text file
+    const filePath = '../innerHTML/'+filename;
+    // Fetch the text file
+    return fetch(filePath)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error fetching file: ${response.statusText}`);
+            }
+            return response.text(); // Read the file as text
+        });
+}
+
 // Load selected template
 // per my test, this load event does NOT affect event delegation.
 window.addEventListener("load", function () {
@@ -24,85 +37,230 @@ window.addEventListener("load", function () {
     // For simplicity, we'll just display the template ID
     const preview = document.getElementById("resume-preview");
     preview.innerHTML = `<p>Selected Template ID: ${templateId}</p>`;
-    preview.classList.add("template"+templateId)
-    addCSS("template"+templateId+".css")
-    preview.innerHTML = `
-    <!-- Header -->
-    <header id="personal-info">
-      <h1>Michael Johnson</h1>
-      <p> Phone: (999)-123-4567 | Email: jo.mi@northeastern.edu | Location: Boston</p>
-    </header>
-    
-    <!-- Education Section -->
-    <section id="edu-section">
-      <h2>Education</h2>
-      <div class="editIcon" id="eduIcon">
-          <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-          <i class="fa-solid fa-plus" onclick="addEducation(this)" style="float:right;margin-right: 10px;"></i>
-      </div>      
-      <table>
-        <tr class="component">
-          <td><strong>Northeastern University</strong></td>
-          <td>Dec 2026</td>
-        </tr>
-        <tr class="degree component">
-          <td colspan="2">MS in Software Engineering Systems</td>
-        </tr>
-        <tr class="component">
-          <td><strong>Boston University</strong></td>
-          <td> Dec 2019</td>
-        </tr>
-        <tr class="degree component">
-          <td colspan="2">BS in Computer Science</td>
-        </tr>
-      </table>
-    </section>
-    
-    <!-- Personal Skills Section -->
-    <section id="skill-section">
-      <h2>Personal Skills</h2>
-      <div class="editIcon" id="skillIcon">
-        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-        <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
-      </div>
-      <ul>
-        <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)</li>
-        <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java</li>
-        <li class="component"><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals</li>
-      </ul>
-    </section>
-    
-    <!-- Professional Experience Section -->
-    <section id="exp-section">
-      <h2>Professional Experience</h2>
-      <div class="editIcon" id="expIcon">
-        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
-      </div>      
-      <h3 class="component">Wicresoft, Azure PaaS Support Engineer</h3>
-      <p class="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
-      <ul class="component">
-        <li>Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.</li>
-        <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID.</li>
-      </ul>
+    preview.classList.add("template"+templateId);
+    addCSS("template"+templateId+".css");
+    loadTextAsInnerHTML("template"+templateId+".txt")
+        .then(text=> {
+            // preview.innerHTML = text;
+            preview.innerHTML = `
+            <!-- Header -->
+            <header id="personal-info">
+              <h1>Michael Johnson</h1>
+              <p> Phone: (999)-123-4567 | Email: jo.mi@northeastern.edu | Location: Boston</p>
+            </header>
         
-      <h3 class="component">Huawei Digital Power Technology, Software Development Engineer</h3>
-      <p class="component"><em>Shenzhen | Mar 2022 - Aug 2022</em></p>
-      <ul class="component">
-        <li>Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.</li>
-        <li>Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency.</li>
-      </ul>
-  
-      <h3 class="component">Dell, Global Operations Engineer, Intern</h3>
-      <p class="component"><em>Shanghai | Jul 2021 - Sep 2021</em></p>
-      <ul class="component">
-        <li>Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.</li>
-        <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
-      </ul>
-    
-    </section>
-  `;
+            <!-- Education Section -->
+            <section id="edu-section">
+              <h2>Education</h2>
+              <div class="editIcon" id="eduIcon">
+                  <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+                  <i class="fa-solid fa-plus" onclick="addEducation(this)" style="float:right;margin-right: 10px;"></i>
+              </div>
+              <table>
+                <tr class="component">
+                  <td><strong>Northeastern University</strong></td>
+                  <td>Dec 2026</td>
+                  <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                  <td colspan="2">MS in Software Engineering Systems</td>
+                </tr>
+                <tr class="component">
+                  <td><strong>Boston University</strong></td>
+                  <td> Dec 2019</td>
+                  <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                  <td colspan="2">BS in Computer Science</td>
+                </tr>
+              </table>
+              <div id="add-edu" class="add-button">+</div>
+            </section>
+        
+            <!-- Personal Skills Section -->
+            <section id="skill-section">
+              <h2>Personal Skills</h2>
+              <div class="editIcon" id="skillIcon">
+                <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+                <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
+              </div>
+              <ul>
+                <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+                <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+                <li class="component"><strong>Certifications</strong>: ITIL 4 Foundation; Microsoft Certified: Azure Database Administrator Associate; Microsoft Certified: Security, Compliance, and Identity Fundamentals<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+              </ul>
+              <div id="add-skill" class="add-button">+</div>
+            </section>
+        
+            <!-- Professional Experience Section -->
+            <section id="exp-section">
+              <h2>Professional Experience</h2>
+              <div class="editIcon" id="expIcon">
+                <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+                <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
+              </div>
+              <h3 class="component">Wicresoft, Azure PaaS Support Engineer</h3>
+              <p class="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
+              <ul class="component">
+                <li>Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.</li>
+                <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+              </ul>
+        
+              <h3 class="component">Huawei Digital Power Technology, Software Development Engineer</h3>
+              <p class="component"><em>Shenzhen | Mar 2022 - Aug 2022</em></p>
+              <ul class="component">
+                <li>Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.</li>
+                <li>Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+              </ul>
+        
+              <h3 class="component">Dell, Global Operations Engineer, Intern</h3>
+              <p class="component"><em>Shanghai | Jul 2021 - Sep 2021</em></p>
+              <ul class="component">
+                <li>Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.</li>
+                <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+              </ul>
+              <div id="add-exp" class="add-button">+</div>
+            </section>
+            `;
+
+            // Bind trash icon with delete function
+            bindEduDelete();
+            bindSkillDelete();
+            bindExpDelete();
+
+            bindAddFunction();
+
+            // Add hover effect to "blocks"
+            bindEduBlock();
+            bindExpBlock();
+            popEditForm();
+        });
+
+
 });
+
+function bindAddFunction(){
+    const addEduButton =  document.getElementById("add-edu");
+    const addSkillButton =  document.getElementById("add-skill");
+    const addExpButton =  document.getElementById("add-exp");
+    addEduButton.addEventListener("click", function(event) {
+        addEducation(this);
+    });
+    addSkillButton.addEventListener("click", function(event) {
+        addSkill(this);
+    });
+    addExpButton.addEventListener("click", function(event) {
+        addExp(this);
+    });
+}
+
+function bindEduDelete(){
+    document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteEduItem(event, this);
+        });
+
+        const relatedRows=[]
+        relatedRows[0] = icon.closest('tr');
+        relatedRows[1] = relatedRows[0].nextElementSibling;
+        relatedRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                icon.classList.add('trash-icon-visible');
+            });
+
+            row.addEventListener('mouseleave', () => {
+                icon.classList.remove('trash-icon-visible');
+            });
+        });
+    });
+}
+function getElementPath(element) {
+    if (!element) return '';
+
+    let path = [];
+    while (element.parentNode) {
+        let tagName = element.tagName.toLowerCase();
+        let siblings = Array.from(element.parentNode.children).filter(el => el.tagName === element.tagName);
+
+        if (siblings.length > 1) {
+            // If there are multiple siblings with the same tag name, use nth-child
+            let index = Array.from(element.parentNode.children).indexOf(element) + 1;
+            path.unshift(`${tagName}:nth-child(${index})`);
+        } else {
+            // Use tag name if it's unique
+            path.unshift(tagName);
+        }
+
+        element = element.parentNode;
+        if (element === document.documentElement) break; // Stop at the root element
+    }
+
+    return path.join(' > ');
+}
+
+function bindSkillDelete(){
+    document.querySelectorAll(".trash-icon-skill").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteSkillItem(event, this);
+        });
+        const row = icon.closest('li');
+        row.addEventListener('mouseenter', () => {
+            icon.classList.add('trash-icon-visible');
+        });
+        row.addEventListener('mouseleave', () => {
+            icon.classList.remove('trash-icon-visible');
+        });
+
+    });
+}
+
+function bindExpDelete(){
+    document.querySelectorAll(".trash-icon-exp").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteExpItem(event, this);
+        });
+
+        const relatedRows=[];
+        relatedRows[0] = icon.closest('ul');
+        relatedRows[1] = relatedRows[0].previousElementSibling;
+        relatedRows[2] = relatedRows[1].previousElementSibling;
+        relatedRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                icon.classList.add('trash-icon-visible');
+            });
+
+            row.addEventListener('mouseleave', () => {
+                icon.classList.remove('trash-icon-visible');
+            });
+        });
+    });
+}
+function deleteEduItem(e,icon) {
+    e.stopPropagation();
+    const relatedRows=[];
+    relatedRows[0] = icon.closest('tr');
+    relatedRows[1] = relatedRows[0].nextElementSibling;
+    relatedRows.forEach(row => row.remove());
+    cancelEntry();
+}
+function deleteSkillItem(e,icon) {
+    e.stopPropagation();
+    const relatedRow = icon.closest('li');
+    relatedRow.remove();
+    cancelEntry();
+}
+function deleteExpItem(e,icon) {
+    e.stopPropagation();
+    const relatedRows=[];
+    relatedRows[0] = icon.closest('ul');
+    relatedRows[1] = relatedRows[0].previousElementSibling;
+    relatedRows[2] = relatedRows[1].previousElementSibling;
+    relatedRows.forEach(row => row.remove());
+    cancelEntry();
+}
 
 // Wait for the DOM to be fully loaded
 // per my test, element replacement does NOT matter for "DOMContentLoaded" event.
@@ -126,6 +284,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 jsPDF: { unit: "in", format: "a4", orientation: "portrait" }, // Optional: Specify PDF settings
             })
             .then(()=>icons.forEach(icon=>{icon.classList.add("editIcon-hidden")}))
+            .then(()=>{
+                for (let e of ["add-edu","add-skill","add-exp"]){
+                    const element = document.getElementById(e);
+                    element.style.display="none";
+                }
+            })
             .then(()=>element.classList.add("pdf"))
             .save() // This triggers the download of the PDF
             // .then(()=>{element.classList.remove("pdf")})
@@ -146,16 +310,11 @@ function bindEduBlock(){
         return;
     }
 
-    // console.log("All rows:",eduSection.querySelectorAll("tr"));
-    // eduSection.querySelectorAll("tr").forEach(tmp=>console.log(tmp.textContent));
     // odd
     const oddElements=eduSection.querySelectorAll("tr:nth-child(odd)");
-    // console.log("Odd eles:", oddElements);
     oddElements.forEach(oddElement => {
-        // console.log("odd: ", oddElement.textContent);
         oddElement.addEventListener('mouseenter', () => {
             const nextSibling = oddElement.nextElementSibling;
-            // console.log(`odd ${oddElement.textContent} \nnext`, nextSibling.textContent);
             if (nextSibling && nextSibling.classList.contains('component')) {
                 nextSibling.classList.add('component-hover');
             }
@@ -168,14 +327,12 @@ function bindEduBlock(){
             }
         });
     });
+
     // even
     const evenElements=eduSection.querySelectorAll("tr:nth-child(even)");
-    // console.log("Even eles:", evenElements);
     evenElements.forEach(evenElement => {
-        // console.log("even: ", evenElement.textContent);
         evenElement.addEventListener('mouseenter', () => {
             const prevSibling = evenElement.previousElementSibling;
-            // console.log(`even ${evenElement.textContent} \nprev`, prevSibling.textContent);
             if (prevSibling && prevSibling.classList.contains('component')) {
                 prevSibling.classList.add('component-hover');
             }
@@ -196,7 +353,6 @@ function bindExpBlock(){
 
     // first
     const firstElements=expSection.querySelectorAll("h3");
-    // console.log("1st eles:", firstElements);
     firstElements.forEach(firstElement => {
         firstElement.addEventListener('mouseenter', () => {
             const secondElement = firstElement.nextElementSibling;
@@ -214,7 +370,6 @@ function bindExpBlock(){
     });
     // 2nd
     const secondElements = expSection.querySelectorAll("p");
-    // console.log("2nd eles:", secondElements);
     secondElements.forEach(secondElement => {
         secondElement.addEventListener('mouseenter', () => {
             const firstElement = secondElement.previousElementSibling;
@@ -232,7 +387,6 @@ function bindExpBlock(){
     });
     // 3rd
     const thirdElements = expSection.querySelectorAll("ul");
-    // console.log("3rd eles:", thirdElements);
     thirdElements.forEach(thirdElement => {
         thirdElement.addEventListener('mouseenter', () => {
             const secondElement = thirdElement.previousElementSibling;
@@ -262,10 +416,7 @@ function popEditForm() {
         // blocks.push({first:eduRows[i], second:eduRows[i+1]});
         blocks.push([eduRows[i], eduRows[i + 1]]);
     }
-    // blocks.forEach(block=>{
-    //     console.log("block content: ", block);
-    // });
-    // return;
+
     blocks.forEach(block => {
         const cells = block[0].querySelectorAll("td");
         const college = cells[0].textContent.trim();
@@ -306,9 +457,7 @@ function popEditForm() {
         const title = strongElement.textContent.trim(); // "Communication language"
         // Extract the remaining part (after the colon)
         const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
-        // console.log(title, details)
         block.addEventListener('click', () => {
-            // console.log("block:", block)
             const form = document.getElementById("resume-form");
             const formContainer = document.getElementById("form-container")
             formContainer.classList.remove("form-container-hidden")
@@ -331,19 +480,7 @@ function popEditForm() {
 
 
     });
-    // exp
-    // const tmp=`
-    // <h3 className="component">Wicresoft, Azure PaaS Support Engineer</h3>
-    // <p className="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
-    // <ul className="component">
-    //     <li>Provided technical support for Azure Logic Apps integration services through individual research, team
-    //         discussions, and cross-team collaboration to ensure customer satisfaction.
-    //     </li>
-    //     <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web
-    //         Application Firewall, and Microsoft Entra ID.
-    //     </li>
-    // </ul>
-    // `;
+
     const firstEles = expSection.querySelectorAll("h3");
     const secondEles = expSection.querySelectorAll("p");
     const thirdEles = expSection.querySelectorAll("ul");
@@ -354,7 +491,6 @@ function popEditForm() {
     }
 
     blocks.forEach(block => {
-
         // Extract details
         const titleAndCompany = block[0].textContent.trim();
         const locationAndDates = block[1].textContent.trim();
@@ -377,9 +513,9 @@ function popEditForm() {
                 formContainer.classList.remove("form-container-hidden")
                 form.innerHTML = `
                     <label for="company">Company:</label>
-                    <input type="text" id="company" name="company" value=${company}>
+                    <input type="text" id="company" name="company" value="${company}">
                     <label for="title">Position Title:</label>
-                    <input type="text" id="title" name="title" value=${title}>
+                    <input type="text" id="title" name="title" value="${title}">
                     <label for="org-address">Location:</label>
                     <textarea id="org-address" name="org-address">${location}</textarea>
                     <label for="start">Start Date:</label>
@@ -439,10 +575,16 @@ function updateExpEntry(button, block) {
     const expSection = block[0].closest("section");
     const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
     const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    // Due to async render issue, remove() has to be placed before any (implicit) sync function.
+    block.forEach(ele => {
+        ele.remove();
+        // console.log("ele: ",ele);
+        // ele was removed out of DOM, but still exists as a variable/object
+    });
     expSection.innerHTML += `
         <h3 class="component">${company}, ${title}</h3>
         <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul class="component"></ul>
+        <ul class="component"><i class="fa-solid fa-trash trash-icon-exp"></i></ul>
     `
 
     const ulEles = expSection.querySelectorAll("ul");
@@ -486,19 +628,27 @@ function updateExpEntry(button, block) {
     });
 
     // 7. Append sorted rows back to the table
-    expSection.innerHTML="";
+    expSection.innerHTML =`
+        <h2>Professional Experience</h2>
+        <div class="editIcon" id="expIcon">
+        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
+        </div>
+    `;
     blocks.forEach(block => {
         expSection.appendChild(block.h);
         expSection.appendChild(block.p);
         expSection.appendChild(block.ul);
     });
+    expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
     bindExpBlock();
+    bindAddFunction();
+    bindExpDelete()
     popEditForm();
     cancelEntry();
 }
 
 function updateEduEntry(button, block) {
-    console.log("updateEduEntry()");
     const form = button.parentNode;
     const college = form.querySelector("#university").value;
     const gradDate = form.querySelector("#graduation").value;
@@ -513,32 +663,30 @@ function updateEduEntry(button, block) {
     const gradDateObj = new Date(gradDate);
     const dateString = gradDateObj.toLocaleString('default', {month: 'short', year: 'numeric' });
 
-
     const table = block[0].closest("section").querySelector("table");
     block.forEach(ele => {
         ele.remove();
-        // console.log("Skip:? ",ele);// ele still exists as a variable/object
+        // console.log("ele: ",ele);
+        // ele was removed out of DOM, but still exists as a variable/object
     });
     table.innerHTML += `
         <tr class="component">
           <td><strong>${college}</strong></td>
           <td>${dateString}</td>
+          <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
         </tr>
         <tr class="degree component">
           <td colspan="2">${major}</td>
         </tr>
     `;
+
     // 5. Collect rows into "blocks" of [institutionRow, degreeRow]
     const rowBlocks = [];
     const rows = Array.from(table.querySelectorAll('tr'));
-    // console.log(rows);
-    // console.log(document.querySelector("#edu-section").querySelectorAll('tr'));
 
     for (let i = 0; i < rows.length; i+=2) {
         const institutionRow = rows[i];
         const degreeRow = rows[i + 1];
-        // degreeRow.remove();
-        // return;
         rowBlocks.push({ institutionRow, degreeRow });
     }
 
@@ -553,13 +701,14 @@ function updateEduEntry(button, block) {
     // here is cause of pair hover effect issue.
     // appendChild() may mess readable order
     // first attempt: remove content first
-    table.innerHTML=""; // This resolves the issue
+    table.innerHTML="";
     rowBlocks.forEach(rowBlock => {
         table.appendChild(rowBlock.institutionRow);
         table.appendChild(rowBlock.degreeRow);
     });
-    // console.log("AFTER update");
+
     bindEduBlock(); // per my view, it caused by previous sort, which changed the reference so that pair goes wrong.
+    bindEduDelete();
     popEditForm(); // SOLVE EVENT listener issue but encounter new one for pair hover effect. so explore bindEduBlock();
     cancelEntry();
 }
@@ -575,24 +724,14 @@ function updateSkillEntry(button, block) {
     }
     const unorderedList = block.closest("ul");
     block.remove();
-    // console.log(unorderedList);
+
     unorderedList.innerHTML += `
-        <li class="component"><strong>${name}</strong> : ${detail}</li>
+        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
     `;
+    bindSkillDelete();
     popEditForm();
     cancelEntry();
 }
-
-// here is keypoint for why functionality is only triggered once time for each section.
-window.addEventListener("load", function() {
-    // Add hover effect to "blocks"
-    bindEduBlock()
-    bindExpBlock()
-    popEditForm()
-});
-
-
-
 
 // set grayscale background
 function activateOverlay(icon) {
@@ -622,7 +761,6 @@ function activateOverlay(icon) {
         for (let row of rows) {
             dates.push(row.nextElementSibling.textContent.split("|")[1].split("-")[0].trim());
         }
-        // console.log(dates);
         populateModifyOptionsTable(names, "exp", dates);
     } else {
         console.log("ERROR: Unable to access icons container.");
@@ -703,8 +841,6 @@ function deleteEduRecord(){
         const bothNames = relatedRow.querySelector('td:nth-child(2)').textContent.trim().split(",");
         const universityName = bothNames[0].trim()
         const date = bothNames[1].trim()
-        // console.log(universityName, date);
-        // return;
 
         // Find the related record in #edu-section
         const eduSection = document.querySelector('#edu-section');
@@ -765,16 +901,12 @@ function deleteExpRecord(){
 
         const orgName = bothNames[0].trim();
         const date = bothNames[2].trim();
-        // console.log(orgName);
-        // console.log(date);
+
         // Find the related record in #exp-section
         const expSection = document.querySelector('#exp-section');
         const records = expSection.querySelectorAll('h3');
 
         records.forEach(record => {
-            // console.log("BREAKLINE");
-            // console.log(record.textContent);
-            // console.log(record.nextElementSibling.textContent);
             if (record.textContent.includes(orgName) && record.nextElementSibling.textContent.includes(date)) {
                 const eles = [record,record.nextElementSibling,record.nextElementSibling.nextElementSibling];
                 for (let e of eles) {
@@ -837,6 +969,7 @@ function addEduEntry(button, icon) {
         <tr class="component">
           <td><strong>${college}</strong></td>
           <td>${dateString}</td>
+          <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
         </tr>
         <tr class="degree component">
           <td colspan="2">${major}</td>
@@ -868,6 +1001,7 @@ function addEduEntry(button, icon) {
         table.appendChild(block.degreeRow);
     });
     bindEduBlock();
+    bindEduDelete();
     popEditForm();
     cancelEntry();
 }
@@ -909,9 +1043,13 @@ function addSkillEntry(button, icon) {
     }
 
     const unorderedList = icon.closest("section").querySelector("ul");
+    // lol: a fixed issue here: If </i> was missed here, here will add two trash icon tags. IDK the logic behind the issue.
+    // it seems like auto implicit complement for html caused this issue.
     unorderedList.innerHTML += `
-        <li class="component"><strong>${name}</strong> : ${detail}</li>
+        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
     `;
+
+    bindSkillDelete();
     popEditForm();
     cancelEntry();
 }
@@ -947,7 +1085,7 @@ function addExp(icon) {
 
 function addExpEntry(button, icon) {
     // 2. Get form input values
-    const form = button.parentNode;
+    const form = button.parentNode; // button is not essential but backup
     const company = document.getElementById("company").value;
     const title = document.getElementById("title").value;
     const orgAddress = document.getElementById("org-address").value;
@@ -973,7 +1111,7 @@ function addExpEntry(button, icon) {
     expSection.innerHTML += `
         <h3 class="component">${company}, ${title}</h3>
         <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul class="component"></ul>
+        <ul class="component"><i class="fa-solid fa-trash trash-icon-exp"></i></ul>
     `
 
     const ulEles = expSection.querySelectorAll("ul");
@@ -1017,13 +1155,22 @@ function addExpEntry(button, icon) {
     });
 
     // 7. Append sorted rows back to the table
-    expSection.innerHTML="";
+    expSection.innerHTML=`
+        <h2>Professional Experience</h2>
+        <div class="editIcon" id="expIcon">
+        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
+        </div>
+    `;
     blocks.forEach(block => {
         expSection.appendChild(block.h);
         expSection.appendChild(block.p);
         expSection.appendChild(block.ul);
     });
+    expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
     bindExpBlock();
+    bindAddFunction();
+    bindExpDelete();
     popEditForm();
     cancelEntry();
 }
@@ -1103,15 +1250,4 @@ function extractAndSaveResumeData() {
         .catch(error => {
             console.error('Error:', error); // Log errors if any
         });
-
-    // Convert to JSON
-    // const resumeJson = JSON.stringify(resumeData, null, 4);
-    // // Save as JSON File
-    // const blob = new Blob([resumeJson], { type: 'application/json' });
-    // const link = document.createElement('a');
-    // link.href = URL.createObjectURL(blob);
-    // link.download = 'resume_data.json'; // The name of the file to be downloaded
-    // document.body.appendChild(link);
-    // link.click(); // Programmatically click the link to trigger the download
-    // document.body.removeChild(link); // Clean up the link element
 }
