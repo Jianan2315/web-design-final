@@ -131,18 +131,7 @@ window.addEventListener("load", function () {
             bindSkillDelete();
             bindExpDelete();
 
-            const addEduButton =  document.getElementById("add-edu");
-            const addSkillButton =  document.getElementById("add-skill");
-            const addExpButton =  document.getElementById("add-exp");
-            addEduButton.addEventListener("click", function(event) {
-                addEducation(this);
-            });
-            addSkillButton.addEventListener("click", function(event) {
-                addSkill(this);
-            });
-            addExpButton.addEventListener("click", function(event) {
-                addExp(this);
-            });
+            bindAddFunction();
 
             // Add hover effect to "blocks"
             bindEduBlock();
@@ -152,6 +141,21 @@ window.addEventListener("load", function () {
 
 
 });
+
+function bindAddFunction(){
+    const addEduButton =  document.getElementById("add-edu");
+    const addSkillButton =  document.getElementById("add-skill");
+    const addExpButton =  document.getElementById("add-exp");
+    addEduButton.addEventListener("click", function(event) {
+        addEducation(this);
+    });
+    addSkillButton.addEventListener("click", function(event) {
+        addSkill(this);
+    });
+    addExpButton.addEventListener("click", function(event) {
+        addExp(this);
+    });
+}
 
 function bindEduDelete(){
     document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
@@ -202,7 +206,6 @@ function bindSkillDelete(){
         icon.addEventListener("click", function(event) {
             deleteSkillItem(event, this);
         });
-        // console.log("icon path:", getElementPath(icon));
         const row = icon.closest('li');
         row.addEventListener('mouseenter', () => {
             icon.classList.add('trash-icon-visible');
@@ -327,12 +330,9 @@ function bindEduBlock(){
 
     // even
     const evenElements=eduSection.querySelectorAll("tr:nth-child(even)");
-    // console.log("Even eles:", evenElements);
     evenElements.forEach(evenElement => {
-        // console.log("even: ", evenElement.textContent);
         evenElement.addEventListener('mouseenter', () => {
             const prevSibling = evenElement.previousElementSibling;
-            // console.log(`even ${evenElement.textContent} \nprev`, prevSibling.textContent);
             if (prevSibling && prevSibling.classList.contains('component')) {
                 prevSibling.classList.add('component-hover');
             }
@@ -353,7 +353,6 @@ function bindExpBlock(){
 
     // first
     const firstElements=expSection.querySelectorAll("h3");
-    // console.log("1st eles:", firstElements);
     firstElements.forEach(firstElement => {
         firstElement.addEventListener('mouseenter', () => {
             const secondElement = firstElement.nextElementSibling;
@@ -371,7 +370,6 @@ function bindExpBlock(){
     });
     // 2nd
     const secondElements = expSection.querySelectorAll("p");
-    // console.log("2nd eles:", secondElements);
     secondElements.forEach(secondElement => {
         secondElement.addEventListener('mouseenter', () => {
             const firstElement = secondElement.previousElementSibling;
@@ -389,7 +387,6 @@ function bindExpBlock(){
     });
     // 3rd
     const thirdElements = expSection.querySelectorAll("ul");
-    // console.log("3rd eles:", thirdElements);
     thirdElements.forEach(thirdElement => {
         thirdElement.addEventListener('mouseenter', () => {
             const secondElement = thirdElement.previousElementSibling;
@@ -419,10 +416,7 @@ function popEditForm() {
         // blocks.push({first:eduRows[i], second:eduRows[i+1]});
         blocks.push([eduRows[i], eduRows[i + 1]]);
     }
-    // blocks.forEach(block=>{
-    //     console.log("block content: ", block);
-    // });
-    // return;
+
     blocks.forEach(block => {
         const cells = block[0].querySelectorAll("td");
         const college = cells[0].textContent.trim();
@@ -463,9 +457,7 @@ function popEditForm() {
         const title = strongElement.textContent.trim(); // "Communication language"
         // Extract the remaining part (after the colon)
         const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
-        // console.log(title, details)
         block.addEventListener('click', () => {
-            // console.log("block:", block)
             const form = document.getElementById("resume-form");
             const formContainer = document.getElementById("form-container")
             formContainer.classList.remove("form-container-hidden")
@@ -521,9 +513,9 @@ function popEditForm() {
                 formContainer.classList.remove("form-container-hidden")
                 form.innerHTML = `
                     <label for="company">Company:</label>
-                    <input type="text" id="company" name="company" value=${company}>
+                    <input type="text" id="company" name="company" value="${company}">
                     <label for="title">Position Title:</label>
-                    <input type="text" id="title" name="title" value=${title}>
+                    <input type="text" id="title" name="title" value="${title}">
                     <label for="org-address">Location:</label>
                     <textarea id="org-address" name="org-address">${location}</textarea>
                     <label for="start">Start Date:</label>
@@ -583,6 +575,12 @@ function updateExpEntry(button, block) {
     const expSection = block[0].closest("section");
     const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
     const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    // Due to async render issue, remove() has to be placed before any (implicit) sync function.
+    block.forEach(ele => {
+        ele.remove();
+        // console.log("ele: ",ele);
+        // ele was removed out of DOM, but still exists as a variable/object
+    });
     expSection.innerHTML += `
         <h3 class="component">${company}, ${title}</h3>
         <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
@@ -630,20 +628,27 @@ function updateExpEntry(button, block) {
     });
 
     // 7. Append sorted rows back to the table
-    expSection.innerHTML="";
+    expSection.innerHTML =`
+        <h2>Professional Experience</h2>
+        <div class="editIcon" id="expIcon">
+        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
+        </div>
+    `;
     blocks.forEach(block => {
         expSection.appendChild(block.h);
         expSection.appendChild(block.p);
         expSection.appendChild(block.ul);
     });
+    expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
     bindExpBlock();
+    bindAddFunction();
     bindExpDelete()
     popEditForm();
     cancelEntry();
 }
 
 function updateEduEntry(button, block) {
-    console.log("updateEduEntry()");
     const form = button.parentNode;
     const college = form.querySelector("#university").value;
     const gradDate = form.querySelector("#graduation").value;
@@ -658,11 +663,11 @@ function updateEduEntry(button, block) {
     const gradDateObj = new Date(gradDate);
     const dateString = gradDateObj.toLocaleString('default', {month: 'short', year: 'numeric' });
 
-
     const table = block[0].closest("section").querySelector("table");
     block.forEach(ele => {
         ele.remove();
-        // console.log("Skip:? ",ele);// ele still exists as a variable/object
+        // console.log("ele: ",ele);
+        // ele was removed out of DOM, but still exists as a variable/object
     });
     table.innerHTML += `
         <tr class="component">
@@ -674,17 +679,14 @@ function updateEduEntry(button, block) {
           <td colspan="2">${major}</td>
         </tr>
     `;
+
     // 5. Collect rows into "blocks" of [institutionRow, degreeRow]
     const rowBlocks = [];
     const rows = Array.from(table.querySelectorAll('tr'));
-    // console.log(rows);
-    // console.log(document.querySelector("#edu-section").querySelectorAll('tr'));
 
     for (let i = 0; i < rows.length; i+=2) {
         const institutionRow = rows[i];
         const degreeRow = rows[i + 1];
-        // degreeRow.remove();
-        // return;
         rowBlocks.push({ institutionRow, degreeRow });
     }
 
@@ -699,7 +701,7 @@ function updateEduEntry(button, block) {
     // here is cause of pair hover effect issue.
     // appendChild() may mess readable order
     // first attempt: remove content first
-    table.innerHTML=""; // This resolves the issue
+    table.innerHTML="";
     rowBlocks.forEach(rowBlock => {
         table.appendChild(rowBlock.institutionRow);
         table.appendChild(rowBlock.degreeRow);
@@ -722,7 +724,7 @@ function updateSkillEntry(button, block) {
     }
     const unorderedList = block.closest("ul");
     block.remove();
-    // console.log(unorderedList);
+
     unorderedList.innerHTML += `
         <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
     `;
@@ -759,7 +761,6 @@ function activateOverlay(icon) {
         for (let row of rows) {
             dates.push(row.nextElementSibling.textContent.split("|")[1].split("-")[0].trim());
         }
-        // console.log(dates);
         populateModifyOptionsTable(names, "exp", dates);
     } else {
         console.log("ERROR: Unable to access icons container.");
@@ -840,8 +841,6 @@ function deleteEduRecord(){
         const bothNames = relatedRow.querySelector('td:nth-child(2)').textContent.trim().split(",");
         const universityName = bothNames[0].trim()
         const date = bothNames[1].trim()
-        // console.log(universityName, date);
-        // return;
 
         // Find the related record in #edu-section
         const eduSection = document.querySelector('#edu-section');
@@ -902,16 +901,12 @@ function deleteExpRecord(){
 
         const orgName = bothNames[0].trim();
         const date = bothNames[2].trim();
-        // console.log(orgName);
-        // console.log(date);
+
         // Find the related record in #exp-section
         const expSection = document.querySelector('#exp-section');
         const records = expSection.querySelectorAll('h3');
 
         records.forEach(record => {
-            // console.log("BREAKLINE");
-            // console.log(record.textContent);
-            // console.log(record.nextElementSibling.textContent);
             if (record.textContent.includes(orgName) && record.nextElementSibling.textContent.includes(date)) {
                 const eles = [record,record.nextElementSibling,record.nextElementSibling.nextElementSibling];
                 for (let e of eles) {
@@ -1090,7 +1085,7 @@ function addExp(icon) {
 
 function addExpEntry(button, icon) {
     // 2. Get form input values
-    const form = button.parentNode;
+    const form = button.parentNode; // button is not essential but backup
     const company = document.getElementById("company").value;
     const title = document.getElementById("title").value;
     const orgAddress = document.getElementById("org-address").value;
@@ -1160,13 +1155,21 @@ function addExpEntry(button, icon) {
     });
 
     // 7. Append sorted rows back to the table
-    expSection.innerHTML="";
+    expSection.innerHTML=`
+        <h2>Professional Experience</h2>
+        <div class="editIcon" id="expIcon">
+        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
+        </div>
+    `;
     blocks.forEach(block => {
         expSection.appendChild(block.h);
         expSection.appendChild(block.p);
         expSection.appendChild(block.ul);
     });
+    expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
     bindExpBlock();
+    bindAddFunction();
     bindExpDelete();
     popEditForm();
     cancelEntry();
@@ -1247,15 +1250,4 @@ function extractAndSaveResumeData() {
         .catch(error => {
             console.error('Error:', error); // Log errors if any
         });
-
-    // Convert to JSON
-    // const resumeJson = JSON.stringify(resumeData, null, 4);
-    // // Save as JSON File
-    // const blob = new Blob([resumeJson], { type: 'application/json' });
-    // const link = document.createElement('a');
-    // link.href = URL.createObjectURL(blob);
-    // link.download = 'resume_data.json'; // The name of the file to be downloaded
-    // document.body.appendChild(link);
-    // link.click(); // Programmatically click the link to trigger the download
-    // document.body.removeChild(link); // Clean up the link element
 }
