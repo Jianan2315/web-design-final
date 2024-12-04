@@ -147,12 +147,15 @@ function bindAddFunction(){
     const addSkillButton =  document.getElementById("add-skill");
     const addExpButton =  document.getElementById("add-exp");
     addEduButton.addEventListener("click", function(event) {
+        hidePreview();
         addEducation(this);
     });
     addSkillButton.addEventListener("click", function(event) {
+        hidePreview();
         addSkill(this);
     });
     addExpButton.addEventListener("click", function(event) {
+        hidePreview();
         addExp(this);
     });
 }
@@ -425,8 +428,9 @@ function popEditForm() {
         block.forEach(ele => {
             ele.addEventListener('click', () => {
                 const form = document.getElementById("resume-form");
-                const formContainer = document.getElementById("form-container")
-                formContainer.classList.remove("form-container-hidden")
+                const formContainer = document.getElementById("form-container");
+                hidePreview();
+                formContainer.classList.remove("form-container-hidden");
                 form.innerHTML = `
                     <label for="university">University:</label>
                     <textarea id="university" name="university">${college}</textarea>
@@ -439,6 +443,7 @@ function popEditForm() {
                     <button type="button" id="cancel-edu-entry">Cancel</button>
                 `;
                 form.querySelector('#update-edu-entry').addEventListener('click', function () {
+
                     updateEduEntry(this, block);
                 });
                 form.querySelector('#cancel-edu-entry').addEventListener('click', function () {
@@ -459,8 +464,9 @@ function popEditForm() {
         const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
         block.addEventListener('click', () => {
             const form = document.getElementById("resume-form");
-            const formContainer = document.getElementById("form-container")
-            formContainer.classList.remove("form-container-hidden")
+            const formContainer = document.getElementById("form-container");
+            hidePreview();
+            formContainer.classList.remove("form-container-hidden");
             form.innerHTML = `
                 <label for="new-skill-name">Skill name:</label>
                 <textarea id="new-skill-name" name="new-skill-name">${title}</textarea>
@@ -471,6 +477,7 @@ function popEditForm() {
                 <button type="button" id="cancel-skill-entry">Cancel</button>
             `;
             form.querySelector('#update-skill-entry').addEventListener('click', function () {
+
                 updateSkillEntry(this, block);
             });
             form.querySelector('#cancel-skill-entry').addEventListener('click', function () {
@@ -509,8 +516,9 @@ function popEditForm() {
         block.forEach(ele => {
             ele.addEventListener('click', () => {
                 const form = document.getElementById("resume-form");
-                const formContainer = document.getElementById("form-container")
-                formContainer.classList.remove("form-container-hidden")
+                const formContainer = document.getElementById("form-container");
+                hidePreview();
+                formContainer.classList.remove("form-container-hidden");
                 form.innerHTML = `
                     <label for="company">Company:</label>
                     <input type="text" id="company" name="company" value="${company}">
@@ -529,6 +537,7 @@ function popEditForm() {
                     <button type="button" id="cancel-exp-entry">Cancel</button>
                 `;
                 form.querySelector('#update-exp-entry').addEventListener('click', function () {
+
                     updateExpEntry(this, block);
                 });
                 form.querySelector('#cancel-exp-entry').addEventListener('click', function () {
@@ -1007,8 +1016,9 @@ function addEduEntry(button, icon) {
 }
 
 function cancelEntry() {
-    const formContainer = document.getElementById("form-container")
-    formContainer.classList.add("form-container-hidden")
+    const formContainer = document.getElementById("form-container");
+    formContainer.classList.add("form-container-hidden");
+    showPreview();
 }
 
 function addSkill(icon) {
@@ -1250,4 +1260,23 @@ function extractAndSaveResumeData() {
         .catch(error => {
             console.error('Error:', error); // Log errors if any
         });
+}
+
+function hidePreview() {
+    const right = document.getElementById('preview-container');
+    const screenWidth = window.innerWidth;
+    console.log("hide");
+    if (screenWidth <= 1024) {
+        right.style.display = 'none';
+        console.log("1024");
+    }
+}
+
+function showPreview() {
+    const right = document.getElementById('preview-container');
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth <= 1024) {
+        right.style.display = 'block';
+    }
 }

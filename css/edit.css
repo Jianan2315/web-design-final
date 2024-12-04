@@ -16,7 +16,7 @@ header {
 
 .edit-page {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-direction: row;
   background: white;
 }
@@ -27,11 +27,8 @@ header {
   background: #f4f4f4;
 }
 
-.edit-page {
-  justify-content: space-evenly;
-}
 .edit-page > div {
-  width: 42%;
+  width: 48%;
   background: white;
 }
 header {
@@ -261,4 +258,19 @@ then, use "position: absolute;" for child icon.*/
 section {
   display: flex; /* Make the section a flex container */
   flex-direction: column; /* Stack content vertically */
+}
+
+/* Responsive Styles for Screens Under 1024px */
+@media (max-width: 1024px) {
+  .edit-page > div {
+    width: 98%;
+  }
+  /*Fixed issue by commenting high-priority CSS rules :) */
+  /*#form-container {*/
+  /*  display: none;*/
+  /*}*/
+
+  /*#preview-container {*/
+  /*  display: block;*/
+  /*}*/
 }
