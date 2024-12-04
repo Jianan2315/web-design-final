@@ -8,47 +8,47 @@
     padding: 0 0 32px;
     aspect-ratio: 1/1.414;
   }
-  .template2 header {
-    background-color: #333333;
-    color: white;
-    padding: 15px 0;
-    text-align: center;
-  }
-  .template2 header p {
-    font-size: 18px;
-  }
-  .template2 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  .template2 td {
-    border: 3px;
-    padding: 5px;
-    text-align: left;
-  }
-  .template2 ul {
-    list-style-type: disc;
-    padding-left: 30px;
-  }
-  .template2 section {
-    width: 90%;
-    margin: 1% 0 0 5%;
-  }
-  .template2 h2 {
-    border-bottom: 2px solid;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-  }
-  .template2 h3 {
-    margin-top: 20px;
-  }
-  .template2 .degree {
-    /*border: solid 1px #ffffff;*/
-    border-bottom-width: 10px;
-  }
-  
-  /*for priority*/
-  .pdf {
-    aspect-ratio: auto;
-  }
+.template2 header {
+  background-color: #333333;
+  color: white;
+  padding: 15px 0;
+  text-align: center;
+}
+.template2 header p {
+  font-size: 18px;
+}
+.template2 table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+.template2 td {
+  border: 3px;
+  padding: 5px;
+  text-align: left;
+}
+.template2 ul {
+  list-style-type: disc;
+  padding-left: 30px;
+}
+.template2 section {
+  width: 90%;
+  margin: 1% 0 0 5%;
+}
+.template2 h2 {
+  border-bottom: 2px solid;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+.template2 h3 {
+  margin-top: 20px;
+}
+.template2 .degree {
+  /*border: solid 1px #ffffff;*/
+  border-bottom-width: 10px;
+}
+
+/*for priority*/
+.pdf {
+  aspect-ratio: auto;
+}

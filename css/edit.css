@@ -214,10 +214,12 @@ i:hover{
 }
 /*set parent ul a reference by "position: relative;"
 then, use "position: absolute;" for child icon.*/
-#exp-section ul{
+#exp-section ul,
+#proj-section ul{
   position: relative;
 }
-.fa-trash.trash-icon-exp {
+.fa-trash.trash-icon-exp,
+.fa-trash.trash-icon-proj {
   vertical-align: top;
   position: absolute;
   right: 0;
@@ -265,12 +267,4 @@ section {
   .edit-page > div {
     width: 98%;
   }
-  /*Fixed issue by commenting high-priority CSS rules :) */
-  /*#form-container {*/
-  /*  display: none;*/
-  /*}*/
-
-  /*#preview-container {*/
-  /*  display: block;*/
-  /*}*/
 }

@@ -1,184 +1,7 @@
-// edit.js
-const PORT=3072;
-
-// add functions
-function addCSS(filename) {
-    // Create a new <link> element
-    const link = document.createElement("link");
-
-    // Set the attributes for the <link> element
-    link.rel = "stylesheet";
-    link.href = "css/templates/"+filename;  // Path to your CSS file
-
-    // Append the <link> element to the <head> section
-    document.head.appendChild(link);
-}
-
-function loadTextAsInnerHTML(filename) {
-    // Path to your text file
-    const filePath = '../innerHTML/'+filename;
-    // Fetch the text file
-    return fetch(filePath)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error fetching file: ${response.statusText}`);
-            }
-            return response.text(); // Read the file as text
-        });
-}
-
-// Load selected template
-// per my test, this load event does NOT affect event delegation.
-window.addEventListener("load", function () {
-    const params = new URLSearchParams(window.location.search);
-    const templateId = params.get("template");
-
-    // Use templateId to load different templates
-    // For simplicity, we'll just display the template ID
-    const preview = document.getElementById("resume-preview");
-    preview.innerHTML = `<p>Selected Template ID: ${templateId}</p>`;
-    preview.classList.add("template"+templateId);
-    addCSS("template"+templateId+".css");
-    console.log("template"+templateId+".css");
-    loadTextAsInnerHTML("template"+templateId+".txt")
-        .then(text=> {
-            preview.innerHTML = text;
-            // preview.innerHTML = `
-            // <!-- Header -->
-            // <header id="personal-info">
-            //   <h1>Prashant Singh</h1>
-            //   <p> Phone: (617) 602-3905 | Email: singh.prasha@husky.neu.edu | Location: Boston</p>
-            // </header>
-        
-            // <!-- Education Section -->
-            // <section id="edu-section">
-            //   <h2>Education</h2>
-            //   <div class="editIcon" id="eduIcon">
-            //       <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-            //       <i class="fa-solid fa-plus" onclick="addEducation(this)" style="float:right;margin-right: 10px;"></i>
-            //   </div>
-            //   <table>
-            //     <tr class="component">
-            //       <td><strong>Northeastern University</strong></td>
-            //       <td>Dec 2026</td>
-            //       <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
-            //     </tr>
-            //     <tr class="degree component">
-            //       <td colspan="2">MS in Software Engineering Systems</td>
-            //     </tr>
-            //     <tr class="component">
-            //       <td><strong>Boston University</strong></td>
-            //       <td> Dec 2019</td>
-            //       <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
-            //     </tr>
-            //     <tr class="degree component">
-            //       <td colspan="2">BS in Computer Science</td>
-            //     </tr>
-            //   </table>
-            //   <div id="add-edu" class="add-button">+</div>
-            // </section>
-        
-            // <!-- Technical Skills Section -->
-            // <section id="skill-section">
-            //   <h2>Technical Skills</h2>
-            //   <div class="editIcon" id="skillIcon">
-            //     <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-            //     <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
-            //   </div>
-            //   <ul>
-            //     <li class="component"><strong>Programming Languages:</strong> Java, C++, Booscript, Linux, JavaScript<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            //     <li class="component"><strong>Web Technologies:</strong> HTML5, CSS, JavaScript, Angular JS, JBoss, Ajax, Node.js<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            //     <li class="component"><strong>Frameworks:</strong> Spring MVC/Boot, Hibernate, Netsuite ERP<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            //     <li class="component"><strong>Databases:</strong> MySQL, StarUML, MongoDB<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            //     <li class="component"><strong>Big Data:</strong> Hadoop, Apache Spark<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            //     <li class="component"><strong>Tools:</strong> Eclipse, SQL Developer, Jenkins, AWS<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            //   </ul>
-            //   <div id="add-skill" class="add-button">+</div>
-            // </section>
-
-            // <!-- Professional Experience Section -->
-            // <section id="exp-section">
-            //   <h2>Professional Experience</h2>
-            //   <div class="editIcon" id="expIcon">
-            //     <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-            //     <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
-            //   </div>
-            //   <h3 class="component">Wicresoft, Azure PaaS Support Engineer</h3>
-            //   <p class="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
-            //   <ul class="component">
-            //     <li>Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.</li>
-            //     <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID.</li>
-            //     <i class="fa-solid fa-trash trash-icon-exp"></i>
-            //   </ul>
-        
-            //   <h3 class="component">Huawei Digital Power Technology, Software Development Engineer</h3>
-            //   <p class="component"><em>Shenzhen | Mar 2022 - Aug 2022</em></p>
-            //   <ul class="component">
-            //     <li>Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.</li>
-            //     <li>Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency.</li>
-            //     <i class="fa-solid fa-trash trash-icon-exp"></i>
-            //   </ul>
-        
-            //   <h3 class="component">Dell, Global Operations Engineer, Intern</h3>
-            //   <p class="component"><em>Shanghai | Jul 2021 - Sep 2021</em></p>
-            //   <ul class="component">
-            //     <li>Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.</li>
-            //     <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
-            //     <i class="fa-solid fa-trash trash-icon-exp"></i>
-            //   </ul>
-            //   <div id="add-exp" class="add-button">+</div>
-            // </section>
-
-            // <!-- Academic Projects Section -->
-            // <section id="proj-section">
-            //   <h2>Academic Projects</h2>
-            //   <div class="editIcon" id="projIcon">
-            //     <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-            //     <i class="fa-solid fa-plus" onclick="addProject(this)" style="float:right;margin-right: 10px;"></i>
-            //   </div>
-
-            //   <h3 class="component">Stock Trading Application (Java Swing, JFreeChart)</h3>
-            //   <p class="component"><em>NEU | August 2018 - December 2018</em></p>
-            //   <ul class="component">
-            //     <li>Built an ecosystem model for better stock market predictions</li>
-            //     <li>Provided graphical representation of stock trends</li>
-            //     <i class="fa-solid fa-trash trash-icon-proj"></i>
-            //   </ul>
-            //   <h3 class="component">Automated Cooking (SQL Workbench, StarUML)</h3>
-            //   <p class="component"><em>NEU | August 2018 - December 2018</em></p>
-            //   <ul class="component">
-            //     <li>Designed a revolutionary database for Automated Cooking Robots</li>
-            //     <li>Used SQL and UML tools for multi-robot cooking workflows</li>
-            //     <i class="fa-solid fa-trash trash-icon-proj"></i>
-            //   </ul>
-            //   <div id="add-proj" class="add-button">+</div>
-            // </section>
-
-            // `;
-
-            // Bind trash icon with delete function
-            bindEduDelete();
-            bindSkillDelete();
-            bindExpDelete();
-            bindProjDelete();
-
-            bindAddFunction();
-
-            // Add hover effect to "blocks"
-            bindEduBlock();
-            bindExpBlock();
-            popEditForm();
-        });
-
-
-});
-
 function bindAddFunction(){
     const addEduButton =  document.getElementById("add-edu");
     const addSkillButton =  document.getElementById("add-skill");
     const addExpButton =  document.getElementById("add-exp");
-    const addProjButton = document.getElementById("add-proj"); // 新增项目绑定按钮
-
     addEduButton.addEventListener("click", function(event) {
         hidePreview();
         addEducation(this);
@@ -191,34 +14,7 @@ function bindAddFunction(){
         hidePreview();
         addExp(this);
     });
-    addProjButton.addEventListener("click", function(event) {
-        hidePreview();
-        addProject(this);
-    });
 }
-
-function bindProjDelete(){
-    document.querySelectorAll(".trash-icon-proj").forEach((icon)=>{
-        icon.addEventListener("click", function(event) {
-            deleteExpItem(event, this);
-        });
-
-        const relatedRows=[];
-        relatedRows[0] = icon.closest('ul');
-        relatedRows[1] = relatedRows[0].previousElementSibling;
-        relatedRows[2] = relatedRows[1].previousElementSibling;
-        relatedRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                icon.classList.add('trash-icon-visible');
-            });
-
-            row.addEventListener('mouseleave', () => {
-                icon.classList.remove('trash-icon-visible');
-            });
-        });
-    });
-}
-
 
 function bindEduDelete(){
     document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
@@ -324,52 +120,6 @@ function deleteExpItem(e,icon) {
     relatedRows.forEach(row => row.remove());
     cancelEntry();
 }
-function deleteProjItem(e,icon) {
-    e.stopPropagation();
-    const relatedRows=[];
-    relatedRows[0] = icon.closest('ul');
-    relatedRows[1] = relatedRows[0].previousElementSibling;
-    relatedRows[2] = relatedRows[1].previousElementSibling;
-    relatedRows.forEach(row => row.remove());
-    cancelEntry();
-}
-
-// Wait for the DOM to be fully loaded
-// per my test, element replacement does NOT matter for "DOMContentLoaded" event.
-// Thus, any issue about event delegation are NOT related to this download event listener
-document.addEventListener("DOMContentLoaded", function() {
-
-    // Get the button and add an event listener
-    const downloadButton = document.getElementById("download-icon");
-
-    downloadButton.addEventListener("click", () => {
-        // Get the HTML content to be converted
-        let element = document.getElementById("resume-preview");
-        const icons= element.querySelectorAll(".editIcon");
-        // Use html2pdf to convert the content to a PDF and save it
-        html2pdf()
-            .from(element)
-            .set({
-                margin: 0,               // Optional: Adjust margins (in inches)
-                filename: "output.pdf",   // Optional: Specify the file name
-                html2canvas: { scale: 2 }, // Optional: Higher quality canvas rendering
-                jsPDF: { unit: "in", format: "a4", orientation: "portrait" }, // Optional: Specify PDF settings
-            })
-            .then(()=>icons.forEach(icon=>{icon.classList.add("editIcon-hidden")}))
-            .then(()=>{
-                for (let e of ["add-edu","add-skill","add-exp"]){
-                    const element = document.getElementById(e);
-                    element.style.display="none";
-                }
-            })
-            .then(()=>element.classList.add("pdf"))
-            .save() // This triggers the download of the PDF
-            // .then(()=>{element.classList.remove("pdf")})
-            .then(()=>{window.location.href = "download.html";})
-            .then(()=>extractAndSaveResumeData())
-            ;
-    });
-});
 
 function bindEduBlock(){
     // Add hover effect to "blocks"
@@ -476,68 +226,10 @@ function bindExpBlock(){
     });
 }
 
-function bindProjBlock(){
-    const expSection = document.getElementById("proj-section");
-
-    // first
-    const firstElements=expSection.querySelectorAll("h3");
-    firstElements.forEach(firstElement => {
-        firstElement.addEventListener('mouseenter', () => {
-            const secondElement = firstElement.nextElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            secondElement.classList.add('component-hover');
-            thirdElement.classList.add('component-hover');
-        });
-
-        firstElement.addEventListener('mouseleave', () => {
-            const secondElement = firstElement.nextElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            secondElement.classList.remove('component-hover');
-            thirdElement.classList.remove('component-hover');
-        });
-    });
-    // 2nd
-    const secondElements = expSection.querySelectorAll("p");
-    secondElements.forEach(secondElement => {
-        secondElement.addEventListener('mouseenter', () => {
-            const firstElement = secondElement.previousElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            firstElement.classList.add('component-hover');
-            thirdElement.classList.add('component-hover');
-        });
-
-        secondElement.addEventListener('mouseleave', () => {
-            const firstElement = secondElement.previousElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            firstElement.classList.remove('component-hover');
-            thirdElement.classList.remove('component-hover');
-        });
-    });
-    // 3rd
-    const thirdElements = expSection.querySelectorAll("ul");
-    thirdElements.forEach(thirdElement => {
-        thirdElement.addEventListener('mouseenter', () => {
-            const secondElement = thirdElement.previousElementSibling;
-            const firstElement = secondElement.previousElementSibling;
-            firstElement.classList.add('component-hover');
-            secondElement.classList.add('component-hover');
-        });
-
-        thirdElement.addEventListener('mouseleave', () => {
-            const secondElement = thirdElement.previousElementSibling;
-            const firstElement = secondElement.previousElementSibling;
-            firstElement.classList.remove('component-hover');
-            secondElement.classList.remove('component-hover');
-        });
-    });
-}
-
-
 function popEditForm() {
     const eduSection = document.getElementById("edu-section");
     const skillSection = document.getElementById("skill-section");
     const expSection = document.getElementById("exp-section");
-    const projSection = document.getElementById("proj-section"); // 新增部分
 
     // edu
     const eduRows = eduSection.querySelectorAll("tr");
@@ -570,6 +262,7 @@ function popEditForm() {
                     <button type="button" id="cancel-edu-entry">Cancel</button>
                 `;
                 form.querySelector('#update-edu-entry').addEventListener('click', function () {
+
                     updateEduEntry(this, block);
                 });
                 form.querySelector('#cancel-edu-entry').addEventListener('click', function () {
@@ -603,6 +296,7 @@ function popEditForm() {
                 <button type="button" id="cancel-skill-entry">Cancel</button>
             `;
             form.querySelector('#update-skill-entry').addEventListener('click', function () {
+
                 updateSkillEntry(this, block);
             });
             form.querySelector('#cancel-skill-entry').addEventListener('click', function () {
@@ -613,10 +307,9 @@ function popEditForm() {
 
     });
 
-    // exp
-    let firstEles = expSection.querySelectorAll("h3");
-    let secondEles = expSection.querySelectorAll("p");
-    let thirdEles = expSection.querySelectorAll("ul");
+    const firstEles = expSection.querySelectorAll("h3");
+    const secondEles = expSection.querySelectorAll("p");
+    const thirdEles = expSection.querySelectorAll("ul");
     blocks = [];
     for (let i = 0; i < firstEles.length; i += 1) {
         // blocks.push({first:eduRows[i], second:eduRows[i+1]});
@@ -663,6 +356,7 @@ function popEditForm() {
                     <button type="button" id="cancel-exp-entry">Cancel</button>
                 `;
                 form.querySelector('#update-exp-entry').addEventListener('click', function () {
+
                     updateExpEntry(this, block);
                 });
                 form.querySelector('#cancel-exp-entry').addEventListener('click', function () {
@@ -673,66 +367,7 @@ function popEditForm() {
 
     });
 
-    firstEles = projSection.querySelectorAll("h3");
-    secondEles = projSection.querySelectorAll("p");
-    thirdEles = projSection.querySelectorAll("ul");
-    blocks = [];
-    for (let i = 0; i < firstEles.length; i += 1) {
-        // blocks.push({first:eduRows[i], second:eduRows[i+1]});
-        blocks.push([firstEles[i], secondEles[i], thirdEles[i]]);
-    }
-
-    blocks.forEach(block => {
-        // Extract details
-        const titleAndCompany = block[0].textContent.trim();
-        const locationAndDates = block[1].textContent.trim();
-        const liEles = block[2].querySelectorAll("li");
-        const experienceItems = Array.from(liEles).map(li => "•"+li.textContent.trim());
-        // Combine experience items into a single string
-        const experienceString = experienceItems.join('\n');
-
-        // Parse title and company
-        const [company, title] = titleAndCompany.split(', ').map(str => str.trim());
-
-        // Parse location and dates
-        const [location, dateRange] = locationAndDates.split('|').map(str => str.trim());
-        const [startDate, endDate] = dateRange.split(' - ').map(str => makeDate(str.trim()));
-
-        block.forEach(ele => {
-            ele.addEventListener('click', () => {
-                const form = document.getElementById("resume-form");
-                const formContainer = document.getElementById("form-container")
-                formContainer.classList.remove("form-container-hidden")
-                form.innerHTML = `
-                    <label for="company">Project:</label>
-                    <input type="text" id="company" name="company" value="${company}">
-                    <label for="title">Team Role:</label>
-                    <input type="text" id="title" name="title" value="${title}">
-                    <label for="org-address">University:</label>
-                    <textarea id="org-address" name="org-address">${location}</textarea>
-                    <label for="start">Start Date:</label>
-                    <input type="date" id="start" name="start" value=${startDate}>
-                    <label for="end">End Date:</label>
-                    <input type="date" id="end" name="end" value=${endDate}>
-                    <label for="exp">Contribution:</label>
-                    <textarea id="exp" name="exp" oninput="addBullet(this)">${experienceString}</textarea>
-                    
-                    <button type="button" id="update-exp-entry">Update</button>
-                    <button type="button" id="cancel-exp-entry">Cancel</button>
-                `;
-                form.querySelector('#update-exp-entry').addEventListener('click', function () {
-                    updateProjEntry(this, block);
-                });
-                form.querySelector('#cancel-exp-entry').addEventListener('click', function () {
-                    cancelEntry();
-                });
-            });
-        });
-
-    });
-
 }
-
 
 function makeDate(inputDate){
     // inputDate = "Jul 2023";
@@ -836,108 +471,10 @@ function updateExpEntry(button, block) {
     expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
     bindExpBlock();
     bindAddFunction();
-    bindExpDelete();
+    bindExpDelete()
     popEditForm();
     cancelEntry();
 }
-
-function updateProjEntry(button, block) {
-    const form = button.parentNode;
-    const company = document.getElementById("company").value;
-    const title = document.getElementById("title").value;
-    const orgAddress = document.getElementById("org-address").value;
-    const start = document.getElementById("start").value;
-    const end = document.getElementById("end").value;
-    const exp = document.getElementById("exp").value;
-    const vals=[company,title,orgAddress,start,end,exp]
-
-    for (let val of vals) {
-        if (!val) {
-            alert("Please fill in all fields.");
-            return;
-        }
-    }
-    // 3. graduation date
-    const startDateObj = new Date(start);
-    const endDateObj = new Date(end);
-
-    // 4.
-    const expSection = block[0].closest("section");
-    const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    // Due to async render issue, remove() has to be placed before any (implicit) sync function.
-    block.forEach(ele => {
-        ele.remove();
-        // console.log("ele: ",ele);
-        // ele was removed out of DOM, but still exists as a variable/object
-    });
-    expSection.innerHTML += `
-        <h3 class="component">${company}, ${title}</h3>
-        <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul class="component"><i class="fa-solid fa-trash trash-icon-exp"></i></ul>
-    `
-
-    const ulEles = expSection.querySelectorAll("ul");
-    const last = ulEles[ulEles.length - 1];
-    for (let e of exp.split("\n")) {
-        const item = document.createElement('li');
-        item.textContent = e.slice(1);
-        last.appendChild(item);
-    }
-    // 5. Collect elements into "blocks"
-    const blocks = [];
-    const heads = Array.from(expSection.querySelectorAll('h3'));
-
-    for (let h of heads) {
-        const p = h.nextElementSibling;
-        const ul = p.nextElementSibling;
-        const em = p.querySelector('em');
-        let startD = ""
-        if (em) {
-            // Extract the text content of the <p> element.
-            const textContent = em.textContent; // Example: "Some Address | Jan 2023 - Dec 2023"
-
-            // Use a regular expression to extract the start date (format: "Month Year").
-            const match = textContent.match(/(\w{3} \d{4})/); // Matches "Month Year" format.
-            if (match) {
-                startD = match[1]; // The first matched group.
-                // console.log(startD); // Output: "Jan 2023" (or whatever your start date is)
-            } else {
-                console.log('No start date found.');
-            }
-        }
-        blocks.push({h, p, ul, startD});
-    }
-
-    // 5. Add sorting logic
-    // Sort the blocks based on the start date
-    blocks.sort((a, b) => {
-        const dateA = new Date(a.startD.trim());
-        const dateB = new Date(b.startD.trim());
-        return dateB - dateA; // Sort in descending order
-    });
-
-    // 7. Append sorted rows back to the table
-    expSection.innerHTML =`
-        <h2>Professional Experience</h2>
-        <div class="editIcon" id="expIcon">
-        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
-        </div>
-    `;
-    blocks.forEach(block => {
-        expSection.appendChild(block.h);
-        expSection.appendChild(block.p);
-        expSection.appendChild(block.ul);
-    });
-    expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
-    bindProjBlock();
-    bindAddFunction();
-    bindProjDelete();
-    popEditForm();
-    cancelEntry();
-}
-
 
 function updateEduEntry(button, block) {
     const form = button.parentNode;
@@ -1000,7 +537,6 @@ function updateEduEntry(button, block) {
 
     bindEduBlock(); // per my view, it caused by previous sort, which changed the reference so that pair goes wrong.
     bindEduDelete();
-    
     popEditForm(); // SOLVE EVENT listener issue but encounter new one for pair hover effect. so explore bindEduBlock();
     cancelEntry();
 }
@@ -1471,100 +1007,6 @@ function addBullet(lines) {
     const values=lines.value.split("\n").map(line => line.startsWith("•")?line:`•${line}`);
     lines.value=values.join("\n");
 }
-
-function extractAndSaveResumeData() {
-    const resumeData = {};
-
-    // Personal Info
-    const personalInfo = document.querySelector('#personal-info');
-    resumeData.personal_info = {
-        name: personalInfo.querySelector('h1').innerText,
-        phone: personalInfo.querySelector('p').innerText.split('|')[0].trim().replace('Phone: ', ''),
-        email: personalInfo.querySelector('p').innerText.split('|')[1].trim().replace('Email: ', ''),
-        location: personalInfo.querySelector('p').innerText.split('|')[2].trim().replace('Location: ', '')
-    };
-
-    // Education Section
-    resumeData.education = [];
-    const eduSection = document.querySelector('#edu-section');
-    const eduRows = eduSection.querySelectorAll('table tbody tr');
-    for (let i = 0; i < eduRows.length; i += 2) {
-        const institutionRow = eduRows[i];
-        const degreeRow = eduRows[i + 1];
-        resumeData.education.push({
-            institution: institutionRow.querySelector('td strong').innerText,
-            graduation_date: institutionRow.querySelectorAll('td')[1].innerText,
-            degree: degreeRow.querySelector('td').innerText
-        });
-    }
-
-    // Personal Skills
-    const skillSection = document.querySelector('#skill-section');
-    resumeData.personal_skills = {
-        communication_languages: skillSection.querySelectorAll('ul li')[0].innerText.split(': ')[1].trim(),
-        programming_languages: skillSection.querySelectorAll('ul li')[1].innerText.split(': ')[1].trim().split(', '),
-        certifications: skillSection.querySelectorAll('ul li')[2].innerText.split(': ')[1].trim().split('; ')
-    };
-
-    // Professional Experience
-    resumeData.professional_experience = [];
-    const expSection = document.querySelector('#exp-section');
-    const experienceEntries = expSection.querySelectorAll('.component');
-    for (let i = 0; i < experienceEntries.length; i += 3) {
-        const companyPosition = experienceEntries[i];
-        const duration = experienceEntries[i + 1];
-        const responsibilities = experienceEntries[i + 2];
-        const responsibilityList = [];
-        responsibilities.querySelectorAll('li').forEach(li => {
-            responsibilityList.push(li.innerText);
-        });
-        resumeData.professional_experience.push({
-            company: companyPosition.innerText.split(',')[0].trim(),
-            position: companyPosition.innerText.split(',')[1].trim(),
-            location: duration.innerText.split('|')[0].trim(),
-            start_end_dates: duration.innerText.split('|')[1].trim(),
-            responsibilities: responsibilityList
-        });
-    }
-
-    // Project
-    resumeData.professional_experience = [];
-    const projSection = document.querySelector('#proj-section');
-    const projectEntries = projSection.querySelectorAll('.component');
-    for (let i = 0; i < projectEntries.length; i += 3) {
-        const companyPosition = projectEntries[i];
-        const duration = projectEntries[i + 1];
-        const responsibilities = projectEntries[i + 2];
-        const responsibilityList = [];
-        responsibilities.querySelectorAll('li').forEach(li => {
-            responsibilityList.push(li.innerText);
-        });
-        resumeData.professional_experience.push({
-            company: companyPosition.innerText.split(',')[0].trim(),
-            position: companyPosition.innerText.split(',')[1].trim(),
-            location: duration.innerText.split('|')[0].trim(),
-            start_end_dates: duration.innerText.split('|')[1].trim(),
-            responsibilities: responsibilityList
-        });
-    }
-
-    // Sending the JSON to the backend using fetch
-    fetch(`http://localhost:${PORT}/save`, {
-        method: 'POST', // HTTP POST method
-        headers: {
-            'Content-Type': 'application/json' // Indicate JSON format
-        },
-        body: JSON.stringify(resumeData, null, 4) // Convert the object to JSON string
-    })
-        .then(response => response.json()) // Parse the JSON response
-        .then(data => {
-            console.log('Success:', data); // Log success message from the backend
-        })
-        .catch(error => {
-            console.error('Error:', error); // Log errors if any
-        });
-}
-
 function hidePreview() {
     const right = document.getElementById('preview-container');
     const screenWidth = window.innerWidth;

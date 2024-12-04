@@ -91,15 +91,15 @@
     <i class="fa-solid fa-plus" onclick="addProject(this)" style="float:right;margin-right: 10px;"></i>
     </div>
 
-    <h3 class="component">Stock Trading Application (Java Swing, JFreeChart)</h3>
-    <p class="component"><em>NEU | August 2018 - December 2018</em></p>
+    <h3 class="component">Stock Trading Application, UI Designer</h3>
+    <p class="component"><em>NEU | Aug 2018 - Dec 2018</em></p>
     <ul class="component">
     <li>Built an ecosystem model for better stock market predictions</li>
     <li>Provided graphical representation of stock trends</li>
     <i class="fa-solid fa-trash trash-icon-proj"></i>
     </ul>
-    <h3 class="component">Automated Cooking (SQL Workbench, StarUML)</h3>
-    <p class="component"><em>NEU | August 2018 - December 2018</em></p>
+    <h3 class="component">Automated Cooking, Database Developer</h3>
+    <p class="component"><em>NEU | Aug 2018 - Dec 2018</em></p>
     <ul class="component">
     <li>Designed a revolutionary database for Automated Cooking Robots</li>
     <li>Used SQL and UML tools for multi-robot cooking workflows</li>
