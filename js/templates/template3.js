@@ -482,8 +482,7 @@ function popEditForm() {
                  cancelEntry();
              });
          });
- 
- 
+
      });
 
 }

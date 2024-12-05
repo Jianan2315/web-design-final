@@ -75,7 +75,7 @@
     <h2>KEY ACHIEVEMENTS</h2>
     <div class="editIcon" id="achiIcon">
     <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-    <i class="fa-solid fa-plus" onclick="addAchievement(this)" style="float:right;margin-right: 10px;"></i>
+    <i class="fa-solid fa-plus" onclick="addAchi(this)" style="float:right;margin-right: 10px;"></i>
     </div>
     <ul>
         <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)<i class="fa-solid fa-trash trash-icon-achi"></i></li>
@@ -103,7 +103,7 @@
     <h2>Language</h2>
     <div class="editIcon" id="langIcon">
     <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-    <i class="fa-solid fa-plus" onclick="addLanguage(this)" style="float:right;margin-right: 10px;"></i>
+    <i class="fa-solid fa-plus" onclick="addLang(this)" style="float:right;margin-right: 10px;"></i>
     </div>
     <ul>
         <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)<i class="fa-solid fa-trash trash-icon-lang"></i></li>
