@@ -1,10 +1,18 @@
 {
     "personal_info": {
-        "name": "JOJHOP",
-        "phone": "(999)-123-4567",
+        "name": "Michael Johnson",
+        "phone": "(666)-123-4567",
         "email": "jo.mi@northeastern.edu",
         "location": "Boston"
     },
+    "technical_skills": [
+        "Programming Languages:A",
+        "Web Technologies:A",
+        "Frameworks:A",
+        "Databases:A",
+        "Big Data:A",
+        "Tools:A"
+    ],
     "education": [
         {
             "institution": "Northeastern University",
@@ -17,19 +25,6 @@
             "degree": "BS in Computer Science"
         }
     ],
-    "personal_skills": {
-        "communication_languages": "Chinese (Native), English (Proficient)",
-        "programming_languages": [
-            "Python",
-            "SQL",
-            "HTML5",
-            "Java"
-        ],
-        "certifications": [
-            "ITIL 4 Foundation",
-            "Microsoft Certified"
-        ]
-    },
     "professional_experience": [
         {
             "company": "Wicresoft",
@@ -50,15 +45,27 @@
                 "Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.",
                 "Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency."
             ]
+        }
+    ],
+    "academic_projects": [
+        {
+            "project": "Stock Trading Application",
+            "role": "UI Designer",
+            "location": "NEU",
+            "start_end_dates": "Aug 2018 - Dec 2018",
+            "responsibilities": [
+                "Built an ecosystem model for better stock market predictions",
+                "Provided graphical representation of stock trends"
+            ]
         },
         {
-            "company": "Dell",
-            "position": "Global Operations Engineer",
-            "location": "Shanghai",
-            "start_end_dates": "Jul 2021 - Sep 2021",
+            "project": "Automated Cooking",
+            "role": "Database Developer",
+            "location": "NEU",
+            "start_end_dates": "Aug 2018 - Dec 2018",
             "responsibilities": [
-                "Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.",
-                "Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements."
+                "Designed a revolutionary database for Automated Cooking Robots",
+                "Used SQL and UML tools for multi-robot cooking workflows"
             ]
         }
     ]

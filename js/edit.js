@@ -199,10 +199,148 @@ function extractAndSaveResumeData() {
             });
         }
     }
-    else if(templateId == 2){
+    else if(templateId == 2) {
+        // Personal Info
+        const personalInfo = document.querySelector('#personal-info');
+        resumeData.personal_info = {
+            name: personalInfo.querySelector('h1').innerText,
+            phone: personalInfo.querySelector('p').innerText.split('|')[0].trim().replace('Phone: ', ''),
+            email: personalInfo.querySelector('p').innerText.split('|')[1].trim().replace('Email: ', ''),
+            location: personalInfo.querySelector('p').innerText.split('|')[2].trim().replace('Location: ', '')
+        };
 
-    }
-    else if(templateId == 3){
+        // Technical Skills Section
+        const skillSection = document.querySelector('#skill-section');
+        resumeData.technical_skills = [];
+        skillSection.querySelectorAll('ul li').forEach(li => {
+            resumeData.technical_skills.push(li.innerText.replace(/<.*?>/g, '').trim());
+        });
+
+        // Education Section
+        resumeData.education = [];
+        const eduSection = document.querySelector('#edu-section');
+        const eduRows = eduSection.querySelectorAll('table tbody tr');
+        for (let i = 0; i < eduRows.length; i += 2) {
+            const institutionRow = eduRows[i];
+            const degreeRow = eduRows[i + 1];
+            resumeData.education.push({
+                institution: institutionRow.querySelector('td strong').innerText,
+                graduation_date: institutionRow.querySelectorAll('td')[1].innerText,
+                degree: degreeRow.querySelector('td').innerText
+            });
+        }
+
+        // Professional Experience Section
+        resumeData.professional_experience = [];
+        const expSection = document.querySelector('#exp-section');
+        const experienceEntries = expSection.querySelectorAll('.component');
+        for (let i = 0; i < experienceEntries.length; i += 3) {
+            const companyPosition = experienceEntries[i];
+            const duration = experienceEntries[i + 1];
+            const responsibilities = experienceEntries[i + 2];
+            const responsibilityList = [];
+            responsibilities.querySelectorAll('li').forEach(li => {
+                responsibilityList.push(li.innerText);
+            });
+            resumeData.professional_experience.push({
+                company: companyPosition.innerText.split(',')[0].trim(),
+                position: companyPosition.innerText.split(',')[1].trim(),
+                location: duration.innerText.split('|')[0].trim(),
+                start_end_dates: duration.innerText.split('|')[1].trim(),
+                responsibilities: responsibilityList
+            });
+        }
+
+        // Academic Projects Section
+        resumeData.academic_projects = [];
+        const projSection = document.querySelector('#proj-section');
+        const projectEntries = projSection.querySelectorAll('.component');
+        for (let i = 0; i < projectEntries.length; i += 3) {
+            const projectTitle = projectEntries[i];
+            const duration = projectEntries[i + 1];
+            const responsibilities = projectEntries[i + 2];
+            const responsibilityList = [];
+            responsibilities.querySelectorAll('li').forEach(li => {
+                responsibilityList.push(li.innerText);
+            });
+            resumeData.academic_projects.push({
+                project: projectTitle.innerText.split(',')[0].trim(),
+                role: projectTitle.innerText.split(',')[1].trim(),
+                location: duration.innerText.split('|')[0].trim(),
+                start_end_dates: duration.innerText.split('|')[1].trim(),
+                responsibilities: responsibilityList
+            });
+        }
+
+    } else if(templateId == 3){
+        // Personal Info
+        const personalInfo = document.querySelector('#personal-info');
+        resumeData.personal_info = {
+            name: personalInfo.querySelector('h1').innerText,
+            phone: personalInfo.querySelector('p').innerText.split('|')[0].trim().replace('Phone: ', ''),
+            email: personalInfo.querySelector('p').innerText.split('|')[1].trim().replace('Email: ', ''),
+            location: personalInfo.querySelector('p').innerText.split('|')[2].trim().replace('Location: ', '')
+        };
+
+        // Education Section
+        resumeData.education = [];
+        const eduSection = document.querySelector('#edu-section');
+        const eduRows = eduSection.querySelectorAll('table tbody tr');
+        for (let i = 0; i < eduRows.length; i += 2) {
+            const institutionRow = eduRows[i];
+            const degreeRow = eduRows[i + 1];
+            resumeData.education.push({
+                institution: institutionRow.querySelector('td strong').innerText,
+                graduation_date: institutionRow.querySelectorAll('td')[1].innerText,
+                degree: degreeRow.querySelector('td').innerText
+            });
+        }
+
+        // Personal Skills Section
+        const skillSection = document.querySelector('#skill-section');
+        resumeData.personal_skills = [];
+        skillSection.querySelectorAll('ul li').forEach(li => {
+            resumeData.personal_skills.push(li.innerText.replace(/<.*?>/g, '').trim());
+        });
+
+        // Languages Section
+        const langSection = document.querySelector('#lang-section');
+        resumeData.languages = [];
+        langSection.querySelectorAll('ul li').forEach(li => {
+            const [category, details] = li.innerText.split(':');
+            resumeData.languages.push({
+                category: category.trim(),
+                details: details.trim()
+            });
+        });
+
+        // Professional Experience Section
+        resumeData.professional_experience = [];
+        const expSection = document.querySelector('#exp-section');
+        const experienceEntries = expSection.querySelectorAll('.component');
+        for (let i = 0; i < experienceEntries.length; i += 3) {
+            const companyPosition = experienceEntries[i];
+            const duration = experienceEntries[i + 1];
+            const responsibilities = experienceEntries[i + 2];
+            const responsibilityList = [];
+            responsibilities.querySelectorAll('li').forEach(li => {
+                responsibilityList.push(li.innerText);
+            });
+            resumeData.professional_experience.push({
+                company: companyPosition.innerText.split(',')[0].trim(),
+                position: companyPosition.innerText.split(',')[1].trim(),
+                location: duration.innerText.split('|')[0].trim(),
+                start_end_dates: duration.innerText.split('|')[1].trim(),
+                responsibilities: responsibilityList
+            });
+        }
+
+        // Key Achievements Section
+        resumeData.key_achievements = [];
+        const achiSection = document.querySelector('#achi-section');
+        achiSection.querySelectorAll('ul li').forEach(li => {
+            resumeData.key_achievements.push(li.innerText.replace(/<.*?>/g, '').trim());
+        });
 
     }
     
@@ -224,3 +362,4 @@ function extractAndSaveResumeData() {
             console.error('Error:', error); // Log errors if any
         });
 }
+
