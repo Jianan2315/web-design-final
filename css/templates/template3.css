@@ -109,7 +109,6 @@
 
 /* Buttons and Icons */
 .template3 .add-button {
-  display: inline-block;
   background-color: #4a90e2;
   color: #fff;
   padding: 0.5rem 1rem;
@@ -119,7 +118,6 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  text-align: center;
   transition: background-color 0.3s ease;
 }
 
