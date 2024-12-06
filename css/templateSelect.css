@@ -34,13 +34,12 @@ header {
 
 .templates-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(50rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(50rem, 1fr));
   gap: 1.25rem;
   justify-items: center;
 }
 
 .overlay {
-  display: flex;
   justify-content: center;
   align-items: center;
   display: none;
@@ -55,7 +54,7 @@ header {
 }
 .overlay .enlarged-thumbnail {
   width: auto;
-  height: 77.5rem;
+  height: 98%;
   background-color: white;
   padding: 10px;
   pointer-events: auto;
