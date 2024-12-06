@@ -104,18 +104,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const previewSection = document.querySelector('#resume-preview');
         // Use html2canvas to take a screenshot of the preview section
-        html2canvas(previewSection).then(canvas => {
-            // Convert the canvas to a data URL
-            const imageData = canvas.toDataURL('image/png');
+        html2canvas(previewSection)
+            .then(()=>{
+                for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
+                    if (document.getElementById(e)){
+                        const element = document.getElementById(e);
+                        element.style.display="none";
+                    }
+                }
+            })
+            .then(canvas => {
+                // Convert the canvas to a data URL
+                const imageData = canvas.toDataURL('image/png');
 
-            // Create a link element to download the image
-            const downloadLink = document.createElement('a');
-            downloadLink.href = imageData;
-            downloadLink.download = 'output.png';
-            downloadLink.click();
-        }).catch(error => {
-            console.error('Error capturing screenshot:', error);
-        });
+                // Create a link element to download the image
+                const downloadLink = document.createElement('a');
+                downloadLink.href = imageData;
+                downloadLink.download = 'output.png';
+                downloadLink.click();
+            })
 
         // Use html2pdf to convert the content to a PDF and save it
         html2pdf()
@@ -127,19 +134,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 jsPDF: { unit: "in", format: "a4", orientation: "portrait" }, // Optional: Specify PDF settings
             })
             .then(()=>icons.forEach(icon=>{icon.classList.add("editIcon-hidden")}))
-            .then(()=>{
-                for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
-                    if (document.getElementById(e)){
-                        const element = document.getElementById(e);
-                        element.style.display="none";
-                    }
-                }
-            })
             .then(()=>element.classList.add("pdf"))
             .save() // This triggers the download of the PDF
-            // .then(()=>{element.classList.remove("pdf")})
             .then(()=>{window.location.href = "download.html";})
-            // .then(()=>extractAndSaveResumeData())
+            .then(()=>extractAndSaveResumeData())
             ;
 
     });
