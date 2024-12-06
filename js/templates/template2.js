@@ -813,7 +813,7 @@ function updateSkillEntry(button, block) {
     cancelEntry();
 }
 
-// set grayscale background
+// set grayscale background Delete
 function activateOverlay(icon) {
     document.body.classList.add("disabled"); // Apply grayscale and disable body
     document.getElementById("overlay").style.display = "block"; // Show overlay
@@ -847,7 +847,7 @@ function activateOverlay(icon) {
     }
 }
 
-// list content in table
+// list content in table  Delete
 function populateModifyOptionsTable(names, mode, dates=null) {
     // Get the target table where university names will be added
     const modifyOptionsTable = document.getElementById("modify-options");
@@ -910,6 +910,7 @@ function populateModifyOptionsTable(names, mode, dates=null) {
     }
 }
 
+// Delete
 function deleteEduRecord(){
     // Get all checked checkboxes within the modify-options table
     const checkedItems = document.querySelectorAll('#modify-options input[type="checkbox"]:checked');
@@ -945,7 +946,7 @@ function deleteEduRecord(){
     });
     cancelModify()
 }
-
+// Delete
 function deleteSkillRecord(){
     // Get all checked checkboxes within the modify-options table
     const checkedItems = document.querySelectorAll('#modify-options input[type="checkbox"]:checked');
@@ -968,7 +969,7 @@ function deleteSkillRecord(){
     });
     cancelModify()
 }
-
+// Delete
 function deleteExpRecord(){
     // Get all checked checkboxes within the modify-options table
     const checkedItems = document.querySelectorAll('#modify-options input[type="checkbox"]:checked');
