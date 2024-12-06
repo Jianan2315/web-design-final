@@ -103,14 +103,16 @@ document.addEventListener("DOMContentLoaded", function() {
         const icons= element.querySelectorAll(".editIcon");
 
         const previewSection = document.querySelector('#resume-preview');
-        for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
-            if (document.getElementById(e)){
-                const element = document.getElementById(e);
-                element.style.display="none";
-            }
-        }
         // Use html2canvas to take a screenshot of the preview section
         html2canvas(previewSection)
+            .then(()=>{
+                for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
+                    if (document.getElementById(e)){
+                        const element = document.getElementById(e);
+                        element.style.display="none";
+                    }
+                }
+            })
             .then(canvas => {
                 // Convert the canvas to a data URL
                 const imageData = canvas.toDataURL('image/png');
