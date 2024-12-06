@@ -1,22 +1,45 @@
+const PORT=3072;
+
 window.addEventListener("load", function () {
-    let resume = "";
-    const thumbnail1 = document.getElementById('resume1');
-    thumbnail1.addEventListener('click', function () {
-        fetch('../json/resume_data.json')
+    const personalInfo = document.querySelector('.personal-info .details');
+    const emailParagraph = personalInfo.querySelector('p:nth-child(3)'); // The 3rd <p> tag contains the email
+    const email = emailParagraph.textContent.split(': ')[1].trim();
+
+    const resumes = [];
+    fetch(`http://localhost:${PORT}/get/resumes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email: `${email}`
+        }),
+    })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Error fetching file: ${response.statusText}`);
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json(); // Read the file as text
+            return response.json(); // Parse the JSON response
         })
-        .then(data=>resume=data).then(()=>console.log(typeof(resume)))
+        .then(data => {
+            console.log('Response:', data);
+            resumes.push(data);
+        })
         .then(()=>{
-            localStorage.setItem('data', JSON.stringify(resume)); 
-            const templateId = "3"; //get by database
-            window.location.href = `edit.html?template=${templateId}`;
-        });
-        
-    });
-
+            console.log("resumes: ",resumes);
+            console.log("resumes[0].resumes[0]: ",resumes[0].resumes[0]);
+            // currently, only configure template3 as demo purpose
+            // so that make sure 1) only one resume in database 2) it must be template 3
+            // loop only one time
+            for (let e of resumes[0].resumes) {
+                const json = JSON.parse(e.json);
+                const thumbnail1 = document.getElementById('resume1');
+                thumbnail1.src=e.thumbnail;
+                thumbnail1.addEventListener('click', function () {
+                    localStorage.setItem('data', JSON.stringify(json));
+                    const templateId = e.templateId; //get by database
+                    window.location.href = `edit.html?template=${templateId}`;
+                });
+            }
+        })
+        .catch(error => console.error('Error:', error));
 });
 

@@ -32,6 +32,7 @@ function loadTextAsInnerHTML(filename) {
 window.addEventListener("load", function () {
     const params = new URLSearchParams(window.location.search);
     const templateId = params.get("template");
+    localStorage.setItem('templateId', templateId);
 
     // Use templateId to load different templates
     // For simplicity, we'll just display the template ID
@@ -185,6 +186,11 @@ document.addEventListener("DOMContentLoaded", function() {
         let element = document.getElementById("resume-preview");
         const icons= element.querySelectorAll(".editIcon");
 
+        const header = document.getElementById('personal-info');
+        const infoText = header.querySelector('p').textContent;
+        const emailMatch = infoText.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
+        localStorage.setItem('email', emailMatch[0]);
+
         for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
             if (document.getElementById(e)){
                 const element = document.getElementById(e);
@@ -197,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(canvas => {
                 // Convert the canvas to a data URL
                 const imageData = canvas.toDataURL('image/png');
-                // Save the database
+                localStorage.setItem('thumbnail', imageData);
                 // Create a link element to download the image
                 // const downloadLink = document.createElement('a');
                 // downloadLink.href = imageData;
@@ -217,8 +223,8 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(()=>icons.forEach(icon=>{icon.classList.add("editIcon-hidden")}))
             .then(()=>element.classList.add("pdf"))
             .save() // This triggers the download of the PDF
-            .then(()=>{window.location.href = "download.html";})
             .then(()=>extractAndSaveResumeData())
+            .then(()=>{window.location.href = "download.html";})
             ;
 
     });
@@ -426,10 +432,30 @@ function extractAndSaveResumeData() {
         });
 
     }
-    
 
 
+    localStorage.setItem('json', JSON.stringify(resumeData, null, 4));
     // Sending the JSON to the backend using fetch
+    fetch(`http://localhost:${PORT}/create/resume`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email: `${localStorage.getItem('email')}`,
+            json: `${localStorage.getItem('json')}`,
+            templateId: `${localStorage.getItem('templateId')}`,
+            thumbnail: `${localStorage.getItem('thumbnail')}`
+        }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json(); // Parse the JSON response
+        })
+        .then(data => console.log('Response:', data))
+        .catch(error => console.error('Error:', error));
+
+    // May remove
     fetch(`http://localhost:${PORT}/save`, {
         method: 'POST', // HTTP POST method
         headers: {
