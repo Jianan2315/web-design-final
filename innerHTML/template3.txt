@@ -1,12 +1,7 @@
 <!-- Header -->
 <header id="personal-info">
-    <h1>DENVER DAHL</h1>
-    <p>Account Manager</p>
-    <p>
-        <span>📞 +1 555 555 5555</span> |
-        <span>✉️ denver.dahl@example.com</span> |
-        <span>🌍 San Francisco, CA</span>
-    </p>
+  <h1>Michael Johnson</h1>
+  <p> Phone: (999)-123-4567 | Email: jo.mi@northeastern.edu | Location: Boston</p>
 </header>
 
 <!-- Two-Column Layout -->

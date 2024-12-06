@@ -206,6 +206,73 @@ function bindEduBlock(){
 
 }
 
+function bindInfoBlock(){
+    const headSection = document.getElementById("personal-info");
+
+    // first
+    const firstElement=headSection.querySelector("h1");
+    firstElement.addEventListener('mouseenter', () => {
+        const secondElement = firstElement.nextElementSibling;
+        const thirdElement = secondElement.nextElementSibling;
+        secondElement.classList.add('component-hover');
+        thirdElement.classList.add('component-hover');
+    });
+    firstElement.addEventListener('mouseleave', () => {
+        const secondElement = firstElement.nextElementSibling;
+        const thirdElement = secondElement.nextElementSibling;
+        secondElement.classList.remove('component-hover');
+        thirdElement.classList.remove('component-hover');
+    });
+
+    // 2nd
+    const secondElement = headSection.querySelector("p");
+    secondElement.addEventListener('mouseenter', () => {
+        const firstElement = secondElement.previousElementSibling;
+        const thirdElement = secondElement.nextElementSibling;
+        firstElement.classList.add('component-hover');
+        thirdElement.classList.add('component-hover');
+    });
+    secondElement.addEventListener('mouseleave', () => {
+        const firstElement = secondElement.previousElementSibling;
+        const thirdElement = secondElement.nextElementSibling;
+        firstElement.classList.remove('component-hover');
+        thirdElement.classList.remove('component-hover');
+    });
+
+}
+
+function updateInfoEntry(button, block) {
+    const form = button.parentNode;// unused
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const email = document.getElementById("email").value;
+    const loc = document.getElementById("info-location").value;
+
+    const vals=[name,phone,email,loc]
+
+    for (let val of vals) {
+        if (!val) {
+            alert("Please fill in all fields.");
+            return;
+        }
+    }
+
+    const headSection = block[0].closest("header");
+    // Due to async render issue, remove() has to be placed before any (implicit) sync function.
+    block.forEach(ele => {
+        ele.remove();
+        // ele was removed out of DOM, but still exists as a variable/object
+    });
+    headSection.innerHTML = `
+      <h1>${name}</h1>
+      <p> Phone: ${phone} | Email: ${email} | Location: ${loc}</p>
+    `
+
+    bindInfoBlock();
+    popEditForm();
+    cancelEntry();
+}
+
 function bindExpBlock(){
     const expSection = document.getElementById("exp-section");
 
@@ -324,6 +391,40 @@ function popEditForm() {
     const skillSection = document.getElementById("skill-section");
     const expSection = document.getElementById("exp-section");
     const projSection = document.getElementById("proj-section");
+
+    // personal info
+    const headSection = document.getElementById("personal-info");
+    const name = headSection.querySelector("h1");
+    const info = headSection.querySelector("p");
+    const [phone, email, location] = info.textContent.split('|').map(info => info.trim().split(":")[1].trim());
+    const block = [name, info];
+    block.forEach(ele => {
+        ele.addEventListener('click', () => {
+            const form = document.getElementById("resume-form");
+            const formContainer = document.getElementById("form-container");
+            hidePreview();
+            formContainer.classList.remove("form-container-hidden");
+            form.innerHTML = `
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="${name.textContent}">
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" value="${phone}">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email" value="${email}">
+                    <label for="info-location">Location:</label>
+                    <input type="text" id="info-location" name="info-location" value="${location}">
+                    
+                    <button type="button" id="update-info-entry">Update</button>
+                    <button type="button" id="cancel-info-entry">Cancel</button>
+                `;
+            form.querySelector('#update-info-entry').addEventListener('click', function () {
+                updateInfoEntry(this, block);
+            });
+            form.querySelector('#cancel-info-entry').addEventListener('click', function () {
+                cancelEntry();
+            });
+        });
+    });
 
     // edu
     const eduRows = eduSection.querySelectorAll("tr");

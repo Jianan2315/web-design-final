@@ -10,7 +10,7 @@
 /* Layout */
 .template2 .two-column-layout {
   display: grid;
-  grid-template-columns: 1fr 3fr; /* 左右比例为 1:3 */
+  grid-template-columns: 1fr 2fr;
   gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -35,24 +35,25 @@
 /* Header (Left Column) */
 .template2 header {
   margin-bottom: 2rem;
+  margin-top: 30%;
 }
 
 .template2 header h1 {
   font-size: 1.8rem;
   font-weight: bold;
   color: #2c3e50;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .template2 header p {
   font-size: 1rem;
   color: #666;
-  line-height: 1.5;
+  line-height: 2;
 }
 
 /* Skills Section (Left Column) */
 .template2 #skill-section {
-  margin-top: 2rem;
+  margin-top: 100%;
   width: 100%;
 }
 
@@ -70,6 +71,12 @@
   font-size: 0.9rem;
   border-radius: 5px;
   text-align: center;
+}
+
+.template2 #edu-section #exp-section #proj-section h3 ul li p{
+  padding : 10% 0 0 1%;
+  margin : 1% 0 0 1%;
+  line-height: 1.5;
 }
 
 /* Add Button */
@@ -97,6 +104,18 @@
   padding-bottom: 0.5rem;
 }
 
+.template2 .right-column h3 {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  margin-top: 0.5rem;
+}
+
+.template2 .right-column p {
+  font-size: 1rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
 .template2 .right-column section {
   margin-bottom: 2rem;
 }
@@ -108,8 +127,8 @@
 
 .template2 .right-column ul li {
   font-size: 0.9rem;
-  line-height: 1.6;
-  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
 }
 
 .template2 .right-column table {

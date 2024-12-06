@@ -2,11 +2,10 @@
 <div class="two-column-layout">
     <!-- Left Column -->
     <div class="left-column">
+        <!-- Header -->
         <header id="personal-info">
-            <h1>Prashant Singh</h1>
-            <p class="contact-info">
-                📞 (617) 602-3905 | ✉️ singh.prasha@husky.neu.edu | 🌍 Boston
-            </p>
+        <h1>Michael Johnson</h1>
+        <p> Phone: (999)-123-4567 | Email: jo.mi@northeastern.edu | Location: Boston</p>
         </header>
 
         <!-- Technical Skills Section -->
