@@ -16,7 +16,7 @@
    ```
    GET http://localhost:3072/resume
    ```
-   ![Postman Example](./images/postman-example.png)
+   ![Postman Example](postman-example.png)
 4. Additional Information:  
    Once you click the **Download** icon of `edit.html`, the resume JSON will be available for retrieval. 
    
