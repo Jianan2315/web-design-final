@@ -101,6 +101,22 @@ document.addEventListener("DOMContentLoaded", function() {
         // Get the HTML content to be converted
         let element = document.getElementById("resume-preview");
         const icons= element.querySelectorAll(".editIcon");
+
+        const previewSection = document.querySelector('#resume-preview');
+        // Use html2canvas to take a screenshot of the preview section
+        html2canvas(previewSection).then(canvas => {
+            // Convert the canvas to a data URL
+            const imageData = canvas.toDataURL('image/png');
+
+            // Create a link element to download the image
+            const downloadLink = document.createElement('a');
+            downloadLink.href = imageData;
+            downloadLink.download = 'output.png';
+            downloadLink.click();
+        }).catch(error => {
+            console.error('Error capturing screenshot:', error);
+        });
+
         // Use html2pdf to convert the content to a PDF and save it
         html2pdf()
             .from(element)
@@ -123,10 +139,12 @@ document.addEventListener("DOMContentLoaded", function() {
             .save() // This triggers the download of the PDF
             // .then(()=>{element.classList.remove("pdf")})
             .then(()=>{window.location.href = "download.html";})
-            .then(()=>extractAndSaveResumeData())
+            // .then(()=>extractAndSaveResumeData())
             ;
+
     });
 });
+
 function extractAndSaveResumeData() {
     const resumeData = {};
 
