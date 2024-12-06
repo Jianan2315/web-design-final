@@ -1,13 +1,13 @@
 {
     "personal_info": {
         "name": "ABC",
-        "phone": "(999)-123-4567",
-        "email": "jo.mi@northeastern.edu",
+        "phone": "(000)-123-4567",
+        "email": "abc@northeastern.edu",
         "location": "Boston"
     },
     "education": [
         {
-            "institution": "Northeastern University",
+            "institution": "NEU University",
             "graduation_date": "Dec 2026",
             "degree": "MS in Software Engineering Systems"
         },
@@ -18,12 +18,12 @@
         }
     ],
     "personal_skills": [
-        "a:Excellent written and verbal communication",
+        "a:A",
         "a:Active listening and empathy"
     ],
     "languages": [
         {
-            "category": "Communication language",
+            "category": "data",
             "details": "Chinese (Native), English (Proficient)"
         },
         {
@@ -33,10 +33,10 @@
     ],
     "professional_experience": [
         {
-            "company": "Wicresoft",
+            "company": "Amazon",
             "position": "Azure PaaS Support Engineer",
             "location": "Shanghai",
-            "start_end_dates": "Jul 2023 - Jul 2024",
+            "start_end_dates": "Jul 2024 - Jul 2025",
             "responsibilities": [
                 "Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.",
                 "Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID."
@@ -64,7 +64,7 @@
         }
     ],
     "key_achievements": [
-        "Developed and deployed a web application, increasing customer engagement by 25%.",
+        "Developed a web application, increasing customer engagement by 25%.",
         "Automated data processing tasks using Python, reducing manual workload by 40 hours per week."
     ]
 }

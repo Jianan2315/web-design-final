@@ -47,10 +47,27 @@ window.addEventListener("load", function () {
     script.src = "./js/templates/"+"template"+templateId+".js";
     console.log(script.src);
 
+    let resume = "";
+    fetch('../json/resume_data.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error fetching file: ${response.statusText}`);
+            }
+            return response.json(); // Read the file as text
+        })
+        .then(data=>resume=data).then(()=>console.log("resume: ",resume));
     script.onload = () => {
         loadTextAsInnerHTML("template"+templateId+".txt")
             .then(text=> {
-                preview.innerHTML = text;
+                let htmlcontent = text;
+                if (localStorage.getItem('data') !== null) {
+                    const resume=JSON.parse(localStorage.getItem('data'));
+                    htmlcontent = populateTemplate(text, resume);
+                    console.log(htmlcontent);
+                } else {
+                    console.log("Key does not exist.");
+                }
+                preview.innerHTML = htmlcontent;
 
                 // Bind trash icon with delete function
                 bindEduDelete();
@@ -88,6 +105,72 @@ window.addEventListener("load", function () {
     document.body.appendChild(script);
 });
 
+function populateTemplate(template, data) {
+    // Personal Info
+    template = template.replace(/<h1>.*?<\/h1>/, `<h1>${data.personal_info.name}</h1>`);
+    template = template.replace(
+        /<p>.*?<\/p>/,
+        `<p> Phone: ${data.personal_info.phone} | Email: ${data.personal_info.email} | Location: ${data.personal_info.location}</p>`
+    );
+
+    // Education Section
+    const educationHTML = data.education
+        .map(
+            edu => `
+                <tr class="component">
+                    <td><strong>${edu.institution}</strong></td>
+                    <td>${edu.graduation_date}</td>
+                    <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                    <td colspan="2">${edu.degree}</td>
+                </tr>`
+        )
+        .join('');
+    template = template.replace(/<table>.*?<\/table>/s, `<table>${educationHTML}</table>`);
+
+    // Personal Skills Section
+    const skillsHTML = data.personal_skills
+        .map(skill => `<li class="component"><strong>${skill}</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>`)
+        .join('');
+    template = template.replace(/<ul>.*?<\/ul>/s, `<ul>${skillsHTML}</ul>`);
+
+    // Languages Section
+    const languagesHTML = data.languages
+        .map(lang => `<li class="component"><strong>${lang.category}</strong>: ${lang.details}<i class="fa-solid fa-trash trash-icon-lang"></i></li>`)
+        .join('');
+    template = template.replace(/<ul>.*?<\/ul>/s, `<ul>${languagesHTML}</ul>`);
+
+    // Professional Experience Section
+    const experienceHTML = data.professional_experience
+        .map(
+            exp => `
+                <h3 class="component">${exp.company}, ${exp.position}</h3>
+                <p class="component"><em>${exp.location} | ${exp.start_end_dates}</em></p>
+                <ul class="component">
+                    ${exp.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                    <i class="fa-solid fa-trash trash-icon-exp"></i>
+                </ul>`
+        )
+        .join('');
+    const professionalExperienceSection = `
+        <h2>Professional Experience</h2>
+        ${experienceHTML}
+        <div id="add-exp" class="add-button">+</div>`;
+    template = template.replace(
+        /<section id="exp-section">.*?<\/section>/s,
+        `<section id="exp-section">${professionalExperienceSection}</section>`
+    );
+
+    // Key Achievements Section
+    const achievementsHTML = data.key_achievements
+        .map(ach => `<li class="component"><strong>${ach}</strong><i class="fa-solid fa-trash trash-icon-achi"></i></li>`)
+        .join('');
+    template = template.replace(/<ul>.*?<\/ul>/s, `<ul>${achievementsHTML}</ul>`);
+
+    return template;
+}
+
 
 // Wait for the DOM to be fully loaded
 // per my test, element replacement does NOT matter for "DOMContentLoaded" event.
@@ -114,12 +197,12 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(canvas => {
                 // Convert the canvas to a data URL
                 const imageData = canvas.toDataURL('image/png');
-
+                // Save the database
                 // Create a link element to download the image
-                const downloadLink = document.createElement('a');
-                downloadLink.href = imageData;
-                downloadLink.download = 'output.png';
-                downloadLink.click();
+                // const downloadLink = document.createElement('a');
+                // downloadLink.href = imageData;
+                // downloadLink.download = 'output.png';
+                // downloadLink.click();
             })
 
         // Use html2pdf to convert the content to a PDF and save it
