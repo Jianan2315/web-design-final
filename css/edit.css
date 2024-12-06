@@ -207,7 +207,9 @@ i:hover{
 .fa-trash.trash-icon-edu {
   display:none;
 }
-.fa-trash.trash-icon-skill {
+.fa-trash.trash-icon-skill,
+.fa-trash.trash-icon-achi,
+.fa-trash.trash-icon-lang {
   vertical-align: top;
   float:right;
   display:none;

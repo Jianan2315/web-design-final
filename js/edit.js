@@ -60,6 +60,14 @@ window.addEventListener("load", function () {
                     bindProjDelete();
                     console.log("pass");
                 }
+                if (typeof bindAchiDelete === 'function') {
+                    bindAchiDelete();
+                    console.log("pass");
+                }
+                if (typeof bindLangDelete === 'function') {
+                    bindLangDelete();
+                    console.log("pass");
+                }
                 // Bind all add buttons with add function
                 bindAddFunction();
 
@@ -104,9 +112,11 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(()=>icons.forEach(icon=>{icon.classList.add("editIcon-hidden")}))
             .then(()=>{
-                for (let e of ["add-edu","add-skill","add-exp"]){
-                    const element = document.getElementById(e);
-                    element.style.display="none";
+                for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
+                    if (document.getElementById(e)){
+                        const element = document.getElementById(e);
+                        element.style.display="none";
+                    }
                 }
             })
             .then(()=>element.classList.add("pdf"))

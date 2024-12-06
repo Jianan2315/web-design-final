@@ -2,7 +2,8 @@ function bindAddFunction(){
     const addEduButton =  document.getElementById("add-edu");
     const addSkillButton =  document.getElementById("add-skill");
     const addExpButton =  document.getElementById("add-exp");
-    const addProjButton = document.getElementById("add-proj"); // 新增项目绑定按钮
+    const addAchiButton =  document.getElementById("add-achi");
+    const addLangButton =  document.getElementById("add-lang");
 
     addEduButton.addEventListener("click", function(event) {
         hidePreview();
@@ -16,54 +17,16 @@ function bindAddFunction(){
         hidePreview();
         addExp(this);
     });
-    addProjButton.addEventListener("click", function(event) {
+    addAchiButton.addEventListener("click", function(event) {
         hidePreview();
-        addProject(this);
+        addAchi(this);
+    });
+    addLangButton.addEventListener("click", function(event) {
+        hidePreview();
+        addLang(this);
     });
 }
 
-function bindProjDelete(){
-    document.querySelectorAll(".trash-icon-proj").forEach((icon)=>{
-        icon.addEventListener("click", function(event) {
-            deleteProjItem(event, this);
-        });
-
-        const relatedRows=[];
-        relatedRows[0] = icon.closest('ul');
-        relatedRows[1] = relatedRows[0].previousElementSibling;
-        relatedRows[2] = relatedRows[1].previousElementSibling;
-        relatedRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                icon.classList.add('trash-icon-visible');
-            });
-
-            row.addEventListener('mouseleave', () => {
-                icon.classList.remove('trash-icon-visible');
-            });
-        });
-    });
-}
-function bindExpDelete(){
-    document.querySelectorAll(".trash-icon-exp").forEach((icon)=>{
-        icon.addEventListener("click", function(event) {
-            deleteExpItem(event, this);
-        });
-
-        const relatedRows=[];
-        relatedRows[0] = icon.closest('ul');
-        relatedRows[1] = relatedRows[0].previousElementSibling;
-        relatedRows[2] = relatedRows[1].previousElementSibling;
-        relatedRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                icon.classList.add('trash-icon-visible');
-            });
-
-            row.addEventListener('mouseleave', () => {
-                icon.classList.remove('trash-icon-visible');
-            });
-        });
-    });
-}
 function bindEduDelete(){
     document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
         icon.addEventListener("click", function(event) {
@@ -123,7 +86,58 @@ function bindSkillDelete(){
 
     });
 }
+function bindLangDelete(){
+    document.querySelectorAll(".trash-icon-lang").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteLangItem(event, this);
+        });
+        const row = icon.closest('li');
+        row.addEventListener('mouseenter', () => {
+            icon.classList.add('trash-icon-visible');
+        });
+        row.addEventListener('mouseleave', () => {
+            icon.classList.remove('trash-icon-visible');
+        });
 
+    });
+}
+function bindAchiDelete(){
+    document.querySelectorAll(".trash-icon-achi").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteAchiItem(event, this);
+        });
+        const row = icon.closest('li');
+        row.addEventListener('mouseenter', () => {
+            icon.classList.add('trash-icon-visible');
+        });
+        row.addEventListener('mouseleave', () => {
+            icon.classList.remove('trash-icon-visible');
+        });
+
+    });
+}
+
+function bindExpDelete(){
+    document.querySelectorAll(".trash-icon-exp").forEach((icon)=>{
+        icon.addEventListener("click", function(event) {
+            deleteExpItem(event, this);
+        });
+
+        const relatedRows=[];
+        relatedRows[0] = icon.closest('ul');
+        relatedRows[1] = relatedRows[0].previousElementSibling;
+        relatedRows[2] = relatedRows[1].previousElementSibling;
+        relatedRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                icon.classList.add('trash-icon-visible');
+            });
+
+            row.addEventListener('mouseleave', () => {
+                icon.classList.remove('trash-icon-visible');
+            });
+        });
+    });
+}
 function deleteEduItem(e,icon) {
     e.stopPropagation();
     const relatedRows=[];
@@ -147,13 +161,16 @@ function deleteExpItem(e,icon) {
     relatedRows.forEach(row => row.remove());
     cancelEntry();
 }
-function deleteProjItem(e,icon) {
+function deleteLangItem(e,icon) {
     e.stopPropagation();
-    const relatedRows=[];
-    relatedRows[0] = icon.closest('ul');
-    relatedRows[1] = relatedRows[0].previousElementSibling;
-    relatedRows[2] = relatedRows[1].previousElementSibling;
-    relatedRows.forEach(row => row.remove());
+    const relatedRow = icon.closest('li');
+    relatedRow.remove();
+    cancelEntry();
+}
+function deleteAchiItem(e,icon) {
+    e.stopPropagation();
+    const relatedRow = icon.closest('li');
+    relatedRow.remove();
     cancelEntry();
 }
 
@@ -262,68 +279,12 @@ function bindExpBlock(){
     });
 }
 
-function bindProjBlock(){
-    const expSection = document.getElementById("proj-section");
-
-    // first
-    const firstElements=expSection.querySelectorAll("h3");
-    firstElements.forEach(firstElement => {
-        firstElement.addEventListener('mouseenter', () => {
-            const secondElement = firstElement.nextElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            secondElement.classList.add('component-hover');
-            thirdElement.classList.add('component-hover');
-        });
-
-        firstElement.addEventListener('mouseleave', () => {
-            const secondElement = firstElement.nextElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            secondElement.classList.remove('component-hover');
-            thirdElement.classList.remove('component-hover');
-        });
-    });
-    // 2nd
-    const secondElements = expSection.querySelectorAll("p");
-    secondElements.forEach(secondElement => {
-        secondElement.addEventListener('mouseenter', () => {
-            const firstElement = secondElement.previousElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            firstElement.classList.add('component-hover');
-            thirdElement.classList.add('component-hover');
-        });
-
-        secondElement.addEventListener('mouseleave', () => {
-            const firstElement = secondElement.previousElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            firstElement.classList.remove('component-hover');
-            thirdElement.classList.remove('component-hover');
-        });
-    });
-    // 3rd
-    const thirdElements = expSection.querySelectorAll("ul");
-    thirdElements.forEach(thirdElement => {
-        thirdElement.addEventListener('mouseenter', () => {
-            const secondElement = thirdElement.previousElementSibling;
-            const firstElement = secondElement.previousElementSibling;
-            firstElement.classList.add('component-hover');
-            secondElement.classList.add('component-hover');
-        });
-
-        thirdElement.addEventListener('mouseleave', () => {
-            const secondElement = thirdElement.previousElementSibling;
-            const firstElement = secondElement.previousElementSibling;
-            firstElement.classList.remove('component-hover');
-            secondElement.classList.remove('component-hover');
-        });
-    });
-}
-
-
 function popEditForm() {
     const eduSection = document.getElementById("edu-section");
     const skillSection = document.getElementById("skill-section");
     const expSection = document.getElementById("exp-section");
-    const projSection = document.getElementById("proj-section");
+    const achiSection = document.getElementById("achi-section");
+    const langSection = document.getElementById("lang-section");
 
     // edu
     const eduRows = eduSection.querySelectorAll("tr");
@@ -356,6 +317,7 @@ function popEditForm() {
                     <button type="button" id="cancel-edu-entry">Cancel</button>
                 `;
                 form.querySelector('#update-edu-entry').addEventListener('click', function () {
+
                     updateEduEntry(this, block);
                 });
                 form.querySelector('#cancel-edu-entry').addEventListener('click', function () {
@@ -366,43 +328,10 @@ function popEditForm() {
 
     });
 
-
-    // skill
-    const skillRows = skillSection.querySelectorAll("li");
-    skillRows.forEach(block => {
-        const strongElement = block.querySelector('strong');
-        const title = strongElement.textContent.trim(); // "Communication language"
-        // Extract the remaining part (after the colon)
-        const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
-        block.addEventListener('click', () => {
-            const form = document.getElementById("resume-form");
-            const formContainer = document.getElementById("form-container");
-            hidePreview();
-            formContainer.classList.remove("form-container-hidden");
-            form.innerHTML = `
-                <label for="new-skill-name">Skill name:</label>
-                <textarea id="new-skill-name" name="new-skill-name">${title}</textarea>
-                 <label for="new-skill-detail">Skill details:</label>
-                <textarea id="new-skill-detail" name="new-skill-detail">${details}</textarea>
-                
-                <button type="button" id="update-skill-entry">Update</button>
-                <button type="button" id="cancel-skill-entry">Cancel</button>
-            `;
-            form.querySelector('#update-skill-entry').addEventListener('click', function () {
-                updateSkillEntry(this, block);
-            });
-            form.querySelector('#cancel-skill-entry').addEventListener('click', function () {
-                cancelEntry();
-            });
-        });
-
-
-    });
-
     // exp
-    let firstEles = expSection.querySelectorAll("h3");
-    let secondEles = expSection.querySelectorAll("p");
-    let thirdEles = expSection.querySelectorAll("ul");
+    const firstEles = expSection.querySelectorAll("h3");
+    const secondEles = expSection.querySelectorAll("p");
+    const thirdEles = expSection.querySelectorAll("ul");
     blocks = [];
     for (let i = 0; i < firstEles.length; i += 1) {
         // blocks.push({first:eduRows[i], second:eduRows[i+1]});
@@ -449,6 +378,7 @@ function popEditForm() {
                     <button type="button" id="cancel-exp-entry">Cancel</button>
                 `;
                 form.querySelector('#update-exp-entry').addEventListener('click', function () {
+
                     updateExpEntry(this, block);
                 });
                 form.querySelector('#cancel-exp-entry').addEventListener('click', function () {
@@ -459,68 +389,103 @@ function popEditForm() {
 
     });
 
-    // project
-    firstEles = projSection.querySelectorAll("h3");
-    secondEles = projSection.querySelectorAll("p");
-    thirdEles = projSection.querySelectorAll("ul");
-    blocks = [];
-    for (let i = 0; i < firstEles.length; i += 1) {
-        // blocks.push({first:eduRows[i], second:eduRows[i+1]});
-        blocks.push([firstEles[i], secondEles[i], thirdEles[i]]);
-    }
+    // skill
+    const skillRows = skillSection.querySelectorAll("li");
+    skillRows.forEach(block => {
+        const strongElement = block.querySelector('strong');
+        const title = strongElement.textContent.trim(); // "Communication language"
+        // Extract the remaining part (after the colon)
+        const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
+        block.addEventListener('click', () => {
+            const form = document.getElementById("resume-form");
+            const formContainer = document.getElementById("form-container");
+            hidePreview();
+            formContainer.classList.remove("form-container-hidden");
+            form.innerHTML = `
+                <label for="new-skill-name">Skill name:</label>
+                <textarea id="new-skill-name" name="new-skill-name">${title}</textarea>
+                 <label for="new-skill-detail">Skill details:</label>
+                <textarea id="new-skill-detail" name="new-skill-detail">${details}</textarea>
+                
+                <button type="button" id="update-skill-entry">Update</button>
+                <button type="button" id="cancel-skill-entry">Cancel</button>
+            `;
+            form.querySelector('#update-skill-entry').addEventListener('click', function () {
 
-    blocks.forEach(block => {
-        // Extract details
-        const titleAndCompany = block[0].textContent.trim();
-        const locationAndDates = block[1].textContent.trim();
-        const liEles = block[2].querySelectorAll("li");
-        const experienceItems = Array.from(liEles).map(li => "•"+li.textContent.trim());
-        // Combine experience items into a single string
-        const experienceString = experienceItems.join('\n');
-
-        // Parse title and company
-        const [company, title] = titleAndCompany.split(', ').map(str => str.trim());
-
-        // Parse location and dates
-        const [location, dateRange] = locationAndDates.split('|').map(str => str.trim());
-        const [startDate, endDate] = dateRange.split(' - ').map(str => makeDate(str.trim()));
-
-        block.forEach(ele => {
-            ele.addEventListener('click', () => {
-                const form = document.getElementById("resume-form");
-                const formContainer = document.getElementById("form-container");
-                hidePreview();
-                formContainer.classList.remove("form-container-hidden");
-                form.innerHTML = `
-                    <label for="company">Project:</label>
-                    <input type="text" id="company" name="company" value="${company}">
-                    <label for="title">Team Role:</label>
-                    <input type="text" id="title" name="title" value="${title}">
-                    <label for="org-address">University:</label>
-                    <textarea id="org-address" name="org-address">${location}</textarea>
-                    <label for="start">Start Date:</label>
-                    <input type="date" id="start" name="start" value=${startDate}>
-                    <label for="end">End Date:</label>
-                    <input type="date" id="end" name="end" value=${endDate}>
-                    <label for="exp">Contribution:</label>
-                    <textarea id="exp" name="exp" oninput="addBullet(this)">${experienceString}</textarea>
-                    
-                    <button type="button" id="update-exp-entry">Update</button>
-                    <button type="button" id="cancel-exp-entry">Cancel</button>
-                `;
-                form.querySelector('#update-exp-entry').addEventListener('click', function () {
-                    updateProjEntry(this, block);
-                });
-                form.querySelector('#cancel-exp-entry').addEventListener('click', function () {
-                    cancelEntry();
-                });
+                updateSkillEntry(this, block);
+            });
+            form.querySelector('#cancel-skill-entry').addEventListener('click', function () {
+                cancelEntry();
             });
         });
 
     });
+     // Achievement
+     const achiRows = achiSection.querySelectorAll("li");
+     achiRows.forEach(block => {
+         const strongElement = block.querySelector('strong');
+         const title = strongElement.textContent.trim(); // "Communication language"
+         // Extract the remaining part (after the colon)
+         const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
+         block.addEventListener('click', () => {
+             const form = document.getElementById("resume-form");
+             const formContainer = document.getElementById("form-container");
+             hidePreview();
+             formContainer.classList.remove("form-container-hidden");
+             form.innerHTML = `
+                 <label for="new-achievement-name">Achievement name:</label>
+                 <textarea id="new-achievement-name" name="new-achievement-name">${title}</textarea>
+                  <label for="new-achievement-detail">Achievement details:</label>
+                 <textarea id="new-achievement-detail" name="new-achievement-detail">${details}</textarea>
+                 
+                 <button type="button" id="update-achievement-entry">Update</button>
+                 <button type="button" id="cancel-achievement-entry">Cancel</button>
+             `;
+             form.querySelector('#update-achievement-entry').addEventListener('click', function () {
+ 
+                 updateAchiEntry(this, block);
+             });
+             form.querySelector('#cancel-achievement-entry').addEventListener('click', function () {
+                 cancelEntry();
+             });
+         });
+ 
+ 
+     });
+ 
+     // language
+     const langRows = langSection.querySelectorAll("li");
+     langRows.forEach(block => {
+         const strongElement = block.querySelector('strong');
+         const title = strongElement.textContent.trim(); // "Communication language"
+         // Extract the remaining part (after the colon)
+         const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
+         block.addEventListener('click', () => {
+             const form = document.getElementById("resume-form");
+             const formContainer = document.getElementById("form-container");
+             hidePreview();
+             formContainer.classList.remove("form-container-hidden");
+             form.innerHTML = `
+                 <label for="new-language-name">Language name:</label>
+                 <textarea id="new-language-name" name="new-language-name">${title}</textarea>
+                  <label for="new-language-detail">Language details:</label>
+                 <textarea id="new-language-detail" name="new-language-detail">${details}</textarea>
+                 
+                 <button type="button" id="update-language-entry">Update</button>
+                 <button type="button" id="cancel-language-entry">Cancel</button>
+             `;
+             form.querySelector('#update-language-entry').addEventListener('click', function () {
+ 
+                 updateLangEntry(this, block);
+             });
+             form.querySelector('#cancel-language-entry').addEventListener('click', function () {
+                 cancelEntry();
+             });
+         });
+
+     });
 
 }
-
 
 function makeDate(inputDate){
     // inputDate = "Jul 2023";
@@ -624,108 +589,10 @@ function updateExpEntry(button, block) {
     expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
     bindExpBlock();
     bindAddFunction();
-    bindExpDelete();
+    bindExpDelete()
     popEditForm();
     cancelEntry();
 }
-
-function updateProjEntry(button, block) {
-    const form = button.parentNode;
-    const company = document.getElementById("company").value;
-    const title = document.getElementById("title").value;
-    const orgAddress = document.getElementById("org-address").value;
-    const start = document.getElementById("start").value;
-    const end = document.getElementById("end").value;
-    const exp = document.getElementById("exp").value;
-    const vals=[company,title,orgAddress,start,end,exp]
-
-    for (let val of vals) {
-        if (!val) {
-            alert("Please fill in all fields.");
-            return;
-        }
-    }
-    // 3. graduation date
-    const startDateObj = new Date(start);
-    const endDateObj = new Date(end);
-
-    // 4.
-    const expSection = block[0].closest("section");
-    const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    // Due to async render issue, remove() has to be placed before any (implicit) sync function.
-    block.forEach(ele => {
-        ele.remove();
-        // console.log("ele: ",ele);
-        // ele was removed out of DOM, but still exists as a variable/object
-    });
-    expSection.innerHTML += `
-        <h3 class="component">${company}, ${title}</h3>
-        <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul class="component"><i class="fa-solid fa-trash trash-icon-exp"></i></ul>
-    `
-
-    const ulEles = expSection.querySelectorAll("ul");
-    const last = ulEles[ulEles.length - 1];
-    for (let e of exp.split("\n")) {
-        const item = document.createElement('li');
-        item.textContent = e.slice(1);
-        last.appendChild(item);
-    }
-    // 5. Collect elements into "blocks"
-    const blocks = [];
-    const heads = Array.from(expSection.querySelectorAll('h3'));
-
-    for (let h of heads) {
-        const p = h.nextElementSibling;
-        const ul = p.nextElementSibling;
-        const em = p.querySelector('em');
-        let startD = ""
-        if (em) {
-            // Extract the text content of the <p> element.
-            const textContent = em.textContent; // Example: "Some Address | Jan 2023 - Dec 2023"
-
-            // Use a regular expression to extract the start date (format: "Month Year").
-            const match = textContent.match(/(\w{3} \d{4})/); // Matches "Month Year" format.
-            if (match) {
-                startD = match[1]; // The first matched group.
-                // console.log(startD); // Output: "Jan 2023" (or whatever your start date is)
-            } else {
-                console.log('No start date found.');
-            }
-        }
-        blocks.push({h, p, ul, startD});
-    }
-
-    // 5. Add sorting logic
-    // Sort the blocks based on the start date
-    blocks.sort((a, b) => {
-        const dateA = new Date(a.startD.trim());
-        const dateB = new Date(b.startD.trim());
-        return dateB - dateA; // Sort in descending order
-    });
-
-    // 7. Append sorted rows back to the table
-    expSection.innerHTML =`
-        <h2>Professional Experience</h2>
-        <div class="editIcon" id="expIcon">
-        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
-        </div>
-    `;
-    blocks.forEach(block => {
-        expSection.appendChild(block.h);
-        expSection.appendChild(block.p);
-        expSection.appendChild(block.ul);
-    });
-    expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
-    bindProjBlock();
-    bindAddFunction();
-    bindProjDelete();
-    popEditForm();
-    cancelEntry();
-}
-
 
 function updateEduEntry(button, block) {
     const form = button.parentNode;
@@ -788,7 +655,6 @@ function updateEduEntry(button, block) {
 
     bindEduBlock(); // per my view, it caused by previous sort, which changed the reference so that pair goes wrong.
     bindEduDelete();
-
     popEditForm(); // SOLVE EVENT listener issue but encounter new one for pair hover effect. so explore bindEduBlock();
     cancelEntry();
 }
@@ -812,8 +678,46 @@ function updateSkillEntry(button, block) {
     popEditForm();
     cancelEntry();
 }
+function updateLangEntry(button, block) {
+    const form = button.parentNode;
+    const name = form.querySelector("#new-language-name").value;
+    const detail = form.querySelector("#new-language-detail").value;
 
-// set grayscale background Delete
+    if (!name || !detail) {
+        alert("Please fill in all fields.");
+        return;
+    }
+    const unorderedList = block.closest("ul");
+    block.remove();
+
+    unorderedList.innerHTML += `
+        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-language"></i></li>
+    `;
+    bindLangDelete();
+    popEditForm();
+    cancelEntry();
+}
+function updateAchiEntry(button, block) {
+    const form = button.parentNode;
+    const name = form.querySelector("#new-achievement-name").value;
+    const detail = form.querySelector("#new-achievement-detail").value;
+
+    if (!name || !detail) {
+        alert("Please fill in all fields.");
+        return;
+    }
+    const unorderedList = block.closest("ul");
+    block.remove();
+
+    unorderedList.innerHTML += `
+        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-achievement"></i></li>
+    `;
+    bindAchiDelete();
+    popEditForm();
+    cancelEntry();
+}
+
+// set grayscale background
 function activateOverlay(icon) {
     document.body.classList.add("disabled"); // Apply grayscale and disable body
     document.getElementById("overlay").style.display = "block"; // Show overlay
@@ -834,6 +738,16 @@ function activateOverlay(icon) {
         const rows = ul.querySelectorAll("li strong")
         const names = Array.from(rows).map(row => row.textContent);
         populateModifyOptionsTable(names, "skill")
+    } else if (icon.parentNode.id=="langIcon"){
+        const ul = section.querySelector("ul"); // Select the <ul> within this section
+        const rows = ul.querySelectorAll("li strong")
+        const names = Array.from(rows).map(row => row.textContent);
+        populateModifyOptionsTable(names, "skill")
+    } else if (icon.parentNode.id=="achiIcon"){
+        const ul = section.querySelector("ul"); // Select the <ul> within this section
+        const rows = ul.querySelectorAll("li strong")
+        const names = Array.from(rows).map(row => row.textContent);
+        populateModifyOptionsTable(names, "skill")
     } else if (icon.parentNode.id=="expIcon"){
         const rows = section.querySelectorAll("h3")
         const names = Array.from(rows).map(row => row.textContent);
@@ -847,7 +761,7 @@ function activateOverlay(icon) {
     }
 }
 
-// list content in table  Delete
+// list content in table
 function populateModifyOptionsTable(names, mode, dates=null) {
     // Get the target table where university names will be added
     const modifyOptionsTable = document.getElementById("modify-options");
@@ -899,6 +813,24 @@ function populateModifyOptionsTable(names, mode, dates=null) {
         </tr>
     `;
     }
+    else if (mode == "lang") {
+        modifyOptionsTable.innerHTML += `
+        <tr>
+            <td></td>
+            <td class="btn-cell"><button onclick="deleteLangRecord()">Delete</button></td>
+            <td class="btn-cell"><button onclick="cancelModify()">Cancel</button></td>
+        </tr>
+    `;
+    }
+    else if (mode == "achi") {
+        modifyOptionsTable.innerHTML += `
+        <tr>
+            <td></td>
+            <td class="btn-cell"><button onclick="deleteAchiRecord()">Delete</button></td>
+            <td class="btn-cell"><button onclick="cancelModify()">Cancel</button></td>
+        </tr>
+    `;
+    }
     else if (mode == "exp") {
         modifyOptionsTable.innerHTML += `
         <tr>
@@ -910,7 +842,6 @@ function populateModifyOptionsTable(names, mode, dates=null) {
     }
 }
 
-// Delete
 function deleteEduRecord(){
     // Get all checked checkboxes within the modify-options table
     const checkedItems = document.querySelectorAll('#modify-options input[type="checkbox"]:checked');
@@ -946,7 +877,7 @@ function deleteEduRecord(){
     });
     cancelModify()
 }
-// Delete
+
 function deleteSkillRecord(){
     // Get all checked checkboxes within the modify-options table
     const checkedItems = document.querySelectorAll('#modify-options input[type="checkbox"]:checked');
@@ -969,7 +900,53 @@ function deleteSkillRecord(){
     });
     cancelModify()
 }
-// Delete
+
+function deleteLangRecord(){
+    // Get all checked checkboxes within the modify-options table
+    const checkedItems = document.querySelectorAll('#modify-options input[type="checkbox"]:checked');
+
+    // Iterate over each checked checkbox to find and remove related records
+    checkedItems.forEach(checkbox => {
+        // Get the text content from the associated row (the next sibling <td>)
+        const relatedRow = checkbox.closest('tr');
+        const skillName = relatedRow.querySelector('td:nth-child(2)').textContent.trim();
+
+        // Find the related record in #lang-section
+        const langSection = document.querySelector('#lang-section');
+        const records = langSection.querySelectorAll('li');
+
+        records.forEach(record => {
+            if (record.textContent.includes(skillName)) {
+                record.remove();
+            }
+        });
+    });
+    cancelModify()
+}
+
+function deleteAchiRecord(){
+    // Get all checked checkboxes within the modify-options table
+    const checkedItems = document.querySelectorAll('#modify-options input[type="checkbox"]:checked');
+
+    // Iterate over each checked checkbox to find and remove related records
+    checkedItems.forEach(checkbox => {
+        // Get the text content from the associated row (the next sibling <td>)
+        const relatedRow = checkbox.closest('tr');
+        const skillName = relatedRow.querySelector('td:nth-child(2)').textContent.trim();
+
+        // Find the related record in #achi-section
+        const achiSection = document.querySelector('#achi-section');
+        const records = achiSection.querySelectorAll('li');
+
+        records.forEach(record => {
+            if (record.textContent.includes(skillName)) {
+                record.remove();
+            }
+        });
+    });
+    cancelModify()
+}
+
 function deleteExpRecord(){
     // Get all checked checkboxes within the modify-options table
     const checkedItems = document.querySelectorAll('#modify-options input[type="checkbox"]:checked');
@@ -1113,6 +1090,46 @@ function addSkill(icon) {
         cancelEntry();
     })
 }
+function addAchi(icon) {
+    const form = document.getElementById("resume-form");
+    const formContainer = document.getElementById("form-container")
+    formContainer.classList.remove("form-container-hidden")
+    form.innerHTML = `
+        <label for="new-achi-name">Achievement name:</label>
+        <textarea id="new-achi-name" name="new-achi-name"></textarea>
+         <label for="new-achi-detail">Achievement details:</label>
+        <textarea id="new-achi-detail" name="new-achi-detail"></textarea>
+        
+        <button type="button" id="add-achi-entry">Save</button>
+        <button type="button" id="cancel-achi-entry">Cancel</button>
+    `;
+    form.querySelector('#add-achi-entry').addEventListener('click', function() {
+        addAchiEntry(this, icon);
+    });
+    form.querySelector('#cancel-achi-entry').addEventListener('click', function() {
+        cancelEntry();
+    })
+}
+function addLang(icon) {
+    const form = document.getElementById("resume-form");
+    const formContainer = document.getElementById("form-container")
+    formContainer.classList.remove("form-container-hidden")
+    form.innerHTML = `
+        <label for="new-lang-name">Language name:</label>
+        <textarea id="new-lang-name" name="new-lang-name"></textarea>
+         <label for="new-lang-detail">Language details:</label>
+        <textarea id="new-lang-detail" name="new-lang-detail"></textarea>
+        
+        <button type="button" id="add-lang-entry">Save</button>
+        <button type="button" id="cancel-lang-entry">Cancel</button>
+    `;
+    form.querySelector('#add-lang-entry').addEventListener('click', function() {
+        addLangEntry(this, icon);
+    });
+    form.querySelector('#cancel-lang-entry').addEventListener('click', function() {
+        cancelEntry();
+    })
+}
 
 function addSkillEntry(button, icon) {
     const form = button.parentNode;
@@ -1132,6 +1149,50 @@ function addSkillEntry(button, icon) {
     `;
 
     bindSkillDelete();
+    popEditForm();
+    cancelEntry();
+}
+
+function addAchiEntry(button, icon) {
+    const form = button.parentNode;
+    const name = form.querySelector("#new-achi-name").value;
+    const detail = form.querySelector("#new-achi-detail").value;
+
+    if (!name || !detail) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    const unorderedList = icon.closest("section").querySelector("ul");
+    // lol: a fixed issue here: If </i> was missed here, here will add two trash icon tags. IDK the logic behind the issue.
+    // it seems like auto implicit complement for html caused this issue.
+    unorderedList.innerHTML += `
+        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-achi"></i></li>
+    `;
+
+    bindAchiDelete();
+    popEditForm();
+    cancelEntry();
+}
+
+function addLangEntry(button, icon) {
+    const form = button.parentNode;
+    const name = form.querySelector("#new-lang-name").value;
+    const detail = form.querySelector("#new-lang-detail").value;
+
+    if (!name || !detail) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    const unorderedList = icon.closest("section").querySelector("ul");
+    // lol: a fixed issue here: If </i> was missed here, here will add two trash icon tags. IDK the logic behind the issue.
+    // it seems like auto implicit complement for html caused this issue.
+    unorderedList.innerHTML += `
+        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-lang"></i></li>
+    `;
+
+    bindLangDelete();
     popEditForm();
     cancelEntry();
 }
@@ -1161,35 +1222,6 @@ function addExp(icon) {
         addExpEntry(this, icon);
     });
     form.querySelector('#cancel-exp-entry').addEventListener('click', function() {
-        cancelEntry();
-    });
-}
-
-function addProject(icon) {
-    const form = document.getElementById("resume-form");
-    const formContainer = document.getElementById("form-container")
-    formContainer.classList.remove("form-container-hidden")
-    form.innerHTML = `
-        <label for="company">Project:</label>
-        <input type="text" id="company" name="company">
-        <label for="title">Team role:</label>
-        <input type="text" id="title" name="title">
-        <label for="org-address">University:</label>
-        <textarea id="org-address" name="org-address"></textarea>
-        <label for="start">Start Date:</label>
-        <input type="date" id="start" name="start">
-        <label for="end">End Date:</label>
-        <input type="date" id="end" name="end">
-        <label for="exp">Contribution:</label>
-        <textarea id="exp" name="exp" oninput="addBullet(this)"></textarea>
-        
-        <button type="button" id="add-proj-entry">Save</button>
-        <button type="button" id="cancel-proj-entry">Cancel</button>
-    `;
-    form.querySelector('#add-proj-entry').addEventListener('click', function() {
-        addProjEntry(this, icon);
-    });
-    form.querySelector('#cancel-proj-entry').addEventListener('click', function() {
         cancelEntry();
     });
 }
@@ -1285,100 +1317,6 @@ function addExpEntry(button, icon) {
     popEditForm();
     cancelEntry();
 }
-
-function addProjEntry(button, icon) {
-    // 2. Get form input values
-    const form = button.parentNode; // button is not essential but backup
-    const company = document.getElementById("company").value;
-    const title = document.getElementById("title").value;
-    const orgAddress = document.getElementById("org-address").value;
-    const start = document.getElementById("start").value;
-    const end = document.getElementById("end").value;
-    const exp = document.getElementById("exp").value;
-    const vals=[company,title,orgAddress,start,end,exp]
-
-    for (let val of vals) {
-        if (!val) {
-            alert("Please fill in all fields.");
-            return;
-        }
-    }
-    // 3. graduation date
-    const startDateObj = new Date(start);
-    const endDateObj = new Date(end);
-
-    // 4.
-    const expSection = icon.closest("section");
-    const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    expSection.innerHTML += `
-        <h3 class="component">${company}, ${title}</h3>
-        <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul class="component"><i class="fa-solid fa-trash trash-icon-exp"></i></ul>
-    `
-
-    const ulEles = expSection.querySelectorAll("ul");
-    const last = ulEles[ulEles.length - 1];
-    for (let e of exp.split("\n")) {
-        const item = document.createElement('li');
-        item.textContent = e.slice(1);
-        last.appendChild(item);
-    }
-    // 5. Collect elements into "blocks"
-    const blocks = [];
-    const heads = Array.from(expSection.querySelectorAll('h3'));
-
-    for (let h of heads) {
-        const p = h.nextElementSibling;
-        const ul = p.nextElementSibling;
-        const em = p.querySelector('em');
-        let startD = ""
-        if (em) {
-            // Extract the text content of the <p> element.
-            const textContent = em.textContent; // Example: "Some Address | Jan 2023 - Dec 2023"
-
-            // Use a regular expression to extract the start date (format: "Month Year").
-            const match = textContent.match(/(\w{3} \d{4})/); // Matches "Month Year" format.
-            if (match) {
-                startD = match[1]; // The first matched group.
-                // console.log(startD); // Output: "Jan 2023" (or whatever your start date is)
-            } else {
-                console.log('No start date found.');
-            }
-        }
-        blocks.push({h, p, ul, startD});
-    }
-
-    // 5. Add sorting logic
-    // Sort the blocks based on the start date
-    blocks.sort((a, b) => {
-        const dateA = new Date(a.startD.trim());
-        const dateB = new Date(b.startD.trim());
-        return dateB - dateA; // Sort in descending order
-    });
-
-    // 7. Append sorted rows back to the table
-    expSection.innerHTML=`
-        <h2>Professional Experience</h2>
-        <div class="editIcon" id="expIcon">
-        <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
-        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
-        </div>
-    `;
-    blocks.forEach(block => {
-        expSection.appendChild(block.h);
-        expSection.appendChild(block.p);
-        expSection.appendChild(block.ul);
-    });
-    expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
-
-    bindProjBlock();
-    bindAddFunction();
-    bindProjDelete();
-    popEditForm();
-    cancelEntry();
-}
-
 function addBullet(lines) {
     const values=lines.value.split("\n").map(line => line.startsWith("•")?line:`•${line}`);
     lines.value=values.join("\n");
