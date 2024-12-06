@@ -17,12 +17,12 @@
             <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
             </div>
             <ul>
-            <li class="component"><strong>Programming Languages:</strong> Java, C++, Booscript, Linux, JavaScript<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Web Technologies:</strong> HTML5, CSS, JavaScript, Angular JS, JBoss, Ajax, Node.js<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Frameworks:</strong> Spring MVC/Boot, Hibernate, Netsuite ERP<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Databases:</strong> MySQL, StarUML, MongoDB<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Big Data:</strong> Hadoop, Apache Spark<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Tools:</strong> Eclipse, SQL Developer, Jenkins, AWS<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Programming Languages:</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Web Technologies:</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Frameworks:</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Databases:</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Big Data:</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Tools:</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
             </ul>
             <div id="add-skill" class="add-button">+</div>
         </section>
@@ -78,14 +78,6 @@
             <ul class="component">
             <li>Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.</li>
             <li>Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency.</li>
-            <i class="fa-solid fa-trash trash-icon-exp"></i>
-            </ul>
-
-            <h3 class="component">Dell, Global Operations Engineer, Intern</h3>
-            <p class="component"><em>Shanghai | Jul 2021 - Sep 2021</em></p>
-            <ul class="component">
-            <li>Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.</li>
-            <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
             <i class="fa-solid fa-trash trash-icon-exp"></i>
             </ul>
             <div id="add-exp" class="add-button">+</div>
