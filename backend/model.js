@@ -1,7 +1,9 @@
 // File: model.js (Data Layer)
 const users = [
-    { username: 'admin', password: '1234', type: 'admin'  },
-    { username: 'Yao', password: '12345678', type: 'employee' }
+    { username: 'admin', password: '1234', type: 'admin' , email: 'admin@gmail.com'},
+    { username: 'Yao', password: '12345678', type: 'employee' , email: 'Yao@gmail.com'},
+    { username: 'Jianan', password: '12345678', type: 'employee' , email: 'Jianan@gmail.com'},
+    { username: 'user', password: '12345678', type: 'employee' , email: 'user@gmail.com'},
 ];
 
 const jobPosts = [

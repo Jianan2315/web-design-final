@@ -19,7 +19,7 @@ const Navbar = () => {
     return (
         <AppBar position="static">
             <Toolbar style={{ justifyContent: 'space-between' }}>
-                <Typography variant="h6">Job Portal</Typography>
+                <Typography variant="h6">Resume Builder</Typography>
                 <div>
                     {userType === 'employee' && (
                         <>
@@ -55,6 +55,9 @@ const Navbar = () => {
                             </Button> */}
                         </>
                     )}
+                    <Button color="inherit" component={Link} to="http://127.0.0.1:3001/frontend/public/index2.html">
+                        Exit
+                    </Button>
                     <Button color="inherit" onClick={handleLogout}>
                         Logout
                     </Button>

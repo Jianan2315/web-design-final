@@ -1,23 +1,27 @@
 {
     "personal_info": {
-        "name": "ABC",
-        "phone": "(666)-123-4567",
+        "name": "Michael",
+        "phone": "(999)-123-4567",
         "email": "jo.mi@northeastern.edu",
         "location": "Boston"
     },
-    "education": [],
-    "personal_skills": [
-        "Developed and deployed a web application, increasing customer engagement by 25%.",
-        "Automated data processing tasks using Python, reducing manual workload by 40 hours per week."
+    "technical_skills": [
+        "Proficient in Microsoft Office Suite:Excel, Word, PowerPoint",
+        "Programming languages:Python, Java, SQL",
+        "Web development:HTML, CSS, JavaScript",
+        "Data analysis and visualization:Tableau, Power BI",
+        "Cloud computing:AWS, Azure"
     ],
-    "languages": [
+    "education": [
         {
-            "category": "Communication language",
-            "details": "Chinese (Native), English (Proficient)"
+            "institution": "Northeastern University",
+            "graduation_date": "Dec 2026",
+            "degree": "MS in Software Engineering Systems"
         },
         {
-            "category": "Programming languages",
-            "details": "Python, SQL, HTML5, Java"
+            "institution": "Boston University",
+            "graduation_date": "Dec 2019",
+            "degree": "BS in Computer Science"
         }
     ],
     "professional_experience": [
@@ -40,20 +44,28 @@
                 "Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.",
                 "Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency."
             ]
-        },
-        {
-            "company": "Dell",
-            "position": "Global Operations Engineer",
-            "location": "Shanghai",
-            "start_end_dates": "Jul 2021 - Sep 2021",
-            "responsibilities": [
-                "Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.",
-                "Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements."
-            ]
         }
     ],
-    "key_achievements": [
-        "Developed and deployed a web application, increasing customer engagement by 25%.",
-        "Automated data processing tasks using Python, reducing manual workload by 40 hours per week."
+    "academic_projects": [
+        {
+            "project": "Stock Trading Application",
+            "role": "UI Designer",
+            "location": "NEU",
+            "start_end_dates": "Aug 2018 - Dec 2018",
+            "responsibilities": [
+                "Built an ecosystem model for better stock market predictions",
+                "Provided graphical representation of stock trends"
+            ]
+        },
+        {
+            "project": "Automated Cooking",
+            "role": "Database Developer",
+            "location": "NEU",
+            "start_end_dates": "Aug 2018 - Dec 2018",
+            "responsibilities": [
+                "Designed a revolutionary database for Automated Cooking Robots",
+                "Used SQL and UML tools for multi-robot cooking workflows"
+            ]
+        }
     ]
 }
