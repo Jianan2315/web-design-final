@@ -16,8 +16,6 @@ function addCSS(filename) {
 
 function loadTextAsInnerHTML(filename) {
     // Path to your text file
-    console.log("1 ", window.location.href); // Full URL
-    console.log("2 ", window.location.pathname); // Path within the URL
     const filePath = 'innerHTML/'+filename;
     // Fetch the text file
     return fetch(filePath)
@@ -66,7 +64,7 @@ window.addEventListener("load", function () {
                 if (localStorage.getItem('data') !== null) {
                     const resume=JSON.parse(localStorage.getItem('data'));
                     localStorage.removeItem('data');
-                    htmlcontent = populateTemplate(text, resume);
+                    htmlcontent = populateTemplate1(text, resume);
                     console.log(htmlcontent);
                 } else {
                     console.log("Key does not exist.");
@@ -109,7 +107,7 @@ window.addEventListener("load", function () {
     document.body.appendChild(script);
 });
 
-function populateTemplate(template, data) {
+function populateTemplate3(template, data) {
     // Personal Info
     template = template.replace(/<h1>.*?<\/h1>/, `<h1>${data.personal_info.name}</h1>`);
     template = template.replace(
@@ -171,6 +169,148 @@ function populateTemplate(template, data) {
         .map(ach => `<li class="component"><strong>${ach}</strong><i class="fa-solid fa-trash trash-icon-achi"></i></li>`)
         .join('');
     template = template.replace(/<ul>.*?<\/ul>/s, `<ul>${achievementsHTML}</ul>`);
+
+    return template;
+}
+
+function populateTemplate2(template, data) {
+    // 1. Personal Info
+    template = template.replace(/<h1>.*?<\/h1>/, `<h1>${data.personal_info.name}</h1>`);
+    template = template.replace(
+        /<p>.*?<\/p>/,
+        `<p> Phone: ${data.personal_info.phone} | Email: ${data.personal_info.email} | Location: ${data.personal_info.location}</p>`
+    );
+
+    // 2. Education Section
+    const educationHTML = data.education
+        .map(
+            edu => `
+                <tr class="component">
+                    <td><strong>${edu.institution}</strong></td>
+                    <td>${edu.graduation_date}</td>
+                    <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                    <td colspan="2">${edu.degree}</td>
+                </tr>`
+        )
+        .join('');
+    template = template.replace(
+        /<table>.*?<\/table>/s,
+        `<table>${educationHTML}</table>`
+    );
+
+    // 3. Technical Skills Section
+    const technicalSkillsHTML = data.technical_skills
+        .map(skill => `<li class="component"><strong>${skill}</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>`)
+        .join('');
+    template = template.replace(
+        /<ul id="skills-list">.*?<\/ul>/s,
+        `<ul id="skills-list">${technicalSkillsHTML}</ul>`
+    );
+
+    // 4. Professional Experience Section
+    const experienceHTML = data.professional_experience
+        .map(
+            exp => `
+                <h3 class="component">${exp.company}, ${exp.position}</h3>
+                <p class="component"><em>${exp.location} | ${exp.start_end_dates}</em></p>
+                <ul class="component">
+                    ${exp.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                    <i class="fa-solid fa-trash trash-icon-exp"></i>
+                </ul>`
+        )
+        .join('');
+    const professionalExperienceSection = `
+        <h2>Professional Experience</h2>
+        ${experienceHTML}
+        <div id="add-exp" class="add-button">+</div>`;
+    template = template.replace(
+        /<section id="exp-section">.*?<\/section>/s,
+        `<section id="exp-section">${professionalExperienceSection}</section>`
+    );
+
+    // 5. Academic Projects Section
+    const projectsHTML = data.academic_projects
+        .map(
+            proj => `
+                <h3 class="component">${proj.project}, ${proj.role}</h3>
+                <p class="component"><em>${proj.location} | ${proj.start_end_dates}</em></p>
+                <ul class="component">
+                    ${proj.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                    <i class="fa-solid fa-trash trash-icon-proj"></i>
+                </ul>`
+        )
+        .join('');
+    const academicProjectsSection = `
+        <h2>Academic Projects</h2>
+        ${projectsHTML}
+        <div id="add-proj" class="add-button">+</div>`;
+    template = template.replace(
+        /<section id="proj-section">.*?<\/section>/s,
+        `<section id="proj-section">${academicProjectsSection}</section>`
+    );
+
+    return template;
+}
+
+function populateTemplate1(template, data) {
+    // 1. Personal Info
+    template = template.replace(/<h1>.*?<\/h1>/, `<h1>${data.personal_info.name}</h1>`);
+    template = template.replace(
+        /<p>.*?<\/p>/,
+        `<p> Phone: ${data.personal_info.phone} | Email: ${data.personal_info.email} | Location: ${data.personal_info.location}</p>`
+    );
+
+    // 2. Education Section
+    const educationHTML = data.education
+        .map(
+            edu => `
+                <tr class="component">
+                    <td><strong>${edu.institution}</strong></td>
+                    <td>${edu.graduation_date}</td>
+                    <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                    <td colspan="2">${edu.degree}</td>
+                </tr>`
+        )
+        .join('');
+    template = template.replace(
+        /<table>.*?<\/table>/s,
+        `<table>${educationHTML}</table>`
+    );
+
+    // 3. Personal Skills Section
+    const skillsHTML = `
+        <li class="component"><strong>Communication language</strong>: ${data.personal_skills.communication_languages}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+        <li class="component"><strong>Programming languages</strong>: ${data.personal_skills.programming_languages.join(', ')}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+        <li class="component"><strong>Certifications</strong>: ${data.personal_skills.certifications.join('; ')}<i class="fa-solid fa-trash trash-icon-skill"></i></li>`;
+    template = template.replace(
+        /<ul>.*?<\/ul>/s,
+        `<ul>${skillsHTML}</ul>`
+    );
+
+    // 4. Professional Experience Section
+    const experienceHTML = data.professional_experience
+        .map(
+            exp => `
+                <h3 class="component">${exp.company}, ${exp.position}</h3>
+                <p class="component"><em>${exp.location} | ${exp.start_end_dates}</em></p>
+                <ul class="component">
+                    ${exp.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                    <i class="fa-solid fa-trash trash-icon-exp"></i>
+                </ul>`
+        )
+        .join('');
+    const professionalExperienceSection = `
+        <h2>Professional Experience</h2>
+        ${experienceHTML}
+        <div id="add-exp" class="add-button">+</div>`;
+    template = template.replace(
+        /<section id="exp-section">.*?<\/section>/s,
+        `<section id="exp-section">${professionalExperienceSection}</section>`
+    );
 
     return template;
 }
