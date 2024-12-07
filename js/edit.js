@@ -16,7 +16,9 @@ function addCSS(filename) {
 
 function loadTextAsInnerHTML(filename) {
     // Path to your text file
-    const filePath = '../../innerHTML/'+filename;
+    console.log("1 ", window.location.href); // Full URL
+    console.log("2 ", window.location.pathname); // Path within the URL
+    const filePath = '../innerHTML/'+filename;
     // Fetch the text file
     return fetch(filePath)
         .then(response => {
@@ -49,7 +51,7 @@ window.addEventListener("load", function () {
     console.log(script.src);
 
     let resume = "";
-    fetch('../json/resume_data.json')
+    fetch('json/resume_data.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error fetching file: ${response.statusText}`);
