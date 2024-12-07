@@ -65,6 +65,7 @@ window.addEventListener("load", function () {
                 let htmlcontent = text;
                 if (localStorage.getItem('data') !== null) {
                     const resume=JSON.parse(localStorage.getItem('data'));
+                    localStorage.removeItem('data');
                     htmlcontent = populateTemplate(text, resume);
                     console.log(htmlcontent);
                 } else {
