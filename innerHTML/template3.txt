@@ -44,8 +44,8 @@
               <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
             </div>
             <ul>
-                <li class="component"><strong>a:Excellent written and verbal communication</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
-                <li class="component"><strong>a:Active listening and empathy</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
+                <li class="component"><strong>Proficient in Microsoft Office Suite</strong>:Excel, Word, PowerPoint<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+                <li class="component"><strong>Data analysis and visualization</strong>:Tableau, Power BI<i class="fa-solid fa-trash trash-icon-skill"></i></li>
             </ul>
             <div id="add-skill" class="add-button">+</div>
         </section>

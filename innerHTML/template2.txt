@@ -16,13 +16,11 @@
             <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
             </div>
             <ul>
-            <li class="component"><strong>Programming Languages:A</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Web Technologies:A</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Frameworks:A</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Databases:A</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Big Data:A</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            <li class="component"><strong>Tools:A</strong><i class="fa-solid fa-trash trash-icon-skill"></i></li>
-            </ul>
+            <li class="component"><strong>Proficient in Microsoft Office Suite</strong>:Excel, Word, PowerPoint<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Programming languages</strong>:Python, Java, SQL<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Web development</strong>:HTML, CSS, JavaScript<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Data analysis and visualization</strong>:Tableau, Power BI<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            <li class="component"><strong>Cloud computing</strong>:AWS, Azure<i class="fa-solid fa-trash trash-icon-skill"></i></li>
             <div id="add-skill" class="add-button">+</div>
         </section>
     </div>
