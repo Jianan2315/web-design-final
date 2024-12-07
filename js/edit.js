@@ -61,10 +61,11 @@ window.addEventListener("load", function () {
         loadTextAsInnerHTML("template"+templateId+".txt")
             .then(text=> {
                 let htmlcontent = text;
-                if (localStorage.getItem('data') !== null) {
-                    const resume=JSON.parse(localStorage.getItem('data'));
-                    localStorage.removeItem('data');
-                    htmlcontent = populateTemplate1(text, resume);
+                if (params.has('id')) {
+                    const id = params.get('id')
+                    const resume=JSON.parse(localStorage.getItem(id));
+                    localStorage.removeItem(id);
+                    htmlcontent = populateTemplate(text, resume, templateId);
                     console.log(htmlcontent);
                 } else {
                     console.log("Key does not exist.");
@@ -107,6 +108,20 @@ window.addEventListener("load", function () {
     document.body.appendChild(script);
 });
 
+function populateTemplate(template, json, templateId){
+    if (templateId == 1){
+        return populateTemplate1(template, json);
+    }
+    else if (templateId == 2){
+        return populateTemplate2(template, json);
+    }
+    else if (templateId == 3){
+        return populateTemplate3(template, json);
+    }
+    else {
+        console.log("Invalid template id: ",templateId);
+    }
+}
 function populateTemplate3(template, data) {
     // Personal Info
     template = template.replace(/<h1>.*?<\/h1>/, `<h1>${data.personal_info.name}</h1>`);
