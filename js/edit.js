@@ -18,7 +18,7 @@ function loadTextAsInnerHTML(filename) {
     // Path to your text file
     console.log("1 ", window.location.href); // Full URL
     console.log("2 ", window.location.pathname); // Path within the URL
-    const filePath = '../innerHTML/'+filename;
+    const filePath = 'innerHTML/'+filename;
     // Fetch the text file
     return fetch(filePath)
         .then(response => {
