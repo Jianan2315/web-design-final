@@ -1,23 +1,17 @@
 // edit.js
 const PORT=3072;
 
-// add functions
 function addCSS(filename) {
-    // Create a new <link> element
     const link = document.createElement("link");
 
-    // Set the attributes for the <link> element
     link.rel = "stylesheet";
     link.href = "css/templates/"+filename;  // Path to your CSS file
 
-    // Append the <link> element to the <head> section
     document.head.appendChild(link);
 }
 
 function loadTextAsInnerHTML(filename) {
-    // Path to your text file
     const filePath = 'innerHTML/'+filename;
-    // Fetch the text file
     return fetch(filePath)
         .then(response => {
             if (!response.ok) {
@@ -47,16 +41,6 @@ window.addEventListener("load", function () {
     // In fact, script is really imported in edit.html.
     script.src = "./js/templates/"+"template"+templateId+".js";
     console.log(script.src);
-
-    // let loadLocalJson = "";
-    // fetch('json/resume_data.json')
-    //     .then(response => {
-    //         if (!response.ok) {
-    //             throw new Error(`Error fetching file: ${response.statusText}`);
-    //         }
-    //         return response.json(); // Read the file as text
-    //     })
-    //     .then(data=>loadLocalJson=data).then(()=>console.log("loadLocalJson: ",loadLocalJson));
 
     script.onload = () => {
         loadTextAsInnerHTML("template"+templateId+".txt")
@@ -384,20 +368,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 element.style.display="none";
             }
         }
-        const previewSection = document.querySelector('#resume-preview');
-        // Use html2canvas to take a screenshot of the preview section
-        html2canvas(previewSection)
-            .then(canvas => {
-                // Convert the canvas to a data URL
-                const imageData = canvas.toDataURL('image/png');
-                localStorage.setItem('thumbnail', imageData);
-                // Create a link element to download the image
-                // const downloadLink = document.createElement('a');
-                // downloadLink.href = imageData;
-                // downloadLink.download = 'output.png';
-                // downloadLink.click();
-            })
-        ;
 
         // Use html2pdf to convert the content to a PDF and save it
         html2pdf()
@@ -412,7 +382,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(()=>element.classList.add("pdf"))
             .save() // This triggers the download of the PDF
             .then(()=>{
-                
+                localStorage.clear();// Just remove data when user leaves this page.
             })
             .then(()=>{window.location.href = "download.html";})
             ;
@@ -421,26 +391,37 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-function saveDatabase(resumeData){
-    fetch(`http://localhost:${PORT}/create/resume`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            email: `${localStorage.getItem('email')}`,
-            json: `${localStorage.getItem('json')}`,
-            templateId: `${localStorage.getItem('templateId')}`,
-            thumbnail: `${localStorage.getItem('thumbnail')}`
-        }),
-    })
+function saveDatabase(resumeData) {
+    const previewSection = document.querySelector('#resume-preview');
+    html2canvas(previewSection)
+        .then(canvas => {
+            // Convert the canvas to a data URL
+            const imageData = canvas.toDataURL('image/png');
+
+            // Proceed with fetch after setting the thumbnail
+            return fetch(`http://localhost:${PORT}/create/resume`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: `${localStorage.getItem('email')}`,
+                    json: `${localStorage.getItem('json')}`,
+                    templateId: `${localStorage.getItem('templateId')}`,
+                    thumbnail: imageData
+                }),
+            });
+        })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json(); // Parse the JSON response
         })
-        .then(data => console.log('Response from /create/resume \n:', data))
+        .then(data => console.log('Response from /create/resume:\n', data))
         .catch(error => console.error('Error:', error));
 }
+
+
+
 function saveLocal(resumeData){
     // May remove
     fetch(`http://localhost:${PORT}/save`, {
