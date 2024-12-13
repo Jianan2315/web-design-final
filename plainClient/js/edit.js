@@ -40,7 +40,6 @@ window.addEventListener("load", function () {
     // because here is just configuration.
     // In fact, script is really imported in edit.html.
     script.src = "./js/templates/"+"template"+templateId+".js";
-    console.log(script.src);
 
     script.onload = () => {
         loadTextAsInnerHTML("template"+templateId+".txt")
@@ -51,7 +50,6 @@ window.addEventListener("load", function () {
                     const resume=JSON.parse(localStorage.getItem(id));
                     localStorage.removeItem(id);
                     htmlcontent = populateTemplate(text, resume, templateId);
-                    console.log(htmlcontent);
                 } else {
                     console.log("Key does not exist.");
                 }
@@ -316,12 +314,7 @@ function populateTemplate1(template, data) {
     return template;
 }
 
-
-// Wait for the DOM to be fully loaded
-// per my test, element replacement does NOT matter for "DOMContentLoaded" event.
-// Thus, any issue about event delegation are NOT related to this download event listener
 document.addEventListener("DOMContentLoaded", function() {
-
     // Get the button and add an event listener
     const icons = document.getElementById("head-icons")
     const downloadButton = icons.querySelector("#download-icon");
@@ -329,16 +322,23 @@ document.addEventListener("DOMContentLoaded", function() {
     const printButton = icons.querySelector("#print-icon");
 
     saveButton.addEventListener("click", ()=>{
-        console.log("Saving...");
+        const header = document.getElementById('personal-info');
+        const infoText = header.querySelector('p').textContent;
+        const emailMatch = infoText.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
+        localStorage.setItem('email', emailMatch[0]);
+
         const resumeData = extractData();
         saveDatabase(resumeData);
         saveLocal(resumeData);
-        console.log("Completed.");
     });
 
     printButton.addEventListener("click", ()=>{
         const originalContent = document.body.innerHTML;
-        const printContent = document.getElementById('resume-preview').outerHTML;
+        const printElement = document.getElementById('resume-preview');
+        printElement.style.width = "100%";
+        printElement.style.margin = "0";
+        printElement.style.padding = "0";
+        const printContent = printElement.outerHTML;
 
         document.body.innerHTML = printContent; // Replace body with the container
         for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
@@ -356,11 +356,6 @@ document.addEventListener("DOMContentLoaded", function() {
         // Get the HTML content to be converted
         let element = document.getElementById("resume-preview");
         const icons= element.querySelectorAll(".editIcon");
-
-        const header = document.getElementById('personal-info');
-        const infoText = header.querySelector('p').textContent;
-        const emailMatch = infoText.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
-        localStorage.setItem('email', emailMatch[0]);
 
         for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
             if (document.getElementById(e)){
@@ -392,8 +387,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function saveDatabase(resumeData) {
+    for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
+        if (document.getElementById(e)){
+            const element = document.getElementById(e);
+            element.style.display="none";
+        }
+    }
     const previewSection = document.querySelector('#resume-preview');
-    html2canvas(previewSection)
+    html2canvas(previewSection, {logging: false})
         .then(canvas => {
             // Convert the canvas to a data URL
             const imageData = canvas.toDataURL('image/png');
@@ -417,14 +418,13 @@ function saveDatabase(resumeData) {
             }
             return response.json(); // Parse the JSON response
         })
-        .then(data => console.log('Response from /create/resume:\n', data))
+        .then(data => console.log('Response from /create/resume:\n', data.message))
         .catch(error => console.error('Error:', error));
 }
 
 
-
+// May remove
 function saveLocal(resumeData){
-    // May remove
     fetch(`http://localhost:${PORT}/save`, {
         method: 'POST', // HTTP POST method
         headers: {
@@ -434,7 +434,7 @@ function saveLocal(resumeData){
     })
         .then(response => response.json()) // Parse the JSON response
         .then(data => {
-            console.log('Success:', data); // Log success message from the backend
+            console.log('Success:', data.message); // Log success message from the backend
         })
         .catch(error => {
             console.error('Error:', error); // Log errors if any

@@ -318,3 +318,9 @@ section {
   top:0;
   left:0;
 }
+
+@media print {
+  @page {
+    margin: 0; /* important rule for using window.print() */
+  }
+}

@@ -1,9 +1,9 @@
 {
     "personal_info": {
-        "name": "Michael Johnson",
+        "name": "0003",
         "phone": "(999)-123-4567",
-        "email": "jo.mi@northeastern.edu",
-        "location": "Boston"
+        "email": "joe.mercy@northeastern.edu",
+        "location": "Toruto"
     },
     "education": [
         {
@@ -49,16 +49,6 @@
             "responsibilities": [
                 "Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.",
                 "Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency."
-            ]
-        },
-        {
-            "company": "Dell",
-            "position": "Global Operations Engineer",
-            "location": "Shanghai",
-            "start_end_dates": "Jul 2021 - Sep 2021",
-            "responsibilities": [
-                "Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.",
-                "Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements."
             ]
         }
     ]

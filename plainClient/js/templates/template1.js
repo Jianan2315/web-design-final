@@ -233,30 +233,22 @@ function bindInfoBlock(){
     const firstElement=headSection.querySelector("h1");
     firstElement.addEventListener('mouseenter', () => {
         const secondElement = firstElement.nextElementSibling;
-        const thirdElement = secondElement.nextElementSibling;
         secondElement.classList.add('component-hover');
-        thirdElement.classList.add('component-hover');
     });
     firstElement.addEventListener('mouseleave', () => {
         const secondElement = firstElement.nextElementSibling;
-        const thirdElement = secondElement.nextElementSibling;
         secondElement.classList.remove('component-hover');
-        thirdElement.classList.remove('component-hover');
     });
 
     // 2nd
     const secondElement = headSection.querySelector("p");
     secondElement.addEventListener('mouseenter', () => {
         const firstElement = secondElement.previousElementSibling;
-        const thirdElement = secondElement.nextElementSibling;
         firstElement.classList.add('component-hover');
-        thirdElement.classList.add('component-hover');
     });
     secondElement.addEventListener('mouseleave', () => {
         const firstElement = secondElement.previousElementSibling;
-        const thirdElement = secondElement.nextElementSibling;
         firstElement.classList.remove('component-hover');
-        thirdElement.classList.remove('component-hover');
     });
 
 }
@@ -1113,10 +1105,8 @@ function addBullet(lines) {
 function hidePreview() {
     const right = document.getElementById('preview-container');
     const screenWidth = window.innerWidth;
-    console.log("hide");
     if (screenWidth <= 1024) {
         right.style.display = 'none';
-        console.log("1024");
     }
 }
 
@@ -1150,21 +1140,13 @@ function adjustTextarea() {
         const maxHeight = lineHeight * 6; // Max height for 6 rows
         const finalHeight = Math.min(scrollHeight, maxHeight);
         textarea.style.height = `${finalHeight}px`;
-
-        console.log("lineHeight:", lineHeight);
-        console.log("scrollHeight:", scrollHeight);
-        console.log("maxHeight:", maxHeight);
-        console.log("finalHeight:", finalHeight);
-        console.log("height:", textarea.style.height);
     }
 
     // Adjust each textarea
     textareas.forEach(textarea => {
-        console.log("Ad");
         adjustHeight(textarea); // Adjust for pre-filled content
         textarea.addEventListener('input', function () {
             adjustHeight(this); // Adjust dynamically on input
         });
     });
-    console.log("ADJUST");
 }
