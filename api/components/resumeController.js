@@ -7,7 +7,7 @@ exports.createResume = async (req, res) => {
         }
         const resume = new Resume({ email, thumbnail, json, templateId });
         await resume.save();
-        res.status(201).json({ message: 'Resume created successfully', resume });
+        res.status(201).json({ message: 'Resume created in database successfully', resume });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }

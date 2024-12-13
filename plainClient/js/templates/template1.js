@@ -363,7 +363,6 @@ function popEditForm() {
                     <button type="button" id="cancel-edu-entry">Cancel</button>
                 `;
                 form.querySelector('#update-edu-entry').addEventListener('click', function () {
-
                     updateEduEntry(this, block);
                 });
                 form.querySelector('#cancel-edu-entry').addEventListener('click', function () {
@@ -396,6 +395,7 @@ function popEditForm() {
                 <button type="button" id="update-skill-entry">Update</button>
                 <button type="button" id="cancel-skill-entry">Cancel</button>
             `;
+            adjustTextarea();
             form.querySelector('#update-skill-entry').addEventListener('click', function () {
                 updateSkillEntry(this, block);
             });
@@ -407,6 +407,7 @@ function popEditForm() {
 
     });
 
+    // EXP
     const firstEles = expSection.querySelectorAll("h3");
     const secondEles = expSection.querySelectorAll("p");
     const thirdEles = expSection.querySelectorAll("ul");
@@ -455,6 +456,7 @@ function popEditForm() {
                     <button type="button" id="update-exp-entry">Update</button>
                     <button type="button" id="cancel-exp-entry">Cancel</button>
                 `;
+                adjustTextarea();
                 form.querySelector('#update-exp-entry').addEventListener('click', function () {
 
                     updateExpEntry(this, block);
@@ -1107,6 +1109,7 @@ function addBullet(lines) {
     const values=lines.value.split("\n").map(line => line.startsWith("•")?line:`•${line}`);
     lines.value=values.join("\n");
 }
+
 function hidePreview() {
     const right = document.getElementById('preview-container');
     const screenWidth = window.innerWidth;
@@ -1124,4 +1127,44 @@ function showPreview() {
     if (screenWidth <= 1024) {
         right.style.display = 'block';
     }
+}
+
+function adjustTextarea() {
+    const textareas = document.querySelectorAll('textarea');
+
+    // Helper function to adjust height
+    function adjustHeight(textarea) {
+        textarea.style.height = 'auto'; // Reset height
+        void textarea.offsetHeight; // Trigger reflow
+        const scrollHeight = textarea.scrollHeight; // Get the actual content height
+
+        // Get the computed line height or fallback to font size
+        let lineHeight = getComputedStyle(textarea).lineHeight;
+        if (lineHeight === 'normal') {
+            const fontSize = parseFloat(getComputedStyle(textarea).fontSize);
+            lineHeight = fontSize * 1.2; // Approximate default multiplier for "normal"
+        } else {
+            lineHeight = parseFloat(lineHeight); // Convert to numeric
+        }
+
+        const maxHeight = lineHeight * 6; // Max height for 6 rows
+        const finalHeight = Math.min(scrollHeight, maxHeight);
+        textarea.style.height = `${finalHeight}px`;
+
+        console.log("lineHeight:", lineHeight);
+        console.log("scrollHeight:", scrollHeight);
+        console.log("maxHeight:", maxHeight);
+        console.log("finalHeight:", finalHeight);
+        console.log("height:", textarea.style.height);
+    }
+
+    // Adjust each textarea
+    textareas.forEach(textarea => {
+        console.log("Ad");
+        adjustHeight(textarea); // Adjust for pre-filled content
+        textarea.addEventListener('input', function () {
+            adjustHeight(this); // Adjust dynamically on input
+        });
+    });
+    console.log("ADJUST");
 }

@@ -17,8 +17,6 @@ function hideEnlargedThumbnail() {
     enlargedThumbnail.innerHTML = ""; // Clear the enlarged thumbnail content
 }
 
-// Event Listeners
-
 // Show the enlarged thumbnail when hovering over a thumbnail
 thumbnails.forEach(thumbnail => {
     thumbnail.addEventListener("mouseenter", showEnlargedThumbnail);

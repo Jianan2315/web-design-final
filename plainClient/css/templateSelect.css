@@ -34,9 +34,10 @@ header {
 
 .templates-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(50rem, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+  gap: 1%;
   justify-items: center;
+  margin: 0 1%;
 }
 
 .overlay {

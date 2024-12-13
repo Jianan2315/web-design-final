@@ -17,20 +17,19 @@
             "degree": "BS in Computer Science"
         }
     ],
-    "personal_skills": [
-        "a:Excellent written and verbal communication",
-        "a:Active listening and empathy"
-    ],
-    "languages": [
-        {
-            "category": "Communication language",
-            "details": "Chinese (Native), English (Proficient)"
-        },
-        {
-            "category": "Programming languages",
-            "details": "Python, SQL, HTML5, Java"
-        }
-    ],
+    "personal_skills": {
+        "communication_languages": "Chinese (Native), English (Proficient)",
+        "programming_languages": [
+            "Python",
+            "SQL",
+            "HTML5",
+            "Java"
+        ],
+        "certifications": [
+            "ITIL 4 Foundation",
+            "Microsoft Certified"
+        ]
+    },
     "professional_experience": [
         {
             "company": "Wicresoft",
@@ -62,9 +61,5 @@
                 "Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements."
             ]
         }
-    ],
-    "key_achievements": [
-        "Developed and deployed a web application, increasing customer engagement by 25%.",
-        "Automated data processing tasks using Python, reducing manual workload by 40 hours per week."
     ]
 }
