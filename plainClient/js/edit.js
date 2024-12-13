@@ -397,6 +397,7 @@ function saveDatabase(resumeData) {
         .then(canvas => {
             // Convert the canvas to a data URL
             const imageData = canvas.toDataURL('image/png');
+            const resumeJson = JSON.stringify(resumeData, null, 4);
 
             // Proceed with fetch after setting the thumbnail
             return fetch(`http://localhost:${PORT}/create/resume`, {
@@ -404,7 +405,7 @@ function saveDatabase(resumeData) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email: `${localStorage.getItem('email')}`,
-                    json: `${localStorage.getItem('json')}`,
+                    json: resumeJson,
                     templateId: `${localStorage.getItem('templateId')}`,
                     thumbnail: imageData
                 }),
@@ -641,8 +642,6 @@ function extractData() {
         });
 
     }
-
-    localStorage.setItem('json', JSON.stringify(resumeData, null, 4));
 
     return resumeData
 }
