@@ -25,7 +25,10 @@ const Login = () => {
             const responseUser = await axios.get(`${BACKEND_URL}/info`, {
                 headers: { Authorization: `Bearer ${response.data.token}` },
             });
+
             const userInfo = responseUser.data.user;
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            localStorage.setItem('role', userInfo.role);
 
             setTimeout(() => {
                 if (userInfo.role === 'admin') {

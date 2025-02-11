@@ -1,0 +1,65 @@
+{
+    "personal_info": {
+        "name": "1220",
+        "phone": "(999)-123-4567",
+        "email": "jo.mi@northeastern.edu",
+        "location": "Boston"
+    },
+    "education": [
+        {
+            "institution": "Northeastern University",
+            "graduation_date": "Dec 2026",
+            "degree": "MS in Software Engineering Systems"
+        },
+        {
+            "institution": "Boston University",
+            "graduation_date": "Dec 2019",
+            "degree": "BS in Computer Science"
+        }
+    ],
+    "personal_skills": {
+        "communication_languages": "Chinese (Native), English (Proficient)",
+        "programming_languages": [
+            "Python",
+            "SQL",
+            "HTML5",
+            "Java"
+        ],
+        "certifications": [
+            "ITIL 4 Foundation",
+            "Microsoft Certified"
+        ]
+    },
+    "professional_experience": [
+        {
+            "company": "Wicresoft",
+            "position": "Azure PaaS Support Engineer",
+            "location": "Shanghai",
+            "start_end_dates": "Jul 2023 - Jul 2024",
+            "responsibilities": [
+                "Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.",
+                "Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID."
+            ]
+        },
+        {
+            "company": "Huawei Digital Power Technology",
+            "position": "Software Development Engineer",
+            "location": "Shenzhen",
+            "start_end_dates": "Mar 2022 - Aug 2022",
+            "responsibilities": [
+                "Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.",
+                "Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency."
+            ]
+        },
+        {
+            "company": "Dell",
+            "position": "Global Operations Engineer",
+            "location": "Shanghai",
+            "start_end_dates": "Jul 2021 - Sep 2021",
+            "responsibilities": [
+                "Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.",
+                "Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements."
+            ]
+        }
+    ]
+}

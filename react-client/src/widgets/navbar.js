@@ -12,8 +12,9 @@ const Navbar = () => {
     const isAuthenticated = !!token; // Boolean to check authentication
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); // Clear the token
-        localStorage.removeItem('role'); // Clear the role (if stored)
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('userInfo');
         navigate('/'); // Redirect to home page
     };
 
@@ -30,10 +31,9 @@ const Navbar = () => {
                     </>
                 ) : (
                     <>
-                        {userRole === 'user' && <Link to="/userPortal">User Portal</Link>}
-                        {userRole === 'user' && <Link to="/templateSelect">Templates</Link>}
-                        {userRole === 'user' && <Link to="/resumeEditor">Editor</Link>}
-                        {userRole === 'admin' && <Link to="/adminPortal">Admin Portal</Link>}
+                        {userRole === 'user' && <Link to="/user">User Portal</Link>}
+                        {userRole === 'user' && <Link to="/select">Templates</Link>}
+                        {userRole === 'admin' && <Link to="/admin">Admin Portal</Link>}
                         <button className="logout-button" onClick={handleLogout}>
                             Log Out
                         </button>

@@ -1,0 +1,117 @@
+<!-- Header -->
+<header id="personal-info">
+  <h1>Michael Johnson</h1>
+  <p> Phone: (999)-123-4567 | Email: jo.mi@northeastern.edu | Location: Boston</p>
+</header>
+
+<!-- Two-Column Layout -->
+<div class="two-column-layout">
+    <!-- Left Column -->
+    <div class="left-column">
+        <!-- Education Section -->
+        <section id="edu-section">
+            <h2>Education</h2>
+            <div class="editIcon" id="eduIcon">
+                <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+                <i class="fa-solid fa-plus" onclick="addEducation(this)" style="float:right;margin-right: 10px;"></i>
+            </div>
+            <table>
+                <tr class="component">
+                    <td><strong>Northeastern University</strong></td>
+                    <td>Dec 2026</td>
+                    <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                    <td colspan="2">MS in Software Engineering Systems</td>
+                </tr>
+                <tr class="component">
+                    <td><strong>Boston University</strong></td>
+                    <td> Dec 2019</td>
+                    <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
+                </tr>
+                <tr class="degree component">
+                    <td colspan="2">BS in Computer Science</td>
+                </tr>
+            </table>
+            <div id="add-edu" class="add-button">+</div>
+        </section>
+
+        <!-- Personal Skills Section -->
+        <section id="skill-section">
+            <h2>Personal Skills</h2>
+            <div class="editIcon" id="skillIcon">
+              <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+              <i class="fa-solid fa-plus" onclick="addSkill(this)" style="float:right;margin-right: 10px;"></i>
+            </div>
+            <ul>
+                <li class="component"><strong>Proficient in Microsoft Office Suite</strong>:Excel, Word, PowerPoint<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+                <li class="component"><strong>Data analysis and visualization</strong>:Tableau, Power BI<i class="fa-solid fa-trash trash-icon-skill"></i></li>
+            </ul>
+            <div id="add-skill" class="add-button">+</div>
+        </section>
+
+        <!-- Languages Section -->
+        <section id="lang-section">
+            <h2>Languages</h2>
+            <div class="editIcon" id="langIcon">
+            <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+            <i class="fa-solid fa-plus" onclick="addLang(this)" style="float:right;margin-right: 10px;"></i>
+            </div>
+            <ul>
+                <li class="component"><strong>Communication language</strong>: Chinese (Native), English (Proficient)<i class="fa-solid fa-trash trash-icon-lang"></i></li>
+                <li class="component"><strong>Programming languages</strong>: Python, SQL, HTML5, Java<i class="fa-solid fa-trash trash-icon-lang"></i></li>
+            </ul>
+            <div id="add-lang" class="add-button">+</div>
+        </section>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+        <!-- Professional Experience Section -->
+        <section id="exp-section">
+            <h2>Professional Experience</h2>
+            <div class="editIcon" id="expIcon">
+                <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+                <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
+            </div>
+            <h3 class="component">Wicresoft, Azure PaaS Support Engineer</h3>
+            <p class="component"><em>Shanghai | Jul 2023 - Jul 2024</em></p>
+            <ul class="component">
+                <li>Provided technical support for Azure Logic Apps integration services through individual research, team discussions, and cross-team collaboration to ensure customer satisfaction.</li>
+                <li>Resolved over 300 support tickets involving Azure products such as Monitor, Sentinel, Virtual Network, Web Application Firewall, and Microsoft Entra ID.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+            </ul>
+
+            <h3 class="component">Huawei Digital Power Technology, Software Development Engineer</h3>
+            <p class="component"><em>Shenzhen | Mar 2022 - Aug 2022</em></p>
+            <ul class="component">
+                <li>Participated in the productization of intelligent battery algorithms, including data acquisition, data preprocessing, feature engineering, model inference, and unit testing.</li>
+                <li>Constructed test data using Python libraries such as NumPy and Pandas for unit testing to ensure algorithm consistency.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+            </ul>
+
+            <h3 class="component">Dell, Global Operations Engineer, Intern</h3>
+            <p class="component"><em>Shanghai | Jul 2021 - Sep 2021</em></p>
+            <ul class="component">
+                <li>Participated in the construction of a cross-departmental data integration platform to enhance data access management and reduce the risk of data leakage.</li>
+                <li>Used PowerBI to visualize business logic behind the integration platform, assisting the development team in understanding business requirements.</li>
+                <i class="fa-solid fa-trash trash-icon-exp"></i>
+            </ul>
+            <div id="add-exp" class="add-button">+</div>
+        </section>
+
+        <!-- Key Achievements Section -->
+        <section id="achi-section">
+            <h2>KEY ACHIEVEMENTS</h2>
+            <div class="editIcon" id="achiIcon">
+            <i class="fa-solid fa-minus" onclick="activateOverlay(this)" style="float:right;"></i>
+            <i class="fa-solid fa-plus" onclick="addAchi(this)" style="float:right;margin-right: 10px;"></i>
+            </div>
+            <ul>
+                <li class="component"><strong>Developed and deployed a web application, increasing customer engagement by 25%.</strong><i class="fa-solid fa-trash trash-icon-achi"></i></li>
+                <li class="component"><strong>Automated data processing tasks using Python, reducing manual workload by 40 hours per week.</strong><i class="fa-solid fa-trash trash-icon-achi"></i></li>
+            </ul>
+            <div id="add-achi" class="add-button">+</div>
+        </section>
+    </div>
+</div>

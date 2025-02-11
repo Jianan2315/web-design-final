@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Resume</title>
+    <link rel="stylesheet" href="css/edit.css">
+</head>
+<body class="edit">
+    <div class="overlay" id="overlay"></div>
+    <div class="modify-table" id="modify-table">
+        <table id="modify-options"></table>
+    </div>
+    <div id="head-icons">
+        <i id="save-icon" class="fa-solid fa-floppy-disk"></i>
+        <i id="download-icon" class="fa-solid fa-download"></i>
+        <i id="print-icon" class="fa-solid fa-print"></i>
+    </div>
+
+    <header>
+        <h1>Edit Your Resume</h1>
+    </header>
+    <main class="edit-page">
+        <div id="form-container" class="form-container-hidden"><section class="form-section">
+            <form id="resume-form">
+            </form>
+        </section></div>
+        <div id="preview-container"><section class="preview-section">
+            <div id="resume-preview">
+                <!-- The selected template with user data will appear here -->
+            </div>
+        </section></div>
+    </main>
+    <script src="js/edit.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://kit.fontawesome.com/e212b5add5.js" crossorigin="anonymous"></script>
+</body>
+</html>

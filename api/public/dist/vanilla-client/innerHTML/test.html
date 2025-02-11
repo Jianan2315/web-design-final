@@ -1,0 +1,413 @@
+<html lang="en"><head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+    injectIntoGlobalHook(window);
+    window.$RefreshReg$ = () => {};
+    window.$RefreshSig$ = () => (type) => type;</script>
+
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hayeresume - Create your resume</title>
+    <style type="text/css" data-vite-dev-id="C:/Users/flywi/Desktop/test/web-design-final/react-client/src/index.css">/* Original Root Styles */
+    :root {
+        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+        font-weight: 400;
+
+        color-scheme: light dark;
+        color: rgba(255, 255, 255, 0.87);
+        background-color: #242424;
+
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Links */
+    a {
+        font-weight: 500;
+        color: #646cff;
+        text-decoration: inherit;
+    }
+    a:hover {
+        color: #535bf2;
+    }
+    h1 {
+        font-size: 3.2em;
+        line-height: 1.1;
+    }
+    /* Buttons */
+    button {
+        border-radius: 8px;
+        border: 1px solid transparent;
+        padding: 0.6em 1.2em;
+        font-size: 1em;
+        font-weight: 500;
+        font-family: inherit;
+        background-color: #1a1a1a;
+        cursor: pointer;
+        transition: border-color 0.25s;
+    }
+    button:hover {
+        border-color: #646cff;
+    }
+    button:focus,
+    button:focus-visible {
+        outline: 4px auto -webkit-focus-ring-color;
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            color: #213547;
+            background-color: #ffffff;
+        }
+        a:hover {
+            color: #747bff;
+        }
+        button {
+            background-color: #f9f9f9;
+        }
+    }
+
+    /* Reset body margin and padding */
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column; /* Stacks the navbar and main content vertically */
+        min-height: 100vh; /* Ensures the body fills the viewport height */
+        box-sizing: border-box;
+        background-color: #f6e5d4; /* Optional background color */
+        overflow-x: hidden; /* Prevent horizontal overflow */
+    }
+
+    /* Prevent navbar from affecting centering */
+    .navbar-container {
+        width: 100%;
+        background-color: #007bff;
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+    }
+
+    /* Center the main content */
+    .main-content {
+        flex: 1;
+        display: flex;
+        justify-content: center; /* Horizontally center */
+        align-items: center; /* Vertically center */
+        padding: 2rem;
+    }
+    </style><style type="text/css" data-vite-dev-id="C:/Users/flywi/Desktop/test/web-design-final/react-client/src/css/navbar.css">/* Navbar.css */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007bff;
+    padding: 1rem 2rem;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.navbar-logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-links a,
+.navbar-links button {
+    margin-left: 1rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.navbar-links a:hover,
+.navbar-links button:hover {
+    text-decoration: underline;
+}
+
+.logout-button {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: white;
+    color: #007bff;
+}
+</style><style type="text/css" data-vite-dev-id="C:/Users/flywi/Desktop/test/web-design-final/react-client/src/css/login.css">/* Login.css */
+.login-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-header {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-input {
+    margin: 0.5rem 0;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-button {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+.login-message {
+    margin-top: 1rem;
+    color: green;
+}
+</style><style type="text/css" data-vite-dev-id="C:/Users/flywi/Desktop/test/web-design-final/react-client/src/css/signup.css">/* Signup.css */
+.signup-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.signup-header {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-input {
+    margin: 0.5rem 0;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.signup-button {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    font-size: 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.signup-button:hover {
+    background-color: #218838;
+}
+
+.signup-message {
+    margin-top: 1rem;
+    color: green;
+}
+</style><style type="text/css" data-vite-dev-id="C:/Users/flywi/Desktop/test/web-design-final/react-client/src/css/userPortal.css">.main-content {
+    display: block;
+    padding: 0;
+}
+h2 {
+    text-align: center;
+}</style><style type="text/css" data-vite-dev-id="C:/Users/flywi/Desktop/test/web-design-final/react-client/src/css/home.css">.home-container {
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+}
+
+.hero-section {
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 4rem 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.cta-button {
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+}
+
+.features-section {
+    text-align: center;
+}
+
+.features {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 2rem;
+    gap: 2rem;
+    flex-wrap: wrap; /* Allow wrapping when there's insufficient space */
+}
+
+.feature {
+    flex: 1 1 28%;
+    max-width: 60%;
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.feature h3 {
+    font-size: 1.5rem;
+    color: #007BFF;
+    margin-bottom: 1rem;
+}
+
+.feature p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 1rem; /* Reduce padding */
+    }
+
+    .hero-section h1 {
+        font-size: 2rem; /* Smaller font size */
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        font-size: 1rem;
+        padding: 0.6rem 1.5rem; /* Reduce button size */
+    }
+
+    .features {
+        flex-direction: column; /* Stack features vertically */
+    }
+
+    .feature {
+        flex: 1 1 98%; /* Each feature takes full width */
+        max-width: 100%;
+        margin-bottom: 1rem; /* Add spacing between features */
+    }
+
+    .feature:last-child {
+        margin-bottom: 0; /* Remove spacing for the last feature */
+    }
+}
+</style><style type="text/css" data-vite-dev-id="C:/Users/flywi/Desktop/test/web-design-final/react-client/src/App.css">#root {
+    width: 100%;          /* Ensure #root stretches to full width */
+    max-width: none;      /* Remove the max-width constraint */
+    margin: 0;            /* Remove auto margin for centering */
+    box-sizing: border-box; /* Ensure padding doesn't cause overflow */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+}
+.logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+        animation: logo-spin infinite 20s linear;
+    }
+}
+
+.card {
+    padding: 2em;
+}
+
+.read-the-docs {
+    color: #888;
+}
+</style></head>
+<body>
+<div id="root"><div class="navbar-container"><nav class="navbar"><div class="navbar-logo"><a href="/" data-discover="true">Resume Builder</a></div><div class="navbar-links"><button class="logout-button">Log Out</button></div></nav></div><div class="main-content"><div><h2>User Portal</h2><div><iframe src="/vanilla-client/profile.html" title="Profile" style="width: 100%; height: 100vh; border: none;"></iframe></div></div></div></div>
+<script type="module" src="/src/main.jsx"></script>
+
+
+</body></html>
