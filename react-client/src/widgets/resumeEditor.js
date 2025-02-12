@@ -28,7 +28,6 @@ const ResumeEditor = () => {
 
             // Adjust iframe height dynamically based on content
             const handleResize = (event) => {
-                console.log("react height:", event.data?.height)
                 if (event.data?.height) {
                     iframe.style.height = `${event.data.height}px`;
                 }
@@ -49,7 +48,7 @@ const ResumeEditor = () => {
                     ) : (
                         <iframe
                             id="resume-iframe"
-                            src={`/vanilla-client/edit.html?template=${templateId}&id=${id}`}
+                            src=""
                             style={{
                                 width: '100%',
                                 border: 'none',
