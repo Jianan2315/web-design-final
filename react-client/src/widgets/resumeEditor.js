@@ -22,34 +22,48 @@ const ResumeEditor = () => {
             }, 2000);
         }
 
-        const iframe = document.querySelector('iframe');
+        const iframe = document.getElementById("resume-iframe");
         if (iframe && templateId && id) {
             iframe.src = `/vanilla-client/edit.html?template=${templateId}&id=${id}`;
+
+            // Adjust iframe height dynamically based on content
+            const handleResize = (event) => {
+                console.log("react height:", event.data?.height)
+                if (event.data?.height) {
+                    iframe.style.height = `${event.data.height}px`;
+                }
+            };
+
+            window.addEventListener("message", handleResize);
+            return () => window.removeEventListener("message", handleResize);
         }
     }, [templateId, id]);
 
     return (
-        <div>
+        <div style={{ width: '100%' }}>
             <h2>Create your resume</h2>
             {userInfo ? (
                 role == "user" ? (
                     invalidRequest ? (
                         <p>Invalid request.</p>
-                        ) : (
-                            <div>
-                                <iframe
-                                    src={`/vanilla-client/edit.html?template=${templateId}&id=${id}`}
-                                    style={{width: '100%', height: '100vh', border: 'none'}}
-                                    title="Editor"
-                                ></iframe>
-                            </div>
-                        )
                     ) : (
-                        <p>No Access.</p>
+                        <iframe
+                            id="resume-iframe"
+                            src={`/vanilla-client/edit.html?template=${templateId}&id=${id}`}
+                            style={{
+                                width: '100%',
+                                border: 'none',
+                                display: 'block'
+                            }}
+                            title="Editor"
+                        ></iframe>
                     )
                 ) : (
-                    <p>Please login in first.</p>
+                    <p>No Access.</p>
                 )
+            ) : (
+                <p>Please login first.</p>
+            )
             }
         </div>
     );

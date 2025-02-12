@@ -20,6 +20,15 @@ function loadTextAsInnerHTML(filename) {
         });
 }
 
+// handle iframe two scroll bars issue
+function sendHeight() {
+    const height = document.documentElement.scrollHeight; // Get full page height
+    window.parent.postMessage({ height }, "*"); // Send height to parent
+}
+
+// Update height when the window resizes
+window.addEventListener("resize", sendHeight);
+
 // Load selected template
 // per my test, this load event does NOT affect event delegation.
 window.addEventListener("load", function () {
@@ -98,6 +107,7 @@ window.addEventListener("load", function () {
                 //     }
                 // }
             });
+        sendHeight();// Ensure height is sent after the page fully loads
         console.log('Script loaded successfully!');
     };
     script.onerror = () => {
