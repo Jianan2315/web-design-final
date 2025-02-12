@@ -58,7 +58,15 @@
 
 # Issues:
 ## 1/10/2025:
-- Async issue between user portal and its iframe:
+1) Async issue between user portal and its iframe:
   - `userPortal.js` *useEffect()* was executed later than `profile.js` on Azure App service, which led to "**Cannot read properties of null**".
-- Load twice issue on thumbnails in frame
-- Old build js still exists in express backend /dist (this doesn't matter thus may fix this later)
+2) Load twice issue on thumbnails in frame
+3) Old build js still exists in express backend /dist (optional, this doesn't matter thus may fix this later)
+
+## 2/10/2025
+According to my records on napkins:
+1) 'scroll' issue (based on my memory, there exist two scroll bars)
+2) 'save to local' issue (no idea about what it is right now)
+
+## 2/12/2025
+All non-optional issues have been fixed.
