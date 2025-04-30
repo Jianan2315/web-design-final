@@ -1,13 +1,12 @@
 const thumbnails = document.querySelectorAll(".thumbnail");
 const overlay = document.getElementById("overlay");
 const enlargedThumbnail = document.getElementById("enlarged-thumbnail");
-var thumbnailTemplateId = 0;
 
 // Functions
 function showEnlargedThumbnail(e) {
     const imgSrc = this.querySelector("img").getAttribute("src");
-    thumbnailTemplateId = this.getAttribute("data-template");
     enlargedThumbnail.innerHTML = `<img src="${imgSrc}" alt="Enlarged Thumbnail">`;
+    enlargedThumbnail.dataset.templateId = this.getAttribute("data-template");
     overlay.style.display = "flex";
 }
 
@@ -16,9 +15,14 @@ function hideEnlargedThumbnail() {
     enlargedThumbnail.innerHTML = ""; // Clear the enlarged thumbnail content
 }
 
-// Show the enlarged thumbnail when hovering over a thumbnail
 thumbnails.forEach(thumbnail => {
+    // Show the enlarged thumbnail when hovering over a thumbnail
     thumbnail.addEventListener("mouseenter", showEnlargedThumbnail);
+    // Click event to navigate to Edit Page
+    thumbnail.addEventListener("click", function() {
+        const templateId = this.getAttribute("data-template");
+        window.location.href = `edit.html?template=${templateId}`;
+    });
 });
 
 // Hide the enlarged thumbnail when mouse moves away
@@ -32,22 +36,11 @@ document.addEventListener("mousemove", function(e) {
     }
 });
 
-// Click event to navigate to Edit Page
-thumbnails.forEach(thumbnail => {
-    thumbnail.addEventListener("click", function() {
-        const templateId = this.getAttribute("data-template");
-        window.location.href = `edit.html?template=${templateId}`;
-    });
-});
-
 // Click event for enlarged
 enlargedThumbnail.addEventListener("click", function() {
-    const templateId = thumbnailTemplateId;
+    const templateId = this.dataset.templateId;
     window.location.href = `edit.html?template=${templateId}`;
 });
 
 // Ensure overlay is hidden on page load
-document.addEventListener("DOMContentLoaded", function() {
-    overlay.style.display = "none";
-    enlargedThumbnail.innerHTML = ""; // Clear any content just in case
-});
+document.addEventListener("DOMContentLoaded", hideEnlargedThumbnail);
