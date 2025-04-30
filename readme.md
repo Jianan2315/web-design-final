@@ -11,10 +11,15 @@ test -> vanilla(peronal use without cloud and extra framework)
 ```
 ``react`` branch is the first attempt using react framework while its code is completely draft.
 
+## 4/30/2025
+1) remove unused code
+2) update templateSelect
+
+## 4/29/2025
+1) remove code that serves react frontend
+
 ## 4/28/2025
 1) remove unused code and files
-2) update readme.md
 
 ## 4/27/2025
-1) update readme.md
-2) remove react-client
+1) remove react-client
