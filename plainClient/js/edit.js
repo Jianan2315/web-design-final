@@ -2,29 +2,20 @@ const PORT=3072;
 
 function addCSS(filename) {
     const link = document.createElement("link");
-
     link.rel = "stylesheet";
     link.href = "css/templates/"+filename;  // Path to your CSS file
-
     document.head.appendChild(link);
 }
 
 function loadTextAsInnerHTML(filename) {
-    const filePath = 'innerHTML/'+filename;
-    return fetch(filePath)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error fetching file: ${response.statusText}`);
-            }
-            return response.text(); // Read the file as text
-        });
+    return "";
 }
 
 // Load selected template
 // per my test, this load event does NOT affect event delegation.
 window.addEventListener("load", function () {
     const params = new URLSearchParams(window.location.search);
-    const templateId = params.get("template");
+    const templateId = "1";
     localStorage.setItem('templateId', templateId);
 
     let preview = null;
@@ -32,8 +23,8 @@ window.addEventListener("load", function () {
         console.log("Restore content exists.");
     } else {
         preview = document.getElementById("resume-preview");
-        preview.innerHTML = `<p>Selected Template ID: ${templateId}</p>`;
-        preview.classList.add("template"+templateId);
+        // preview.innerHTML = `<p>Selected Template ID: ${templateId}</p>`;
+        // preview.classList.add("template"+templateId);
     }
     addCSS("template"+templateId+".css");
 
@@ -47,16 +38,16 @@ window.addEventListener("load", function () {
             .then(text=> {
                 if (!localStorage.getItem("restore")){
                     localStorage.removeItem("restore");
-                    let htmlcontent = text;
+                    // let htmlcontent = text;
                     if (params.has('id')) {
                         const id = params.get('id')
                         const resume=JSON.parse(localStorage.getItem(id));
                         // localStorage.removeItem(id);
-                        htmlcontent = populateTemplate(text, resume, templateId);
+                        // htmlcontent = populateTemplate(text, resume, templateId);
                     } else {
                         console.log("Key does not exist.");
                     }
-                    preview.innerHTML = htmlcontent;
+                    // preview.innerHTML = htmlcontent;
                 } else {
                     console.log("Pass.");
                 }
@@ -88,13 +79,6 @@ window.addEventListener("load", function () {
                 }
                 // Link update with click
                 popEditForm();
-                // uncomment to see pdf preview
-                // for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
-                //     if (document.getElementById(e)){
-                //         const element = document.getElementById(e);
-                //         element.style.display="none";
-                //     }
-                // }
             });
         console.log('Script loaded successfully!');
     };
@@ -115,65 +99,7 @@ function populateTemplate(template, json, templateId){
 
 
 function populateTemplate1(template, data) {
-    // 1. Personal Info
-    template = template.replace(/<h1>.*?<\/h1>/, `<h1>${data.personal_info.name}</h1>`);
-    template = template.replace(
-        /<p>.*?<\/p>/,
-        `<p> Phone: ${data.personal_info.phone} | Email: ${data.personal_info.email} | Location: ${data.personal_info.location}</p>`
-    );
-
-    // 2. Education Section
-    const educationHTML = data.education
-        .map(
-            edu => `
-                <tr class="component">
-                    <td><strong>${edu.institution}</strong></td>
-                    <td>${edu.graduation_date}</td>
-                    <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
-                </tr>
-                <tr class="degree component">
-                    <td colspan="2">${edu.degree}</td>
-                </tr>`
-        )
-        .join('');
-    template = template.replace(
-        /<table>.*?<\/table>/s,
-        `<table>${educationHTML}</table>`
-    );
-
-    // 3. Personal Skills Section
-    let skillsHTML = ``;
-    Object.entries(data.personal_skills).forEach(([key, value]) => {
-        skillsHTML += `<li class="component"><strong>${key}</strong>: ${value}<i class="fa-solid fa-trash trash-icon-skill"></i></li>`;
-    });
-
-    template = template.replace(
-        /<ul>.*?<\/ul>/s,
-        `<ul>${skillsHTML}</ul>`
-    );
-
-    // 4. Professional Experience Section
-    const experienceHTML = data.professional_experience
-        .map(
-            exp => `
-                <h3 class="component">${exp.company}, ${exp.position}</h3>
-                <p class="component"><em>${exp.location} | ${exp.start_end_dates}</em></p>
-                <ul class="component">
-                    ${exp.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
-                    <i class="fa-solid fa-trash trash-icon-exp"></i>
-                </ul>`
-        )
-        .join('');
-    const professionalExperienceSection = `
-        <h2>Professional Experience</h2>
-        ${experienceHTML}
-        <div id="add-exp" class="add-button">+</div>`;
-    template = template.replace(
-        /<section id="exp-section">.*?<\/section>/s,
-        `<section id="exp-section">${professionalExperienceSection}</section>`
-    );
-
-    return template;
+    return ``;
 }
 
 document.addEventListener("DOMContentLoaded", function() {
