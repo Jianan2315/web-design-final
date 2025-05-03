@@ -1,12 +1,5 @@
 const PORT=3072;
 
-function addCSS(filename) {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "css/templates/"+filename;  // Path to your CSS file
-    document.head.appendChild(link);
-}
-
 // Load selected template
 // per my test, this load event does NOT affect event delegation.
 window.addEventListener("load", function () {
@@ -20,22 +13,17 @@ window.addEventListener("load", function () {
     } else {
         preview = document.getElementById("resume-preview");
     }
-    addCSS("template"+templateId+".css");
 
     const script = document.createElement('script');
 
     if (!localStorage.getItem("restore")){
         localStorage.removeItem("restore");
-        // let htmlcontent = text;
         if (params.has('id')) {
             const id = params.get('id')
             const resume=JSON.parse(localStorage.getItem(id));
-            // localStorage.removeItem(id);
-            // htmlcontent = populateTemplate(text, resume, templateId);
         } else {
             console.log("Key does not exist.");
         }
-        // preview.innerHTML = htmlcontent;
     } else {
         console.log("Pass.");
     }
