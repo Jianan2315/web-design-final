@@ -32,27 +32,14 @@ window.addEventListener("load", function () {
     bindEduDelete();
     bindSkillDelete();
     bindExpDelete();
-    if (typeof bindProjDelete === 'function') {
-        bindProjDelete();
-        console.log("pass");
-    }
-    if (typeof bindAchiDelete === 'function') {
-        bindAchiDelete();
-        console.log("pass");
-    }
-    if (typeof bindLangDelete === 'function') {
-        bindLangDelete();
-        console.log("pass");
-    }
+
     // Bind all add buttons with add function
     bindAddFunction();
 
     // Add hover effect to "blocks"
     bindEduBlock();
     bindExpBlock();
-    if (typeof bindProjBlock === 'function') {
-        bindProjBlock();
-    }
+
     // Link update with click
     popEditForm();
 
