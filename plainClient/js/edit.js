@@ -3,27 +3,14 @@ const PORT=3072;
 // Load selected template
 // per my test, this load event does NOT affect event delegation.
 window.addEventListener("load", function () {
-    const params = new URLSearchParams(window.location.search);
-    const templateId = "1";
-    localStorage.setItem('templateId', templateId);
+    localStorage.setItem('templateId', "1");
 
-    let preview = null;
     if (localStorage.getItem("restore")){
         console.log("Restore content exists.");
-    } else {
-        preview = document.getElementById("resume-preview");
     }
-
-    const script = document.createElement('script');
 
     if (!localStorage.getItem("restore")){
         localStorage.removeItem("restore");
-        if (params.has('id')) {
-            const id = params.get('id')
-            const resume=JSON.parse(localStorage.getItem(id));
-        } else {
-            console.log("Key does not exist.");
-        }
     } else {
         console.log("Pass.");
     }
@@ -86,9 +73,8 @@ document.addEventListener("DOMContentLoaded", function() {
         printElement.style.width = "100%";
         printElement.style.margin = "0";
         printElement.style.padding = "0";
-        const printContent = printElement.outerHTML;
 
-        document.body.innerHTML = printContent; // Replace body with the container
+        document.body.innerHTML = printElement.outerHTML; // Replace body with the container
         for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
             if (document.getElementById(e)){
                 const element = document.getElementById(e);
@@ -526,7 +512,6 @@ function bindInfoBlock(){
 }
 
 function updateInfoEntry(button, block) {
-    const form = button.parentNode;// unused
     const name = document.getElementById("name").value;
     const phone = document.getElementById("phone").value;
     const email = document.getElementById("email").value;
@@ -746,7 +731,6 @@ function makeDate(inputDate){
 }
 
 function updateExpEntry(button, block) {
-    const form = button.parentNode;
     const company = document.getElementById("company").value;
     const title = document.getElementById("title").value;
     const orgAddress = document.getElementById("org-address").value;
@@ -1088,7 +1072,6 @@ function addExp(icon) {
 
 function addExpEntry(button, icon) {
     // 2. Get form input values
-    const form = button.parentNode; // button is not essential but backup
     const company = document.getElementById("company").value;
     const title = document.getElementById("title").value;
     const orgAddress = document.getElementById("org-address").value;
