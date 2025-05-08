@@ -275,12 +275,11 @@ function bindAddFunction(){
 
 function bindEduDelete(){
     document.querySelectorAll(".trash-icon-edu").forEach((icon)=>{
-        icon.addEventListener("click", function(event) {
-            deleteEduItem(event, this);
-        });
-
         const block = icon.parentElement;
         if (block) {
+            icon.addEventListener("click", function(event) {
+                deleteItem(event, this);
+            });
             block.addEventListener('mouseenter', () => {
                 icon.classList.add('trash-icon-visible');
             });
@@ -295,11 +294,11 @@ function bindEduDelete(){
 
 function bindSkillDelete(){
     document.querySelectorAll(".trash-icon-skill").forEach((icon)=>{
-        icon.addEventListener("click", function(event) {
-            deleteSkillItem(event, this);
-        });
         const block = icon.parentElement;
         if (block) {
+            icon.addEventListener("click", function(event) {
+                deleteItem(event, this);
+            });
             block.addEventListener('mouseenter', () => {
                 icon.classList.add('trash-icon-visible');
             });
@@ -314,12 +313,11 @@ function bindSkillDelete(){
 
 function bindExpDelete(){
     document.querySelectorAll(".trash-icon-exp").forEach((icon)=>{
-        icon.addEventListener("click", function(event) {
-            deleteExpItem(event, this);
-        });
-
         const block = icon.parentElement;
         if (block) {
+            icon.addEventListener("click", function(event) {
+                deleteItem(event, this);
+            });
             block.addEventListener('mouseenter', () => {
                 icon.classList.add('trash-icon-visible');
             });
@@ -332,27 +330,9 @@ function bindExpDelete(){
     });
 }
 
-function deleteEduItem(e,icon) {
-    e.stopPropagation();
-    const relatedRows=[];
-    relatedRows[0] = icon.closest('tr');
-    relatedRows[1] = relatedRows[0].nextElementSibling;
-    relatedRows.forEach(row => row.remove());
-    cancelEntry();
-}
-function deleteSkillItem(e,icon) {
-    e.stopPropagation();
-    const relatedRow = icon.closest('li');
-    relatedRow.remove();
-    cancelEntry();
-}
-function deleteExpItem(e,icon) {
-    e.stopPropagation();
-    const relatedRows=[];
-    relatedRows[0] = icon.closest('ul');
-    relatedRows[1] = relatedRows[0].previousElementSibling;
-    relatedRows[2] = relatedRows[1].previousElementSibling;
-    relatedRows.forEach(row => row.remove());
+function deleteItem(e,icon) {
+    const block = icon.parentElement;
+    block.remove();
     cancelEntry();
 }
 
