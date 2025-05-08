@@ -256,21 +256,13 @@ function splitOnFirstColon(str) {
 }
 
 function bindAddFunction(){
-    const addEduButton =  document.getElementById("add-edu");
-    const addSkillButton =  document.getElementById("add-skill");
-    const addExpButton =  document.getElementById("add-exp");
-    addEduButton.addEventListener("click", function(event) {
-        hidePreview();
-        addEducation(this);
-    });
-    addSkillButton.addEventListener("click", function(event) {
-        hidePreview();
-        addSkill(this);
-    });
-    addExpButton.addEventListener("click", function(event) {
-        hidePreview();
-        addExp(this);
-    });
+    for (let _id in ["add-edu", "add-skill", "add-exp"]){
+        const addButton = document.getElementById(_id);
+        addButton.addEventListener("click", function(event) {
+            hidePreview();
+            addEducation(this);
+        });
+    }
 }
 
 function bindEduDelete(){
