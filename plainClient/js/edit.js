@@ -1,7 +1,6 @@
 const PORT=3072;
 
 // Load selected template
-// per my test, this load event does NOT affect event delegation.
 window.addEventListener("load", function () {
     localStorage.setItem('templateId', "1");
 
@@ -280,42 +279,18 @@ function bindEduDelete(){
             deleteEduItem(event, this);
         });
 
-        const relatedRows=[]
-        relatedRows[0] = icon.closest('tr');
-        relatedRows[1] = relatedRows[0].nextElementSibling;
-        relatedRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
+        const block = icon.parentElement;
+        if (block) {
+            block.addEventListener('mouseenter', () => {
                 icon.classList.add('trash-icon-visible');
             });
-
-            row.addEventListener('mouseleave', () => {
+            block.addEventListener('mouseleave', () => {
                 icon.classList.remove('trash-icon-visible');
             });
-        });
-    });
-}
-function getElementPath(element) {
-    if (!element) return '';
-
-    let path = [];
-    while (element.parentNode) {
-        let tagName = element.tagName.toLowerCase();
-        let siblings = Array.from(element.parentNode.children).filter(el => el.tagName === element.tagName);
-
-        if (siblings.length > 1) {
-            // If there are multiple siblings with the same tag name, use nth-child
-            let index = Array.from(element.parentNode.children).indexOf(element) + 1;
-            path.unshift(`${tagName}:nth-child(${index})`);
         } else {
-            // Use tag name if it's unique
-            path.unshift(tagName);
+            console.error('Error: Cannot access parent element of ', icon);
         }
-
-        element = element.parentNode;
-        if (element === document.documentElement) break; // Stop at the root element
-    }
-
-    return path.join(' > ');
+    });
 }
 
 function bindSkillDelete(){
@@ -323,14 +298,17 @@ function bindSkillDelete(){
         icon.addEventListener("click", function(event) {
             deleteSkillItem(event, this);
         });
-        const row = icon.closest('li');
-        row.addEventListener('mouseenter', () => {
-            icon.classList.add('trash-icon-visible');
-        });
-        row.addEventListener('mouseleave', () => {
-            icon.classList.remove('trash-icon-visible');
-        });
-
+        const block = icon.parentElement;
+        if (block) {
+            block.addEventListener('mouseenter', () => {
+                icon.classList.add('trash-icon-visible');
+            });
+            block.addEventListener('mouseleave', () => {
+                icon.classList.remove('trash-icon-visible');
+            });
+        } else {
+            console.error('Error: Cannot access parent element of ', icon);
+        }
     });
 }
 
@@ -340,21 +318,20 @@ function bindExpDelete(){
             deleteExpItem(event, this);
         });
 
-        const relatedRows=[];
-        relatedRows[0] = icon.closest('ul');
-        relatedRows[1] = relatedRows[0].previousElementSibling;
-        relatedRows[2] = relatedRows[1].previousElementSibling;
-        relatedRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
+        const block = icon.parentElement;
+        if (block) {
+            block.addEventListener('mouseenter', () => {
                 icon.classList.add('trash-icon-visible');
             });
-
-            row.addEventListener('mouseleave', () => {
+            block.addEventListener('mouseleave', () => {
                 icon.classList.remove('trash-icon-visible');
             });
-        });
+        } else {
+            console.error('Error: Cannot access parent element of ', icon);
+        }
     });
 }
+
 function deleteEduItem(e,icon) {
     e.stopPropagation();
     const relatedRows=[];
