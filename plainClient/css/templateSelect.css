@@ -16,25 +16,25 @@ header {
   padding: 1.25rem;
 }
 
-.thumbnail {
-  width: 37.5rem;
-  height: 56.25rem;
-  margin: 10px;
-  overflow: hidden;
-  cursor: pointer;
-}
-.thumbnail img {
-  width: 98%;
-  height: 98%;
-  object-fit: contain;
-}
-
 .templates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
   gap: 1%;
   justify-items: center;
   margin: 0 1%;
+}
+
+.templates-grid .thumbnail {
+  width: 37.5rem;
+  height: 56.25rem;
+  margin: 10px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.templates-grid .thumbnail img {
+  width: 98%;
+  height: 98%;
+  object-fit: contain;
 }
 
 .overlay {

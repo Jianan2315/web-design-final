@@ -2,11 +2,9 @@ const thumbnails = document.querySelectorAll(".thumbnail");
 const overlay = document.getElementById("overlay");
 const enlargedThumbnail = document.getElementById("enlarged-thumbnail");
 
-// Functions
 function showEnlargedThumbnail(e) {
     const imgSrc = this.querySelector("img").getAttribute("src");
     enlargedThumbnail.innerHTML = `<img src="${imgSrc}" alt="Enlarged Thumbnail">`;
-    enlargedThumbnail.dataset.templateId = this.getAttribute("data-template");
     overlay.style.display = "flex";
 }
 
@@ -16,12 +14,9 @@ function hideEnlargedThumbnail() {
 }
 
 thumbnails.forEach(thumbnail => {
-    // Show the enlarged thumbnail when hovering over a thumbnail
     thumbnail.addEventListener("mouseenter", showEnlargedThumbnail);
-    // Click event to navigate to Edit Page
     thumbnail.addEventListener("click", function() {
-        const templateId = this.getAttribute("data-template");
-        window.location.href = `edit.html?template=${templateId}`;
+        window.location.href = `edit.html`;
     });
 });
 
@@ -30,7 +25,6 @@ document.addEventListener("mousemove", function(e) {
     const isOverThumbnail = Array.from(thumbnails).some(thumbnail => thumbnail.contains(e.target));
     const isOverEnlarged = enlargedThumbnail.contains(e.target);
 
-    // Only hide the overlay if it"s currently displayed
     if (overlay.style.display === "flex" && !isOverThumbnail && !isOverEnlarged) {
         hideEnlargedThumbnail();
     }
@@ -38,8 +32,7 @@ document.addEventListener("mousemove", function(e) {
 
 // Click event for enlarged
 enlargedThumbnail.addEventListener("click", function() {
-    const templateId = this.dataset.templateId;
-    window.location.href = `edit.html?template=${templateId}`;
+    window.location.href = `edit.html`;
 });
 
 // Ensure overlay is hidden on page load
