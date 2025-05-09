@@ -260,7 +260,13 @@ function bindAddFunction(){
         const addButton = document.getElementById(_id);
         addButton.addEventListener("click", function(event) {
             hidePreview();
-            addEducation(this);
+            if (_id === "add-edu"){
+                addEducation(this);
+            } else if (_id === "add-skill"){
+                addSkill(this);
+            } else{
+                addExp(this);
+            }
         });
     }
 }
@@ -859,7 +865,7 @@ function updateSkillEntry(button, block) {
     cancelEntry();
 }
 
-function addEducation(icon) {
+function addEducation(addButton) {
     const form = document.getElementById("resume-form");
     const formContainer = document.getElementById("form-container")
     formContainer.classList.remove("form-container-hidden")
@@ -869,22 +875,25 @@ function addEducation(icon) {
         <label for="graduation">(Expected) Graduation Year:</label>
         <input type="date" id="graduation" name="graduation">
         <label for="major">Major:</label>
-        <textarea id="major" name="major"></textarea>
-        
+        <textarea id="major" name="major"></textarea>       
         <button type="button" id="add-edu-entry">Save</button>
         <button type="button" id="cancel-edu-entry">Cancel</button>
     `;
     form.querySelector('#add-edu-entry').addEventListener('click', function() {
-        addEduEntry(this, icon);
+        addEduEntry(this, addButton);
     });
     form.querySelector('#cancel-edu-entry').addEventListener('click', function() {
         cancelEntry();
     });
 }
 
-function addEduEntry(button, icon) {
-    // 2. Get form input values
-    const form = button.parentNode;
+function parseDate(str) {
+    return new Date("1 " + str);  // Always use `new`
+}
+
+function addEduEntry(saveButton, addButton) {
+    // Get form input values
+    const form = saveButton.parentNode;
     const college = form.querySelector("#university").value;
     const gradDate = form.querySelector("#graduation").value;
     const major = form.querySelector("#major").value;
@@ -894,50 +903,36 @@ function addEduEntry(button, icon) {
         return;
     }
 
-    // 3. Parse graduation date
+    // Parse graduation date
     const gradDateObj = new Date(gradDate);
 
-    // 4. Add new row to the table
-    const table = icon.closest("section").querySelector("table tbody");
-    const dateString = gradDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });//toDateString()
-    table.innerHTML += `
-        <tr class="component">
-          <td><strong>${college}</strong></td>
-          <td>${dateString}</td>
-          <td class="trash-td" rowspan="2"><i class="fa-solid fa-trash trash-icon-edu"></i></td>
-        </tr>
-        <tr class="degree component">
-          <td colspan="2">${major}</td>
-        </tr>
-    `
+    const list = addButton.previousElementSibling;
+    const dateString = gradDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+        <div class="component">
+            <ul>
+                <li><strong>${college}</strong><span class="float-right">${dateString}</span></li>
+                <li>${major}</li>
+            </ul>
+            <i class="fa-solid fa-trash trash-icon-edu"></i>
+        </div>`
 
-    // 5. Collect rows into "blocks" of [institutionRow, degreeRow]
-    const rowBlocks = [];
-    const rows = Array.from(table.querySelectorAll('tr'));
+    list.appendChild(wrapper.firstElementChild);
+    const components = Array.from(list.querySelectorAll(".component"));
 
-    for (let i = 0; i < rows.length; i+=2) {
-        const institutionRow = rows[i];
-        const degreeRow = rows[i + 1];
-        rowBlocks.push({ institutionRow, degreeRow });
-    }
-
-    // 5. Add sorting logic
-    // Sort the blocks based on the date in the institutionRow's second cell
-    rowBlocks.sort((a, b) => {
-        const dateA = new Date(a.institutionRow.cells[1].textContent.trim());
-        const dateB = new Date(b.institutionRow.cells[1].textContent.trim());
-        return dateB - dateA; // Sort in descending order
+    //  Sort in descending order
+    components.sort((a, b) => {
+        const dateA = parseDate(a.querySelector(".float-right").textContent.trim());
+        const dateB = parseDate(b.querySelector(".float-right").textContent.trim());
+        return dateB - dateA;
     });
 
-    // 7. Append sorted rows back to the table
-    table.innerHTML="";
-    rowBlocks.forEach(block => {
-        table.appendChild(block.institutionRow);
-        table.appendChild(block.degreeRow);
-    });
+    // Re-append in sorted order
+    components.forEach(c => list.appendChild(c));
+
     bindEduBlock();
     bindEduDelete();
-    popEditForm();
     cancelEntry();
 }
 
@@ -968,8 +963,8 @@ function addSkill(icon) {
     })
 }
 
-function addSkillEntry(button, icon) {
-    const form = button.parentNode;
+function addSkillEntry(saveButton, addButton) {
+    const form = saveButton.parentNode;
     const name = form.querySelector("#new-skill-name").value;
     const detail = form.querySelector("#new-skill-detail").value;
 
@@ -978,15 +973,19 @@ function addSkillEntry(button, icon) {
         return;
     }
 
-    const unorderedList = icon.closest("section").querySelector("ul");
-    // lol: a fixed issue here: If </i> was missed here, here will add two trash icon tags. IDK the logic behind the issue.
-    // it seems like auto implicit complement for html caused this issue.
-    unorderedList.innerHTML += `
-        <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
-    `;
+    const list = addButton.previousElementSibling;
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+        <div class="component">
+            <ul>
+                <li><strong>${name}</strong>: ${detail}</li>
+            </ul>
+            <i class="fa-solid fa-trash trash-icon-skill"></i>
+        </div>`
+
+    list.appendChild(wrapper.firstElementChild);
 
     bindSkillDelete();
-    popEditForm();
     cancelEntry();
 }
 
@@ -1019,8 +1018,14 @@ function addExp(icon) {
     });
 }
 
-function addExpEntry(button, icon) {
-    // 2. Get form input values
+function parseEndDate(component) {
+    const dateText = component.querySelector("em").textContent;
+    const match = dateText.match(/-\s*([A-Za-z]{3} \d{4})/); // Extract "Jul 2024"
+
+    return new Date("1 " + match[1]);  // "1 Jul 2024"
+}
+
+function addExpEntry(saveButton, addButton) {
     const company = document.getElementById("company").value;
     const title = document.getElementById("title").value;
     const orgAddress = document.getElementById("org-address").value;
@@ -1035,79 +1040,43 @@ function addExpEntry(button, icon) {
             return;
         }
     }
-    // 3. graduation date
+
     const startDateObj = new Date(start);
     const endDateObj = new Date(end);
 
-    // 4.
-    const expSection = icon.closest("section");
+    const list = addButton.previousElementSibling;
     const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
     const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    expSection.innerHTML += `
-        <h3 class="component">${company}, ${title}</h3>
-        <p class="component"><em>${orgAddress} | ${startDate} - ${endDate}</em></p>
-        <ul class="component"><i class="fa-solid fa-trash trash-icon-exp"></i></ul>
-    `
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+        <div class="component">
+            <ul>
+                <li>${company}, ${title}</li>
+                <li><em>${orgAddress} | ${startDate} - ${endDate}</em></li>
+                ${exp.split('\n')
+                    .map(line => line.trim().replace(/^•\s*/, ''))
+                    .filter(line => line.length > 0)
+                    .map(line => `<li>${line}</li>`)
+                    .join('\n')}
+            </ul>
+            <i class="fa-solid fa-trash trash-icon-exp"></i>
+        </div>`
 
-    const ulEles = expSection.querySelectorAll("ul");
-    const last = ulEles[ulEles.length - 1];
-    for (let e of exp.split("\n")) {
-        const item = document.createElement('li');
-        item.textContent = e.slice(1);
-        last.appendChild(item);
-    }
-    // 5. Collect elements into "blocks"
-    const blocks = [];
-    const heads = Array.from(expSection.querySelectorAll('h3'));
+    list.appendChild(wrapper.firstElementChild);
+    const components = Array.from(list.querySelectorAll(".component"));
 
-    for (let h of heads) {
-        const p = h.nextElementSibling;
-        const ul = p.nextElementSibling;
-        const em = p.querySelector('em');
-        let startD = ""
-        if (em) {
-            // Extract the text content of the <p> element.
-            const textContent = em.textContent; // Example: "Some Address | Jan 2023 - Dec 2023"
+    // Sort by end date descending
+    components.sort((a, b) => parseEndDate(b) - parseEndDate(a));
 
-            // Use a regular expression to extract the start date (format: "Month Year").
-            const match = textContent.match(/(\w{3} \d{4})/); // Matches "Month Year" format.
-            if (match) {
-                startD = match[1]; // The first matched group.
-                // console.log(startD); // Output: "Jan 2023" (or whatever your start date is)
-            } else {
-                console.log('No start date found.');
-            }
-        }
-        blocks.push({h, p, ul, startD});
-    }
+    // Re-append in sorted order
+    components.forEach(comp => list.appendChild(comp));
 
-    // 5. Add sorting logic
-    // Sort the blocks based on the start date
-    blocks.sort((a, b) => {
-        const dateA = new Date(a.startD.trim());
-        const dateB = new Date(b.startD.trim());
-        return dateB - dateA; // Sort in descending order
-    });
-
-    // 7. Append sorted rows back to the table
-    expSection.innerHTML=`
-        <h2>Professional Experience</h2>
-        <div class="editIcon" id="expIcon">
-        <i class="fa-solid fa-plus" onclick="addExp(this)" style="float:right;margin-right: 10px;"></i>
-        </div>
-    `;
-    blocks.forEach(block => {
-        expSection.appendChild(block.h);
-        expSection.appendChild(block.p);
-        expSection.appendChild(block.ul);
-    });
-    expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
     bindExpBlock();
     bindAddFunction();
     bindExpDelete();
-    popEditForm();
     cancelEntry();
 }
+
 function addBullet(lines) {
     const values=lines.value.split("\n").map(line => line.startsWith("•")?line:`•${line}`);
     lines.value=values.join("\n");
