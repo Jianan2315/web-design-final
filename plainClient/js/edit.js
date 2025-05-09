@@ -22,9 +22,7 @@ window.addEventListener("load", function () {
     // Bind all add buttons with add function
     bindAddFunction();
 
-    // Link update with click
-    popEditForm();
-
+    // Bind update function
 });
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -252,7 +250,7 @@ function splitOnFirstColon(str) {
 }
 
 function bindAddFunction(){
-    for (let _id in ["add-edu", "add-skill", "add-exp"]){
+    for (let _id of ["add-edu", "add-skill", "add-exp"]){
         const addButton = document.getElementById(_id);
         addButton.addEventListener("click", function(event) {
             hidePreview();
@@ -384,186 +382,7 @@ function updateInfoEntry(button, block) {
     `
 
     bindInfoBlock();
-    popEditForm();
     cancelEntry();
-}
-
-function popEditForm() {
-    const eduSection = document.getElementById("edu-section");
-    const skillSection = document.getElementById("skill-section");
-    const expSection = document.getElementById("exp-section");
-
-    // personal info
-    const headSection = document.getElementById("personal-info");
-    const name = headSection.querySelector("h1");
-    const info = headSection.querySelector("p");
-    const [phone, email, location] = info.textContent.split('|').map(info => info.trim().split(":")[1].trim());
-    const block = [name, info];
-    block.forEach(ele => {
-        ele.addEventListener('click', () => {
-            const form = document.getElementById("resume-form");
-            const formContainer = document.getElementById("form-container");
-            hidePreview();
-            formContainer.classList.remove("form-container-hidden");
-            form.innerHTML = `
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" value="${name.textContent}">
-                    <label for="phone">Phone:</label>
-                    <input type="text" id="phone" name="phone" value="${phone}">
-                    <label for="email">Email:</label>
-                    <input type="text" id="email" name="email" value="${email}">
-                    <label for="info-location">Location:</label>
-                    <input type="text" id="info-location" name="info-location" value="${location}">
-                    
-                    <button type="button" id="update-info-entry">Update</button>
-                    <button type="button" id="cancel-info-entry">Cancel</button>
-                `;
-            form.querySelector('#update-info-entry').addEventListener('click', function () {
-                updateInfoEntry(this, block);
-            });
-            form.querySelector('#cancel-info-entry').addEventListener('click', function () {
-                cancelEntry();
-            });
-        });
-    });
-
-    // edu
-    const eduRows = eduSection.querySelectorAll("tr");
-    let blocks = [];
-    for (let i = 0; i < eduRows.length; i += 2) {
-        // blocks.push({first:eduRows[i], second:eduRows[i+1]});
-        blocks.push([eduRows[i], eduRows[i + 1]]);
-    }
-
-    blocks.forEach(block => {
-        const cells = block[0].querySelectorAll("td");
-        const college = cells[0].textContent.trim();
-        const date = new Date(`${cells[1].textContent.trim()} 01`).toISOString().split('T')[0];
-        const major = block[1].textContent.trim();
-        block.forEach(ele => {
-            ele.addEventListener('click', () => {
-                const form = document.getElementById("resume-form");
-                const formContainer = document.getElementById("form-container");
-                hidePreview();
-                formContainer.classList.remove("form-container-hidden");
-                form.innerHTML = `
-                    <label for="university">University:</label>
-                    <textarea id="university" name="university">${college}</textarea>
-                    <label for="graduation">(Expected) Graduation Year:</label>
-                    <input type="date" id="graduation" name="graduation" value=${date}>
-                    <label for="major">Major:</label>
-                    <textarea id="major" name="major">${major}</textarea>
-                    
-                    <button type="button" id="update-edu-entry">Update</button>
-                    <button type="button" id="cancel-edu-entry">Cancel</button>
-                `;
-                form.querySelector('#update-edu-entry').addEventListener('click', function () {
-                    updateEduEntry(this, block);
-                });
-                form.querySelector('#cancel-edu-entry').addEventListener('click', function () {
-                    cancelEntry();
-                });
-            });
-        });
-
-    });
-
-
-    // skill
-    const skillRows = skillSection.querySelectorAll("li");
-    skillRows.forEach(block => {
-        const strongElement = block.querySelector('strong');
-        const title = strongElement.textContent.trim(); // "Communication language"
-        // Extract the remaining part (after the colon)
-        const details = block.textContent.replace(title + ':', '').trim(); // "Chinese (Native), English (Proficient)"
-        block.addEventListener('click', () => {
-            const form = document.getElementById("resume-form");
-            const formContainer = document.getElementById("form-container");
-            hidePreview();
-            formContainer.classList.remove("form-container-hidden");
-            form.innerHTML = `
-                <label for="new-skill-name">Skill name:</label>
-                <textarea id="new-skill-name" name="new-skill-name">${title}</textarea>
-                 <label for="new-skill-detail">Skill details:</label>
-                <textarea id="new-skill-detail" name="new-skill-detail">${details}</textarea>
-                
-                <button type="button" id="update-skill-entry">Update</button>
-                <button type="button" id="cancel-skill-entry">Cancel</button>
-            `;
-            adjustTextarea();
-            form.querySelector('#update-skill-entry').addEventListener('click', function () {
-                updateSkillEntry(this, block);
-            });
-            form.querySelector('#cancel-skill-entry').addEventListener('click', function () {
-                cancelEntry();
-            });
-        });
-
-
-    });
-
-    // EXP
-    const firstEles = expSection.querySelectorAll("h3");
-    const secondEles = expSection.querySelectorAll("p");
-    const thirdEles = expSection.querySelectorAll("ul");
-    blocks = [];
-    for (let i = 0; i < firstEles.length; i += 1) {
-        // blocks.push({first:eduRows[i], second:eduRows[i+1]});
-        blocks.push([firstEles[i], secondEles[i], thirdEles[i]]);
-    }
-
-    blocks.forEach(block => {
-        // Extract details
-        const titleAndCompany = block[0].textContent.trim();
-        const locationAndDates = block[1].textContent.trim();
-        const liEles = block[2].querySelectorAll("li");
-        const experienceItems = Array.from(liEles).map(li => "•"+li.textContent.trim());
-        // Combine experience items into a single string
-        const experienceString = experienceItems.join('\n');
-
-        // Parse title and company
-        const [company, title] = titleAndCompany.split(', ').map(str => str.trim());
-
-        // Parse location and dates
-        const [location, dateRange] = locationAndDates.split('|').map(str => str.trim());
-        const [startDate, endDate] = dateRange.split(' - ').map(str => makeDate(str.trim()));
-
-        block.forEach(ele => {
-            ele.addEventListener('click', () => {
-                const form = document.getElementById("resume-form");
-                const formContainer = document.getElementById("form-container");
-                hidePreview();
-                formContainer.classList.remove("form-container-hidden");
-                form.innerHTML = `
-                    <label for="company">Company:</label>
-                    <input type="text" id="company" name="company" value="${company}">
-                    <label for="title">Position Title:</label>
-                    <input type="text" id="title" name="title" value="${title}">
-                    <label for="org-address">Location:</label>
-                    <textarea id="org-address" name="org-address">${location}</textarea>
-                    <label for="start">Start Date:</label>
-                    <input type="date" id="start" name="start" value=${startDate}>
-                    <label for="end">End Date:</label>
-                    <input type="date" id="end" name="end" value=${endDate}>
-                    <label for="exp">Experience:</label>
-                    <textarea id="exp" name="exp" oninput="addBullet(this)">${experienceString}</textarea>
-                    
-                    <button type="button" id="update-exp-entry">Update</button>
-                    <button type="button" id="cancel-exp-entry">Cancel</button>
-                `;
-                adjustTextarea();
-                form.querySelector('#update-exp-entry').addEventListener('click', function () {
-
-                    updateExpEntry(this, block);
-                });
-                form.querySelector('#cancel-exp-entry').addEventListener('click', function () {
-                    cancelEntry();
-                });
-            });
-        });
-
-    });
-
 }
 
 function makeDate(inputDate){
@@ -666,7 +485,6 @@ function updateExpEntry(button, block) {
     expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
     bindAddFunction();
     bindExpDelete()
-    popEditForm();
     cancelEntry();
 }
 
@@ -730,7 +548,6 @@ function updateEduEntry(button, block) {
     });
 
     bindEduDelete();
-    popEditForm(); // SOLVE EVENT listener issue but encounter new one for pair hover effect. so explore bindEduBlock();
     cancelEntry();
 }
 
@@ -750,7 +567,6 @@ function updateSkillEntry(button, block) {
         <li class="component"><strong>${name}</strong>: ${detail}<i class="fa-solid fa-trash trash-icon-skill"></i></li>
     `;
     bindSkillDelete();
-    popEditForm();
     cancelEntry();
 }
 
