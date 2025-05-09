@@ -22,10 +22,6 @@ window.addEventListener("load", function () {
     // Bind all add buttons with add function
     bindAddFunction();
 
-    // Add hover effect to "blocks"
-    bindEduBlock();
-    bindExpBlock();
-
     // Link update with click
     popEditForm();
 
@@ -332,111 +328,6 @@ function deleteItem(e,icon) {
     const block = icon.parentElement;
     block.remove();
     cancelEntry();
-}
-
-function bindEduBlock(){
-    // Add hover effect to "blocks"
-    const eduSection = document.getElementById("edu-section");
-    // edu
-    if (eduSection){
-        // console.log("bindEduBlock()");
-    } else {
-        console.log("Invalid eduSection");
-        return;
-    }
-
-    // odd
-    const oddElements=eduSection.querySelectorAll("tr:nth-child(odd)");
-    oddElements.forEach(oddElement => {
-        oddElement.addEventListener('mouseenter', () => {
-            const nextSibling = oddElement.nextElementSibling;
-            if (nextSibling && nextSibling.classList.contains('component')) {
-                nextSibling.classList.add('component-hover');
-            }
-        });
-
-        oddElement.addEventListener('mouseleave', () => {
-            const nextSibling = oddElement.nextElementSibling;
-            if (nextSibling && nextSibling.classList.contains('component')) {
-                nextSibling.classList.remove('component-hover');
-            }
-        });
-    });
-
-    // even
-    const evenElements=eduSection.querySelectorAll("tr:nth-child(even)");
-    evenElements.forEach(evenElement => {
-        evenElement.addEventListener('mouseenter', () => {
-            const prevSibling = evenElement.previousElementSibling;
-            if (prevSibling && prevSibling.classList.contains('component')) {
-                prevSibling.classList.add('component-hover');
-            }
-        });
-
-        evenElement.addEventListener('mouseleave', () => {
-            const prevSibling = evenElement.previousElementSibling;
-            if (prevSibling && prevSibling.classList.contains('component')) {
-                prevSibling.classList.remove('component-hover');
-            }
-        });
-    });
-
-}
-
-function bindExpBlock(){
-    const expSection = document.getElementById("exp-section");
-
-    // first
-    const firstElements=expSection.querySelectorAll("h3");
-    firstElements.forEach(firstElement => {
-        firstElement.addEventListener('mouseenter', () => {
-            const secondElement = firstElement.nextElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            secondElement.classList.add('component-hover');
-            thirdElement.classList.add('component-hover');
-        });
-
-        firstElement.addEventListener('mouseleave', () => {
-            const secondElement = firstElement.nextElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            secondElement.classList.remove('component-hover');
-            thirdElement.classList.remove('component-hover');
-        });
-    });
-    // 2nd
-    const secondElements = expSection.querySelectorAll("p");
-    secondElements.forEach(secondElement => {
-        secondElement.addEventListener('mouseenter', () => {
-            const firstElement = secondElement.previousElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            firstElement.classList.add('component-hover');
-            thirdElement.classList.add('component-hover');
-        });
-
-        secondElement.addEventListener('mouseleave', () => {
-            const firstElement = secondElement.previousElementSibling;
-            const thirdElement = secondElement.nextElementSibling;
-            firstElement.classList.remove('component-hover');
-            thirdElement.classList.remove('component-hover');
-        });
-    });
-    // 3rd
-    const thirdElements = expSection.querySelectorAll("ul");
-    thirdElements.forEach(thirdElement => {
-        thirdElement.addEventListener('mouseenter', () => {
-            const secondElement = thirdElement.previousElementSibling;
-            const firstElement = secondElement.previousElementSibling;
-            firstElement.classList.add('component-hover');
-            secondElement.classList.add('component-hover');
-        });
-
-        thirdElement.addEventListener('mouseleave', () => {
-            const secondElement = thirdElement.previousElementSibling;
-            const firstElement = secondElement.previousElementSibling;
-            firstElement.classList.remove('component-hover');
-            secondElement.classList.remove('component-hover');
-        });
-    });
 }
 
 function bindInfoBlock(){
@@ -773,7 +664,6 @@ function updateExpEntry(button, block) {
         expSection.appendChild(block.ul);
     });
     expSection.innerHTML += `<div id="add-exp" class="add-button">+</div>`;
-    bindExpBlock();
     bindAddFunction();
     bindExpDelete()
     popEditForm();
@@ -839,7 +729,6 @@ function updateEduEntry(button, block) {
         table.appendChild(rowBlock.degreeRow);
     });
 
-    bindEduBlock(); // per my view, it caused by previous sort, which changed the reference so that pair goes wrong.
     bindEduDelete();
     popEditForm(); // SOLVE EVENT listener issue but encounter new one for pair hover effect. so explore bindEduBlock();
     cancelEntry();
@@ -931,7 +820,6 @@ function addEduEntry(saveButton, addButton) {
     // Re-append in sorted order
     components.forEach(c => list.appendChild(c));
 
-    bindEduBlock();
     bindEduDelete();
     cancelEntry();
 }
@@ -1071,7 +959,6 @@ function addExpEntry(saveButton, addButton) {
     // Re-append in sorted order
     components.forEach(comp => list.appendChild(comp));
 
-    bindExpBlock();
     bindAddFunction();
     bindExpDelete();
     cancelEntry();
