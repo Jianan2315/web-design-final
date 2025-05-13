@@ -16,6 +16,7 @@ window.addEventListener("load", function () {
     bindDeleteBlock(); // Bind trash icon with delete function
     bindAddFunction(); // Bind all add buttons with add function
     bindUpdateFunction(); // Bind update function
+    bindSectionFunction(); // Bind move up/down function for each section
 });
 
 function cancelEntry() {
@@ -28,6 +29,8 @@ function deleteItem(icon) {
     block.remove();
     cancelEntry();
 }
+
+// bind functions
 function bindAddFunction(){
     for (let _id of ["add-edu", "add-skill", "add-exp"]){
         const addButton = document.getElementById(_id);
@@ -48,7 +51,8 @@ function bindDeleteBlock(){
         document.querySelectorAll(_id).forEach((icon)=>{
             const block = icon.parentElement;
             if (block) {
-                icon.addEventListener("click", function() {
+                icon.addEventListener("click", function(e) {
+                    e.stopPropagation(); // not necessary but in case
                     deleteItem(this);
                 });
                 block.addEventListener('mouseenter', () => {
@@ -78,6 +82,43 @@ function bindUpdateFunction() {
             });
         });
     }
+}
+function bindSectionFunction(){ // bind operations for each section inside preview container
+    const preview = document.querySelector("#resume-preview");
+    const sections = preview.querySelectorAll("section:not([data-type=\"info\"])");
+    sections.forEach(section => {
+        const up = section.querySelector(".fa-up-long");
+        const down = section.querySelector(".fa-down-long");
+        const plus = section.querySelector(".fa-square-plus");
+        const minus = section.querySelector(".fa-square-minus");
+        up.addEventListener("click", function (e){
+            e.stopPropagation();
+            const current = this.closest("section");
+            const prev = current.previousElementSibling;
+            if (prev && prev.dataset.type !== "info") {
+                current.parentElement.insertBefore(current, prev);
+            }
+        });
+        down.addEventListener("click", function (e){
+            e.stopPropagation();
+            const current = this.closest("section");
+            const next = current.nextElementSibling;
+            if (next) {
+                current.parentElement.insertBefore(next, current);
+            }
+        });
+        plus.addEventListener("click", function (e){
+            e.stopPropagation();
+            const current = this.closest("section");
+            const clone = current.cloneNode(true);  // deep copy (includes children)
+            current.parentElement.appendChild(clone);
+        });
+        minus.addEventListener("click", function(e){
+            e.stopPropagation();
+            const current = this.closest("section");
+            current.remove();
+        });
+    });
 }
 
 function hidePreview() {
