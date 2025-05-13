@@ -11,6 +11,11 @@ test -> vanilla(peronal use without cloud and extra framework)
 ```
 ``react`` branch is the first attempt using react framework while its code is completely draft.
 
+## 5/13
+1) "templatSelect" has been fixed about two weeks ago.
+2) "edit" script is completed today.
+3) Next step: update css for "edit"
+
 ## 4/30/2025
 1) remove unused code
 2) update templateSelect
