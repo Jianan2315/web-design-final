@@ -13,7 +13,7 @@ window.addEventListener("load", function () {
         console.log("Pass.");
     }
 
-    bindDeleteFunction(); // Bind trash icon with delete function
+    bindDeleteBlock(); // Bind trash icon with delete function
     bindAddFunction(); // Bind all add buttons with add function
     bindUpdateFunction(); // Bind update function
 });
@@ -43,7 +43,7 @@ function bindAddFunction(){
         });
     }
 }
-function bindDeleteFunction(){
+function bindDeleteBlock(){
     for (let _id of [".trash-icon-edu", ".trash-icon-skill", ".trash-icon-exp"]){
         document.querySelectorAll(_id).forEach((icon)=>{
             const block = icon.parentElement;
@@ -64,14 +64,321 @@ function bindDeleteFunction(){
     }
 }
 function bindUpdateFunction() {
-    for (let listName of ["#edu-list", "#skill-list", "#exp-list"]){
-        const ulBlocks = document.querySelectorAll(listName+" .component ul");
-        ulBlocks.forEach(ulBlock => {
-            ulBlock.addEventListener('click', ()=> fillForm(ulBlock, listName));
-        })
+    for (let type of ["info", "edu", "skill", "exp"]){
+        const sections = document.querySelectorAll("."+type+"-section");
+        sections.forEach(section => {
+            let sectionTitle = null;
+            if (type !== "info"){
+                sectionTitle = section.querySelector("h2");
+                sectionTitle.addEventListener('click', ()=> fillSectionName(sectionTitle));
+            }
+            const ulBlocks = section.querySelectorAll(".component ul");
+            ulBlocks.forEach(ulBlock => {
+                ulBlock.addEventListener('click', ()=> fillForm(ulBlock, type));
+            });
+        });
     }
 }
 
+function hidePreview() {
+    const right = document.getElementById('preview-container');
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 1024) {
+        right.style.display = 'none';
+    }
+}
+function showPreview() {
+    const right = document.getElementById('preview-container');
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth <= 1024) {
+        right.style.display = 'block';
+    }
+}
+
+function adjustHeight(textarea) { // Helper function to adjust height
+    textarea.style.height = 'auto'; // Reset height
+    void textarea.offsetHeight; // Trigger reflow
+    const scrollHeight = textarea.scrollHeight; // Get the actual content height
+
+    // Get the computed line height or fallback to font size
+    let lineHeight = getComputedStyle(textarea).lineHeight;
+    if (lineHeight === 'normal') {
+        const fontSize = parseFloat(getComputedStyle(textarea).fontSize);
+        lineHeight = fontSize * 1.2; // Approximate default multiplier for "normal"
+    } else {
+        lineHeight = parseFloat(lineHeight); // Convert to numeric
+    }
+
+    const maxHeight = lineHeight * 6; // Max height for 6 rows
+    const finalHeight = Math.min(scrollHeight, maxHeight);
+    textarea.style.height = `${finalHeight}px`;
+}
+function adjustTextarea(form) {
+    const textareas = form.querySelectorAll('textarea');
+
+    // Adjust each textarea
+    textareas.forEach(textarea => {
+        adjustHeight(textarea); // Adjust for pre-filled content
+        textarea.addEventListener('input', function () {
+            adjustHeight(this); // Adjust dynamically on input
+        });
+    });
+}
+
+// Add entries
+function parseStringToDateObject(str) {
+    return new Date("1 " + str);  // Always use `new`
+}
+function addEduEntry(saveButton, addButton) {
+    // Get form input values
+    const form = saveButton.parentElement;
+    const college = form.querySelector("#university").value;
+    const gradDate = form.querySelector("#graduation").value;
+    const major = form.querySelector("#major").value;
+
+    if (!college || !gradDate) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    // Parse graduation date
+    const [year, month, day] = gradDate.split("-").map(Number);
+    const gradDateObj = new Date(year, month-1, day);
+    const list = addButton.previousElementSibling;
+    const dateString = gradDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+        <div class="component">
+            <ul>
+                <li><strong>${college}</strong><span class="float-right">${dateString}</span></li>
+                <li>${major}</li>
+            </ul>
+            <i class="fa-solid fa-trash trash-icon-edu"></i>
+        </div>`
+
+    list.appendChild(wrapper.firstElementChild);
+    const components = Array.from(list.querySelectorAll(".component"));
+
+    //  Sort in descending order
+    components.sort((a, b) => {
+        const dateA = parseStringToDateObject(a.querySelector(".float-right").textContent.trim());
+        const dateB = parseStringToDateObject(b.querySelector(".float-right").textContent.trim());
+        return dateB - dateA;
+    });
+
+    // Re-append in sorted order
+    components.forEach(c => list.appendChild(c));
+
+    bindDeleteBlock();
+    bindUpdateFunction(); // Not good but simple way. Save my mind.
+    cancelEntry();
+}
+function addEducation(addButton) {
+    const form = popEduForm();
+    form.querySelector('#add-edu-entry').addEventListener('click', function() {
+        addEduEntry(this, addButton);
+    });
+    form.querySelector('#cancel-edu-entry').addEventListener('click', function() {
+        cancelEntry();
+    });
+}
+function addSkillEntry(saveButton, addButton) {
+    const form = saveButton.parentElement;
+    const name = form.querySelector("#new-skill-name").value;
+    const detail = form.querySelector("#new-skill-detail").value;
+
+    if (!name || !detail) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    const list = addButton.previousElementSibling;
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+        <div class="component">
+            <ul>
+                <li><strong>${name}</strong>: <span>${detail}</span></li>
+            </ul>
+            <i class="fa-solid fa-trash trash-icon-skill"></i>
+        </div>`
+
+    list.appendChild(wrapper.firstElementChild);
+
+    bindDeleteBlock();
+    bindUpdateFunction();
+    cancelEntry();
+}
+function addSkill(addButton) {
+    const form = popSkillForm();
+    form.querySelector('#add-skill-entry').addEventListener('click', function() {
+        addSkillEntry(this, addButton);
+    });
+    form.querySelector('#cancel-skill-entry').addEventListener('click', function() {
+        cancelEntry();
+    })
+}
+function parseEndDate(component) {
+    const dateText = component.querySelector("em").textContent;
+    const match = dateText.match(/-\s*([A-Za-z]{3} \d{4})/); // Extract "Jul 2024"
+
+    return new Date("1 " + match[1]);  // "1 Jul 2024"
+}
+function addExpEntry(saveButton, addButton) {
+    const form = saveButton.parentElement;
+    const company = form.querySelector("#company").value;
+    const title = form.querySelector("#title").value;
+    const orgAddress = form.querySelector("#org-address").value;
+    const start = form.querySelector("#start").value;
+    const end = form.querySelector("#end").value;
+    const exp = form.querySelector("#exp").value;
+    const vals=[company,title,orgAddress,start,end,exp]
+
+    for (let val of vals) {
+        if (!val) {
+            alert("Please fill in all fields.");
+            return;
+        }
+    }
+
+    const [syear, smonth, sday] = start.split("-").map(Number);
+    const startDateObj = new Date(syear,smonth-1, sday);
+    const [eyear, emonth, eday] = end.split("-").map(Number);
+    const endDateObj = new Date(eyear, emonth-1, eday);
+
+    const list = addButton.previousElementSibling;
+    const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+        <div class="component">
+            <ul>
+                <li>${company}, ${title}</li>
+                <li><em>${orgAddress} | ${startDate} - ${endDate}</em></li>
+                ${exp.split('\n')
+        .map(line => line.trim().replace(/^•\s*/, ''))
+        .filter(line => line.length > 0)
+        .map(line => `<li>${line}</li>`)
+        .join('\n')}
+            </ul>
+            <i class="fa-solid fa-trash trash-icon-exp"></i>
+        </div>`
+
+    list.appendChild(wrapper.firstElementChild);
+    const components = Array.from(list.querySelectorAll(".component"));
+
+    // Sort by end date descending
+    components.sort((a, b) => parseEndDate(b) - parseEndDate(a));
+
+    // Re-append in sorted order
+    components.forEach(comp => list.appendChild(comp));
+
+    bindDeleteBlock();
+    bindUpdateFunction();
+    cancelEntry();
+}
+function addExp(addButton) {
+    const form = popExpForm();
+    form.querySelector('#add-exp-entry').addEventListener('click', function() {
+        addExpEntry(this, addButton);
+    });
+    form.querySelector('#cancel-exp-entry').addEventListener('click', function() {
+        cancelEntry();
+    });
+}
+
+// Update Entries
+function updateSectionName(saveButton, sectionTitle){
+    const form = saveButton.parentElement;
+    const name = form.querySelector("#section").value;
+
+    if (!name) {
+        alert("Please fill the module name.");
+        return;
+    }
+
+    sectionTitle.querySelector("span").innerText = name;
+
+    cancelEntry();
+}
+function updateInfoEntry(saveButton, ulBlock){
+    const divBlock = ulBlock.parentElement;
+    const list = divBlock.parentElement;
+    divBlock.remove();
+
+    const form = saveButton.parentElement;
+    const name = form.querySelector("#name").value;
+    const phone = form.querySelector("#phone").value;
+    const email = form.querySelector("#email").value;
+    const location = form.querySelector("#location").value;
+
+    if (!name || !phone || !email || !location) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+        <div class="component">
+            <ul>
+                <li><strong>${name}</strong></li>
+                <li><p> Phone: ${phone} | Email: ${email} | Location: ${location}</p></li>
+            </ul>
+        </div>`
+
+    list.appendChild(wrapper.firstElementChild);
+    bindUpdateFunction(); // Not good but simple way. Save my mind.
+    cancelEntry();
+}
+function updateEduEntry(saveButton, ulBlock){
+    const addButton = ulBlock.closest('section').querySelector('.add-button');
+    const divBlock = ulBlock.parentElement;
+    divBlock.remove();
+    addEduEntry(saveButton, addButton);
+}
+function updateSkillEntry(saveButton, ulBlock){
+    const addButton = ulBlock.closest('section').querySelector('.add-button');
+    const divBlock = ulBlock.parentElement;
+    divBlock.remove();
+    addSkillEntry(saveButton, addButton);
+}
+function updateExpEntry(saveButton, ulBlock){
+    const addButton = ulBlock.closest('section').querySelector('.add-button');
+    const divBlock = ulBlock.parentElement;
+    divBlock.remove();
+    addExpEntry(saveButton, addButton);
+}
+
+function popSectionName(){
+    const form = document.getElementById("resume-form");
+    const formContainer = document.getElementById("form-container")
+    formContainer.classList.remove("form-container-hidden")
+    form.innerHTML = `
+        <label for="section">Section Name:</label>
+        <input type="text" id="section" name="section">
+        <button type="button" id="update-section-name">Save</button>
+        <button type="button" id="cancel-section-name">Cancel</button>
+    `;
+    return form;
+}
+function popInfoForm(){
+    const form = document.getElementById("resume-form");
+    const formContainer = document.getElementById("form-container")
+    formContainer.classList.remove("form-container-hidden")
+    form.innerHTML = `
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location">
+        <button type="button" id="update-info-entry">Save</button>
+        <button type="button" id="cancel-info-entry">Cancel</button>
+    `;
+    return form;
+}
 function popEduForm(){
     const form = document.getElementById("resume-form");
     const formContainer = document.getElementById("form-container")
@@ -131,233 +438,37 @@ function popExpForm(){
     return form;
 }
 
-function parseStringToDateObject(str) {
-    return new Date("1 " + str);  // Always use `new`
-}
-function addEduEntry(saveButton, addButton) {
-    // Get form input values
-    const form = saveButton.parentElement;
-    const college = form.querySelector("#university").value;
-    const gradDate = form.querySelector("#graduation").value;
-    const major = form.querySelector("#major").value;
+function fillSectionName(sectionTitle){
+    const form = popSectionName();
+    form.querySelector("#section").value = sectionTitle.querySelector("span").innerText.trim();
 
-    if (!college || !gradDate) {
-        alert("Please fill in all fields.");
-        return;
-    }
+    adjustTextarea(form);
 
-    // Parse graduation date
-    const [year, month, day] = gradDate.split("-").map(Number);
-    const gradDateObj = new Date(year, month-1, day);
-    const list = addButton.previousElementSibling;
-    const dateString = gradDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = `
-        <div class="component">
-            <ul>
-                <li><strong>${college}</strong><span class="float-right">${dateString}</span></li>
-                <li>${major}</li>
-            </ul>
-            <i class="fa-solid fa-trash trash-icon-edu"></i>
-        </div>`
-
-    list.appendChild(wrapper.firstElementChild);
-    const components = Array.from(list.querySelectorAll(".component"));
-
-    //  Sort in descending order
-    components.sort((a, b) => {
-        const dateA = parseStringToDateObject(a.querySelector(".float-right").textContent.trim());
-        const dateB = parseStringToDateObject(b.querySelector(".float-right").textContent.trim());
-        return dateB - dateA;
+    form.querySelector('#update-section-name').addEventListener('click', function() {
+        updateSectionName(this, sectionTitle);
     });
-
-    // Re-append in sorted order
-    components.forEach(c => list.appendChild(c));
-
-    bindDeleteFunction();
-    bindUpdateFunction(); // Not good but simple way. Save my mind.
-    cancelEntry();
-}
-function addEducation(addButton) {
-    const form = popEduForm();
-    form.querySelector('#add-edu-entry').addEventListener('click', function() {
-        addEduEntry(this, addButton);
-    });
-    form.querySelector('#cancel-edu-entry').addEventListener('click', function() {
+    form.querySelector('#cancel-section-name').addEventListener('click', function() {
         cancelEntry();
     });
 }
+function fillInfoForm(ulBlock){
+    const form = popInfoForm();
+    const liItems = ulBlock.querySelectorAll('li');
+    form.querySelector("#name").value = liItems[0].innerText.trim();
+    const [phone,email,location]= liItems[1].innerText.split("|").map(piece=>piece.split(":")[1].trim());
+    form.querySelector("#phone").value = phone;
+    form.querySelector("#email").value = email;
+    form.querySelector("#location").value = location;
 
-function addSkillEntry(saveButton, addButton) {
-    const form = saveButton.parentElement;
-    const name = form.querySelector("#new-skill-name").value;
-    const detail = form.querySelector("#new-skill-detail").value;
+    adjustTextarea(form);
 
-    if (!name || !detail) {
-        alert("Please fill in all fields.");
-        return;
-    }
-
-    const list = addButton.previousElementSibling;
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = `
-        <div class="component">
-            <ul>
-                <li><strong>${name}</strong>: <span>${detail}</span></li>
-            </ul>
-            <i class="fa-solid fa-trash trash-icon-skill"></i>
-        </div>`
-
-    list.appendChild(wrapper.firstElementChild);
-
-    bindDeleteFunction();
-    bindUpdateFunction();
-    cancelEntry();
-}
-function addSkill(addButton) {
-    const form = popSkillForm();
-    form.querySelector('#add-skill-entry').addEventListener('click', function() {
-        addSkillEntry(this, addButton);
+    form.querySelector('#update-info-entry').addEventListener('click', function() {
+        updateInfoEntry(this, ulBlock);
     });
-    form.querySelector('#cancel-skill-entry').addEventListener('click', function() {
-        cancelEntry();
-    })
-}
-
-function parseEndDate(component) {
-    const dateText = component.querySelector("em").textContent;
-    const match = dateText.match(/-\s*([A-Za-z]{3} \d{4})/); // Extract "Jul 2024"
-
-    return new Date("1 " + match[1]);  // "1 Jul 2024"
-}
-function addExpEntry(saveButton, addButton) {
-    const form = saveButton.parentElement;
-    const company = form.querySelector("#company").value;
-    const title = form.querySelector("#title").value;
-    const orgAddress = form.querySelector("#org-address").value;
-    const start = form.querySelector("#start").value;
-    const end = form.querySelector("#end").value;
-    const exp = form.querySelector("#exp").value;
-    const vals=[company,title,orgAddress,start,end,exp]
-
-    for (let val of vals) {
-        if (!val) {
-            alert("Please fill in all fields.");
-            return;
-        }
-    }
-
-    const [syear, smonth, sday] = start.split("-").map(Number);
-    const startDateObj = new Date(syear,smonth-1, sday);
-    const [eyear, emonth, eday] = end.split("-").map(Number);
-    const endDateObj = new Date(eyear, emonth-1, eday);
-
-    const list = addButton.previousElementSibling;
-    const startDate = startDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    const endDate = endDateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = `
-        <div class="component">
-            <ul>
-                <li>${company}, ${title}</li>
-                <li><em>${orgAddress} | ${startDate} - ${endDate}</em></li>
-                ${exp.split('\n')
-        .map(line => line.trim().replace(/^•\s*/, ''))
-        .filter(line => line.length > 0)
-        .map(line => `<li>${line}</li>`)
-        .join('\n')}
-            </ul>
-            <i class="fa-solid fa-trash trash-icon-exp"></i>
-        </div>`
-
-    list.appendChild(wrapper.firstElementChild);
-    const components = Array.from(list.querySelectorAll(".component"));
-
-    // Sort by end date descending
-    components.sort((a, b) => parseEndDate(b) - parseEndDate(a));
-
-    // Re-append in sorted order
-    components.forEach(comp => list.appendChild(comp));
-
-    bindDeleteFunction();
-    bindUpdateFunction();
-    cancelEntry();
-}
-function addExp(addButton) {
-    const form = popExpForm();
-    form.querySelector('#add-exp-entry').addEventListener('click', function() {
-        addExpEntry(this, addButton);
-    });
-    form.querySelector('#cancel-exp-entry').addEventListener('click', function() {
+    form.querySelector('#cancel-info-entry').addEventListener('click', function() {
         cancelEntry();
     });
 }
-
-function hidePreview() {
-    const right = document.getElementById('preview-container');
-    const screenWidth = window.innerWidth;
-    if (screenWidth <= 1024) {
-        right.style.display = 'none';
-    }
-}
-function showPreview() {
-    const right = document.getElementById('preview-container');
-    const screenWidth = window.innerWidth;
-
-    if (screenWidth <= 1024) {
-        right.style.display = 'block';
-    }
-}
-
-function adjustHeight(textarea) { // Helper function to adjust height
-    textarea.style.height = 'auto'; // Reset height
-    void textarea.offsetHeight; // Trigger reflow
-    const scrollHeight = textarea.scrollHeight; // Get the actual content height
-
-    // Get the computed line height or fallback to font size
-    let lineHeight = getComputedStyle(textarea).lineHeight;
-    if (lineHeight === 'normal') {
-        const fontSize = parseFloat(getComputedStyle(textarea).fontSize);
-        lineHeight = fontSize * 1.2; // Approximate default multiplier for "normal"
-    } else {
-        lineHeight = parseFloat(lineHeight); // Convert to numeric
-    }
-
-    const maxHeight = lineHeight * 6; // Max height for 6 rows
-    const finalHeight = Math.min(scrollHeight, maxHeight);
-    textarea.style.height = `${finalHeight}px`;
-}
-function adjustTextarea(form) {
-    const textareas = form.querySelectorAll('textarea');
-
-    // Adjust each textarea
-    textareas.forEach(textarea => {
-        adjustHeight(textarea); // Adjust for pre-filled content
-        textarea.addEventListener('input', function () {
-            adjustHeight(this); // Adjust dynamically on input
-        });
-    });
-}
-
-function updateEduEntry(saveButton, ulBlock){
-    const addButton = ulBlock.closest('section').querySelector('.add-button');
-    const divBlock = ulBlock.parentElement;
-    divBlock.remove();
-    addEduEntry(saveButton, addButton);
-}
-function updateSkillEntry(saveButton, ulBlock){
-    const addButton = ulBlock.closest('section').querySelector('.add-button');
-    const divBlock = ulBlock.parentElement;
-    divBlock.remove();
-    addSkillEntry(saveButton, addButton);
-}
-function updateExpEntry(saveButton, ulBlock){
-    const addButton = ulBlock.closest('section').querySelector('.add-button');
-    const divBlock = ulBlock.parentElement;
-    divBlock.remove();
-    addExpEntry(saveButton, addButton);
-}
-
 function parseStringToFormDate(dateString){ //Jul 2023
     return new Date("1 "+dateString).toISOString().split('T')[0];
 }
@@ -421,13 +532,15 @@ function fillExperienceForm(ulBlock) {
         cancelEntry();
     });
 }
-function fillForm(ulBlock, listName) {
-    if (listName === "#edu-list"){
-        ulBlock.addEventListener('click', ()=> fillEducationForm(ulBlock));
-    } else if (listName === "#skill-list"){
-        ulBlock.addEventListener('click', ()=> fillSkillForm(ulBlock));
+function fillForm(ulBlock, type) {
+    if (type === "info"){
+        ulBlock.addEventListener('click', ()=> fillInfoForm(ulBlock));
+    } else if (type === "edu") {
+        ulBlock.addEventListener('click', () => fillEducationForm(ulBlock));
+    } else if (type === "skill") {
+        ulBlock.addEventListener('click', () => fillSkillForm(ulBlock));
     } else {
-        ulBlock.addEventListener('click', ()=> fillExperienceForm(ulBlock));
+        ulBlock.addEventListener('click', () => fillExperienceForm(ulBlock));
     }
 }
 
