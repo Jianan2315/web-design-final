@@ -13,12 +13,15 @@ window.addEventListener("load", function () {
         console.log("Pass.");
     }
 
+    bindFunctions();
+});
+
+function bindFunctions() {
     bindDeleteBlock(); // Bind trash icon with delete function
     bindAddFunction(); // Bind all add buttons with add function
     bindUpdateFunction(); // Bind update function
     bindSectionFunction(); // Bind move up/down function for each section
-});
-
+}
 function cancelEntry() {
     const formContainer = document.getElementById("form-container");
     formContainer.classList.add("form-container-hidden");
@@ -112,6 +115,7 @@ function bindSectionFunction(){ // bind operations for each section inside previ
             const current = this.closest("section");
             const clone = current.cloneNode(true);  // deep copy (includes children)
             current.parentElement.appendChild(clone);
+            bindFunctions();
         });
         minus.addEventListener("click", function(e){
             e.stopPropagation();
