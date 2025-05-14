@@ -13,6 +13,8 @@ body {
 header {
   background: white;
   margin-bottom: 1em;
+  text-align: center;
+  padding: 1.25rem;
 }
 
 .edit-page {
@@ -27,6 +29,11 @@ header {
   padding: 1.25rem;
   background: #f4f4f4;
 }
+.form-section {
+  position: sticky;
+  top:0;
+  left:0;
+}
 
 .edit-page > div {
   background: white;
@@ -37,24 +44,10 @@ header {
   width: 48%;
 }
 
-header {
-  text-align: center;
-  padding: 1.25rem;
-}
-
 .form-section form {
   display: flex;
   flex-direction: column;
   color: black;
-}
-.form-section form .grid-box {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-}
-.form-section form .grid-box label {
-  display: inline-block;
-  width: 30%;
 }
 .form-section form label {
   margin-top: 10px;
@@ -63,7 +56,6 @@ header {
   padding: 5px;
   font-size: 16px;
 }
-/*.form-section form #preview-btn, .form-section form #save-btn*/
 .form-section form button {
   margin-top: 1.25rem;
   padding: 10px;
@@ -75,7 +67,6 @@ header {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-/*.form-section form #preview-btn:hover, .form-section form #save-btn:hover*/
 .form-section form button:hover{
   background-color: #4b4b50;
   color: white;
@@ -84,47 +75,8 @@ header {
 .preview-section #resume-preview {
   border: 1px solid #ccc;
 }
-/* download css*/
-.download {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  color: #000000;
-  text-align: center;
-  font-size: 36px;
-}
-.download .container {
-  max-width: 100%;
-}
-.download h1 {
-  color: #4CAF50;
-}
-.download a {
-  color: #2196F3;
-  text-decoration: none;
-  font-weight: bold;
-}
-.download a:hover {
-  text-decoration: underline;
-}
-/*Icon/button  rules*/
-.editIcon {
-  float: right;
-  display: none;
-}
-.editIcon-hidden {
-  display: none;
-}
-.edit{}
-.edit body.disabled {
-  filter: grayscale(1);
-  pointer-events: none;
-}
 
+/*Icon/button  rules*/
 .form-container-hidden {
   display: none;
 }
@@ -153,10 +105,6 @@ header {
   background: #f4f4f4;
 }
 
-.component-hover {
-  background-color: #f4f4f4;
-}
-
 i:hover{
   cursor: pointer;
 }
@@ -165,28 +113,21 @@ i:hover{
 .fa-trash{
   margin-right: 6px;
 }
-.component .trash-td {
-  padding: 0;
-  width: 20px;
-}
 .fa-trash.trash-icon-edu {
   display:none;
 }
-.fa-trash.trash-icon-skill,
-.fa-trash.trash-icon-achi,
-.fa-trash.trash-icon-lang {
+.fa-trash.trash-icon-skill{
   vertical-align: top;
   float:right;
   display:none;
 }
+
 /*set parent ul a reference by "position: relative;"
 then, use "position: absolute;" for child icon.*/
-#exp-section ul,
-#proj-section ul{
+#exp-section ul{
   position: relative;
 }
-.fa-trash.trash-icon-exp,
-.fa-trash.trash-icon-proj {
+.fa-trash.trash-icon-exp{
   vertical-align: top;
   position: absolute;
   right: 0;
@@ -266,12 +207,6 @@ section {
   }
 }
 
-.form-section {
-  position: sticky;
-  top:0;
-  left:0;
-}
-
 @media print {
   @page {
     margin: 0; /* important rule for using window.print() */
@@ -296,18 +231,6 @@ section {
   padding: 1em 0;
   text-align: center;
 }
-.template1 header p {
-  font-size: 18px;
-}
-.template1 table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.template1 td {
-  border: 3px;
-  padding: 5px;
-  text-align: left;
-}
 .template1 ul {
   list-style-type: disc;
   padding-left: 30px;
@@ -321,13 +244,6 @@ section {
   border-bottom: 2px solid;
   padding-bottom: 10px;
   margin-bottom: 15px;
-}
-.template1 h3 {
-  /*margin-top: 20px;*/
-}
-.template1 .degree {
-  /*border: solid 1px #ffffff;*/
-  border-bottom-width: 10px;
 }
 
 /*for priority*/
