@@ -21,6 +21,7 @@ function bindFunctions() {
     bindAddFunction(); // Bind all add buttons with add function
     bindUpdateFunction(); // Bind update function
     bindSectionFunction(); // Bind move up/down function for each section
+    addBulletToExp(); // Add bullets in exp-like section
 }
 function cancelEntry() {
     const formContainer = document.getElementById("form-container");
@@ -124,6 +125,16 @@ function bindSectionFunction(){ // bind operations for each section inside previ
         });
     });
 }
+function addBulletToExp(){
+    const ulBlocks = document.querySelectorAll('.exp-section ul');
+    ulBlocks.forEach((ulBlock) => {
+        ulBlock.querySelectorAll("li").forEach((li, index) => {
+            if (index > 1) {
+                li.style.listStyleType = 'disc';
+            }
+        })
+    });
+}
 
 function hidePreview() {
     const right = document.getElementById('preview-container');
@@ -196,7 +207,7 @@ function addEduEntry(saveButton, addButton) {
     wrapper.innerHTML = `
         <div class="component">
             <ul>
-                <li><strong>${college}</strong><span class="float-right">${dateString}</span></li>
+                <li><strong>${college}</strong><span>${dateString}</span></li>
                 <li>${major}</li>
             </ul>
             <i class="fa-solid fa-trash trash-icon-edu"></i>
@@ -207,8 +218,8 @@ function addEduEntry(saveButton, addButton) {
 
     //  Sort in descending order
     components.sort((a, b) => {
-        const dateA = parseStringToDateObject(a.querySelector(".float-right").textContent.trim());
-        const dateB = parseStringToDateObject(b.querySelector(".float-right").textContent.trim());
+        const dateA = parseStringToDateObject(a.querySelector("span").textContent.trim());
+        const dateB = parseStringToDateObject(b.querySelector("span").textContent.trim());
         return dateB - dateA;
     });
 
@@ -298,8 +309,8 @@ function addExpEntry(saveButton, addButton) {
     wrapper.innerHTML = `
         <div class="component">
             <ul>
-                <li>${company}, ${title}</li>
-                <li><em>${orgAddress} | ${startDate} - ${endDate}</em></li>
+                <li><strong>${company}, ${title}</strong></li>
+                <li><strong><em>${orgAddress} | ${startDate} - ${endDate}</em></strong></li>
                 ${exp.split('\n')
         .map(line => line.trim().replace(/^•\s*/, ''))
         .filter(line => line.length > 0)
@@ -318,6 +329,7 @@ function addExpEntry(saveButton, addButton) {
     // Re-append in sorted order
     components.forEach(comp => list.appendChild(comp));
 
+    addBulletToExp();
     bindDeleteBlock();
     bindUpdateFunction();
     cancelEntry();
