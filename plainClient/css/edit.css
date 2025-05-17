@@ -129,13 +129,19 @@ ul {
 }
 .component {
   background: #ffffff;
+  position: relative;
 }
 .component:hover{
   background: #f4f4f4;
 }
 i.fa-trash{
-  float:right;
+  position: absolute;
+  right: 0.5rem; /*  move to end */
+  top: 50%;
+  transform: translateY(-50%);
   display: none;
+  z-index: 10;
+  opacity: 0.5;
 }
 i.trash-icon-visible {
   display:inline-block;
@@ -161,6 +167,13 @@ i.trash-icon-visible {
   background-color: #f4f4f4;
 }
 
+/* personal info*/
+#info-list {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+/* below need further modification*/
 /* media effect*/
 @media (max-width: 2048px) {
   #preview-container {
