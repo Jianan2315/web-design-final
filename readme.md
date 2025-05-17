@@ -11,14 +11,18 @@ test -> vanilla(peronal use without cloud and extra framework)
 ```
 ``react`` branch is the first attempt using react framework while its code is completely draft.
 
+## 5/17
+1) update printButton of 'edit'.
+2) Next: update 1) em as rem 2) font-size.
+
 ## 5/16
 1) "edit.css" is almost done for personal use.
-2) Last step: update em as rem.
+2) Next: update em as rem.
 
 ## 5/13
 1) "templatSelect" has been fixed about two weeks ago.
 2) "edit" script is completed today.
-3) Next step: update css for "edit"
+3) Next: update css for "edit"
 
 ## 4/30/2025
 1) remove unused code

@@ -60,10 +60,10 @@ function bindDeleteBlock(){
                     deleteItem(this);
                 });
                 block.addEventListener('mouseenter', () => {
-                    icon.classList.add('trash-icon-visible');
+                    icon.classList.add('icon-visible');
                 });
                 block.addEventListener('mouseleave', () => {
-                    icon.classList.remove('trash-icon-visible');
+                    icon.classList.remove('icon-visible');
                 });
             } else {
                 console.error('Error: Cannot access parent element of ', icon);
@@ -91,10 +91,21 @@ function bindSectionFunction(){ // bind operations for each section inside previ
     const preview = document.querySelector("#resume-preview");
     const sections = preview.querySelectorAll("section:not([data-type=\"info\"])");
     sections.forEach(section => {
+        const title =  section.querySelector("h2");
         const up = section.querySelector(".fa-up-long");
         const down = section.querySelector(".fa-down-long");
         const plus = section.querySelector(".fa-square-plus");
         const minus = section.querySelector(".fa-square-minus");
+        title.addEventListener('mouseenter', () => {
+            for (let x of [up, down, plus, minus]) {
+                x.classList.add('icon-visible');
+            }
+        });
+        title.addEventListener('mouseleave', () => {
+            for (let x of [up, down, plus, minus]) {
+                x.classList.remove('icon-visible');
+            }
+        });
         up.addEventListener("click", function (e){
             e.stopPropagation();
             const current = this.closest("section");
@@ -646,8 +657,8 @@ document.addEventListener("DOMContentLoaded", function() {
         printElement.style.margin = "0";
         printElement.style.padding = "0";
 
-        document.body.innerHTML = printElement.outerHTML; // Replace body with the container
-        for (let e of ["add-edu","add-skill","add-exp","add-proj","add-achi","add-lang"]){
+        document.body.innerHTML = printElement.outerHTML; // outerHTML: string of DOM element object
+        for (let e of ["add-edu","add-skill","add-exp"]){
             if (document.getElementById(e)){
                 const element = document.getElementById(e);
                 element.style.display="none";
