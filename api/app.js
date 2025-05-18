@@ -20,7 +20,7 @@ app.use('/', userRoutes);
 // Old APIs
 app.get('/resume', (req, res) => {
     // Path to the saved resume JSON file
-    const filePath = path.join(__dirname, '../plainClient/json/resume_data.json');
+    const filePath = path.join(__dirname, '../plainClient/json/resume_01.json');
 
     // Read the JSON file and send it as a response
     fs.readFile(filePath, 'utf-8', (err, data) => {
@@ -38,7 +38,7 @@ app.post('/save', (req, res) => {
     const resumeData = req.body;
 
     // Define the file path to save the JSON data
-    const filePath = path.join(__dirname, '../plainClient/json/resume_data.json');
+    const filePath = path.join(__dirname, '../plainClient/json/resume_01.json');
 
     // Write JSON data to a file
     fs.writeFile(filePath, JSON.stringify(resumeData, null, 4), 'utf8', (err) => {

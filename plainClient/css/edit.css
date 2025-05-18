@@ -35,8 +35,8 @@ section {
 }
 ul {
   list-style-type: none;
-  padding-left: 30px;
-  margin-bottom: 10px;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
 }
 
 /* top icons*/
@@ -176,6 +176,9 @@ i.icon-visible {
   text-align: center;
   font-size: 1.5rem;
 }
+#info-list p {
+  font-size: 1rem;
+}
 
 @media print {
   #resume-preview {
@@ -185,40 +188,40 @@ i.icon-visible {
 
 /* below need further modification*/
 /* media effect*/
-/*@media (max-width: 2048px) {*/
-/*  #preview-container {*/
-/*    width: 62%;*/
-/*  }*/
-/*  #form-container {*/
-/*    width: 32%;*/
-/*  }*/
-/*  #head-icons i{*/
-/*    font-size: 3em;*/
-/*    margin: 0.5em;*/
-/*  }*/
-/*}*/
-/*@media (max-width: 1536px) {*/
-/*  #preview-container {*/
-/*    width: 76%;*/
-/*  }*/
-/*  #form-container {*/
-/*    width: 20%;*/
-/*  }*/
-/*  #head-icons i{*/
-/*    font-size: 2em;*/
-/*    margin: 0.3em;*/
-/*  }*/
-/*}*/
-/*@media (max-width: 1024px) {*/
-/*  #form-container,*/
-/*  #preview-container {*/
-/*    width: 96%;*/
-/*  }*/
-/*  #head-icons i{*/
-/*    font-size: 1em;*/
-/*    margin: 0.2em;*/
-/*  }*/
-/*}*/
+@media (max-width: 2048px) {
+  #preview-container {
+    width: 62%;
+  }
+  #form-container {
+    width: 32%;
+  }
+  #head-icons i{
+    font-size: 2.8rem;
+    margin: 0.5rem;
+  }
+}
+@media (max-width: 1536px) {
+  #preview-container {
+    width: 76%;
+  }
+  #form-container {
+    width: 20%;
+  }
+  #head-icons i{
+    font-size: 2.2rem;
+    margin: 0.4rem;
+  }
+}
+@media (max-width: 1024px) {
+  #form-container,
+  #preview-container {
+    width: 96%;
+  }
+  #head-icons i{
+    font-size: 1.4rem;
+    margin: 0.3rem;
+  }
+}
 
 /*!*for priority*!*/
 /*.pdf {*/

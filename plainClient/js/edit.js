@@ -612,6 +612,49 @@ function fillForm(ulBlock, type) {
     }
 }
 
+// save resume data to local json file and restore from json
+function extractResumeData() {
+    const data = {
+        info: {}
+    };
+
+    // Extract static info
+    const infoItems = document.querySelectorAll(".info-section li");
+    data.info.name = infoItems[0]?.innerText.trim();
+    data.info.details = infoItems[1]?.innerText.trim();
+
+    // Preserve order by extracting visible section titles
+    const preview = document.querySelector("#resume-preview");
+    const sections = preview.querySelectorAll("section:not([data-type=\"info\"])");
+    sections.forEach(section => {
+        const title = section.querySelector("h2 span")?.innerText.trim();
+        const listContainer = section.querySelector(":scope > div");
+
+        const entries = [];
+        listContainer.querySelectorAll(".component").forEach(component => {
+            const items = Array.from(component.querySelectorAll("li")).map(li => li.innerText.trim());
+            entries.push(items);
+        });
+
+        data[title] = entries;
+    });
+
+    return data;
+}
+function saveAsJSON(data, filename = "resume.json") {
+    const jsonStr = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
 //
 // Below needs further modification
 //
@@ -625,29 +668,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const saveButton = icons.querySelector("#save-icon");
     const printButton = icons.querySelector("#print-icon");
 
-    saveButton.addEventListener("click", async ()=>{
-        const header = document.getElementById('personal-info');
-        const infoText = header.querySelector('p').textContent;
-        const emailMatch = infoText.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
-        localStorage.setItem('email', emailMatch[0]);
-
-        const resumeData = extractData();
-        const params = new URLSearchParams(window.location.search);
-        try {
-            if (params.has('id')) {
-                const id = params.get('id');
-                localStorage.setItem(id, JSON.stringify(resumeData));
-                await saveDatabase(resumeData, id);
-            } else {
-                await saveDatabase(resumeData);
-            }
-            await saveLocal(resumeData);
-            setTimeout(() => {
-                location.reload();
-            }, 800);// 500 sometimes fails.
-        } catch (e){
-            console.log("Save error: ", e);
-        }
+    saveButton.addEventListener("click", ()=>{
+        const resumeData = extractResumeData();
+        saveAsJSON(resumeData);
     });
 
     printButton.addEventListener("click", ()=>{

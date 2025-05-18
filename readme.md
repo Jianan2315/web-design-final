@@ -11,6 +11,9 @@ test -> vanilla(peronal use without cloud and extra framework)
 ```
 ``react`` branch is the first attempt using react framework while its code is completely draft.
 
+## 5/18
+1) Create a new repo "HiResumeLite" for further dev since this repo focuses on cloud deployment.
+
 ## 5/17
 1) update printButton of 'edit'.
 2) Next: update 1) em as rem 2) font-size.
